@@ -385,6 +385,9 @@ public class BusinessViewProfileController implements Initializable{
   * #   On Hover Icon Methods                                               #
     ######################################################################### */
     
+    /* # A better method to do this has been discovered, Marked for replacement. 
+     * # See BusinessManageTimeslotController.java for example. */
+    
     public void onHoverEffectsApplyTo(ImageView image) {
         image.setEffect(null);
         image.setEffect(glow);

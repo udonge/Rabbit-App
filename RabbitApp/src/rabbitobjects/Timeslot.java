@@ -20,16 +20,22 @@ public class Timeslot {
     private String employeeID;          // Employee of Business assigned to Service. [EMPLOYEE]
     private Date appointmentDate;       // Date and Time of Service. [DATE]
     private Time duration;              // How long the appointment is expected to last. [DURATION]
+    private String description;         // Business sets a short 24 character description of service. [DESCRIPTION]
        
     public Timeslot(
             String businessID,
             String customerID,
             String employeeID,
-            Date appointmentDate) {
+            Date appointmentDate,
+            Time duration,
+            String description) {
+        
         this.host = businessID;
         this.patron = customerID;
         this.employeeID = employeeID;
-        this.appointmentDate = appointmentDate;          
+        this.appointmentDate = appointmentDate;        
+        this.duration = duration;
+        this.description = description;
     }
     /* # Setter */
     public void setHost(String host) {
@@ -44,6 +50,7 @@ public class Timeslot {
     public void setAppointmentDate(Date date) {
         this.appointmentDate = date;
     }
+    
     /* # Getter */
     public String getHost() {
         return this.host;

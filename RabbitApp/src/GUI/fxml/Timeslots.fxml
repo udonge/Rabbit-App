@@ -15,7 +15,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1">
+<GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.BusinessManageTimeslotController">
   <columnConstraints>
     <ColumnConstraints hgrow="SOMETIMES" maxWidth="1280.0" minWidth="1280.0" prefWidth="1280.0" />
   </columnConstraints>
@@ -98,62 +98,62 @@
                   <RowConstraints maxHeight="50.0" minHeight="50.0" prefHeight="50.0" vgrow="SOMETIMES" />
               </rowConstraints>
                <children>
-                  <ImageView fx:id="img_0Hour" fitHeight="200.0" fitWidth="200.0" GridPane.halignment="CENTER" GridPane.rowIndex="1">
+                  <ImageView fx:id="img_12Hour" fitHeight="200.0" fitWidth="200.0" onMouseClicked="#onClickHour" GridPane.halignment="CENTER" GridPane.rowIndex="1">
                      <image>
                         <Image url="@assets/Rabbit_logo_512.png" />
                      </image>
                   </ImageView>
-                  <ImageView fx:id="img_1Hour" fitHeight="200.0" fitWidth="200.0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1">
+                  <ImageView fx:id="img_01Hour" fitHeight="200.0" fitWidth="200.0" onMouseClicked="#onClickHour" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1">
                      <image>
                         <Image url="@assets/Rabbit_logo_512.png" />
                      </image>
                   </ImageView>
-                  <ImageView fx:id="img_2Hour" fitHeight="200.0" fitWidth="200.0" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="1">
+                  <ImageView fx:id="img_02Hour" fitHeight="200.0" fitWidth="200.0" onMouseClicked="#onClickHour" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="1">
                      <image>
                         <Image url="@assets/Rabbit_logo_512.png" />
                      </image>
                   </ImageView>
-                  <ImageView fx:id="img_3Hour" fitHeight="200.0" fitWidth="200.0" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.rowIndex="1">
+                  <ImageView fx:id="img_03Hour" fitHeight="200.0" fitWidth="200.0" onMouseClicked="#onClickHour" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.rowIndex="1">
                      <image>
                         <Image url="@assets/Rabbit_logo_512.png" />
                      </image>
                   </ImageView>
-                  <ImageView fx:id="img_4Hour" fitHeight="200.0" fitWidth="200.0" GridPane.columnIndex="4" GridPane.halignment="CENTER" GridPane.rowIndex="1">
+                  <ImageView fx:id="img_04Hour" fitHeight="200.0" fitWidth="200.0" onMouseClicked="#onClickHour" GridPane.columnIndex="4" GridPane.halignment="CENTER" GridPane.rowIndex="1">
                      <image>
                         <Image url="@assets/Rabbit_logo_512.png" />
                      </image>
                   </ImageView>
-                  <ImageView fx:id="img_5Hour" fitHeight="200.0" fitWidth="200.0" GridPane.columnIndex="5" GridPane.halignment="CENTER" GridPane.rowIndex="1">
+                  <ImageView fx:id="img_05Hour" fitHeight="200.0" fitWidth="200.0" onMouseClicked="#onClickHour" GridPane.columnIndex="5" GridPane.halignment="CENTER" GridPane.rowIndex="1">
                      <image>
                         <Image url="@assets/Rabbit_logo_512.png" />
                      </image>
                   </ImageView>
-                  <ImageView fx:id="img_6Hour" fitHeight="200.0" fitWidth="200.0" GridPane.halignment="CENTER" GridPane.rowIndex="2">
+                  <ImageView fx:id="img_06Hour" fitHeight="200.0" fitWidth="200.0" onMouseClicked="#onClickHour" GridPane.halignment="CENTER" GridPane.rowIndex="2">
                      <image>
                         <Image url="@assets/Rabbit_logo_512.png" />
                      </image>
                   </ImageView>
-                  <ImageView fx:id="img_7Hour" fitHeight="200.0" fitWidth="200.0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="2">
+                  <ImageView fx:id="img_07Hour" fitHeight="200.0" fitWidth="200.0" onMouseClicked="#onClickHour" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="2">
                      <image>
                         <Image url="@assets/Rabbit_logo_512.png" />
                      </image>
                   </ImageView>
-                  <ImageView fx:id="img_8Hour" fitHeight="200.0" fitWidth="200.0" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="2">
+                  <ImageView fx:id="img_08Hour" fitHeight="200.0" fitWidth="200.0" onMouseClicked="#onClickHour" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="2">
                      <image>
                         <Image url="@assets/Rabbit_logo_512.png" />
                      </image>
                   </ImageView>
-                  <ImageView fx:id="img_9Hour" fitHeight="200.0" fitWidth="200.0" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.rowIndex="2">
+                  <ImageView fx:id="img_09Hour" fitHeight="200.0" fitWidth="200.0" onMouseClicked="#onClickHour" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.rowIndex="2">
                      <image>
                         <Image url="@assets/Rabbit_logo_512.png" />
                      </image>
                   </ImageView>
-                  <ImageView fx:id="img_10Hour" fitHeight="200.0" fitWidth="200.0" GridPane.columnIndex="4" GridPane.halignment="CENTER" GridPane.rowIndex="2">
+                  <ImageView fx:id="img_10Hour" fitHeight="200.0" fitWidth="200.0" onMouseClicked="#onClickHour" GridPane.columnIndex="4" GridPane.halignment="CENTER" GridPane.rowIndex="2">
                      <image>
                         <Image url="@assets/Rabbit_logo_512.png" />
                      </image>
                   </ImageView>
-                  <ImageView fx:id="image_11Hour" fitHeight="200.0" fitWidth="200.0" GridPane.columnIndex="5" GridPane.halignment="CENTER" GridPane.rowIndex="2">
+                  <ImageView fx:id="img_11Hour" fitHeight="200.0" fitWidth="200.0" onMouseClicked="#onClickHour" GridPane.columnIndex="5" GridPane.halignment="CENTER" GridPane.rowIndex="2">
                      <image>
                         <Image url="@assets/Rabbit_logo_512.png" />
                      </image>
@@ -218,6 +218,11 @@
                         <Font size="24.0" />
                      </font>
                   </Text>
+                  <Text fx:id="text_AMorPM" fill="#cdbcbc" strokeType="OUTSIDE" strokeWidth="0.0" text="AM / PM" GridPane.columnIndex="6" GridPane.halignment="CENTER">
+                     <font>
+                        <Font size="24.0" />
+                     </font>
+                  </Text>
                </children>
             </GridPane>
             <GridPane GridPane.columnIndex="1" GridPane.rowIndex="2">
@@ -229,13 +234,6 @@
                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
               </rowConstraints>
-               <children>
-                  <Text fx:id="label_HoverIconDesc" fill="#cacca7" strokeType="OUTSIDE" strokeWidth="0.0" text="&quot;Hover Icon  Desc&quot;" GridPane.halignment="CENTER">
-                     <font>
-                        <Font size="18.0" />
-                     </font>
-                  </Text>
-               </children>
             </GridPane>
             <GridPane GridPane.columnIndex="1">
               <columnConstraints>
@@ -279,18 +277,23 @@
                         </GridPane>
                         <ToggleButton fx:id="toggle_FullHour" maxWidth="100.0" minWidth="100.0" mnemonicParsing="false" prefWidth="100.0" selected="true" text="Full Hour" toggleGroup="$Duration" GridPane.halignment="CENTER" />
                         <Button fx:id="btn_Save" mnemonicParsing="false" text="Save" GridPane.columnIndex="4" GridPane.halignment="RIGHT" GridPane.rowIndex="1" />
-                        <ToggleButton fx:id="toggle_PM" mnemonicParsing="false" text="PM" GridPane.columnIndex="2" GridPane.rowIndex="1">
+                        <RadioButton fx:id="radiobtn_PM" mnemonicParsing="false" text="PM" textFill="#cacca7" GridPane.columnIndex="2" GridPane.rowIndex="1">
                            <toggleGroup>
                               <ToggleGroup fx:id="AMorPM" />
                            </toggleGroup>
-                        </ToggleButton>
-                        <ToggleButton fx:id="toggle_AM" mnemonicParsing="false" selected="true" text="AM" toggleGroup="$AMorPM" GridPane.columnIndex="2" GridPane.halignment="LEFT" />
+                        </RadioButton>
+                        <RadioButton fx:id="radiobtn_AM" mnemonicParsing="false" selected="true" text="AM" textFill="#cacca7" toggleGroup="$AMorPM" GridPane.columnIndex="2" />
                      </children>
                   </GridPane>
-                  <TextField fx:id="textfield_ActivityDesc" promptText="Describe the service provided in this appointment (64 Chars or Less)" GridPane.rowIndex="1" />
+                  <TextField fx:id="textfield_ActivityDesc" promptText="Describe the service provided in this appointment (24 Chars or Less)" GridPane.rowIndex="1" />
                   <Label styleClass="labelfont" text="Booking!">
                      <font>
                         <Font size="36.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="label_HoverIconDesc" styleClass="labelfont" text="Hover Icon Desc" textFill="#cacca7" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1">
+                     <font>
+                        <Font size="18.0" />
                      </font>
                   </Label>
                </children>

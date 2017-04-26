@@ -6,6 +6,7 @@
 package rabbitapp;
 
 import controllers.BusinessMainMenuController;
+import controllers.BusinessManageTimeslotController;
 import controllers.BusinessViewProfileController;
 import controllers.CustomerMainMenuController;
 import controllers.LoginController;
@@ -122,6 +123,18 @@ public class RabbitFX extends RabbitApp {
         
         showScene(stage, root);        
         
+    }
+    
+    public void viewBusinessManageTimeslot(Stage stage) throws IOException {
+        
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/GUI/fxml/Timeslots.fxml"));
+        Parent root = loader.load();
+        BusinessManageTimeslotController controller = loader.getController();
+        
+        controller.setSession(session);
+        controller.setDriver(this);
+        
+        showScene(stage, root);           
     }
     
 }

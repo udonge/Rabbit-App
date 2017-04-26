@@ -43,7 +43,7 @@ public class RabbitApp extends Application {
 
         /* # Upon start up, load session then present Login screen */
         rabbitfx.setSession(session);
-        rabbitfx.loginStage(primaryStage);
+        rabbitfx.viewBusinessManageTimeslot(primaryStage);
         
     }
 

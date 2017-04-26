@@ -155,8 +155,7 @@ public class Validation {
             return true;
             
         }
-            
-        
+              
         if(dateIsValid(day,month,year)) {
             errorText.setText("");
             return true;
@@ -166,6 +165,7 @@ public class Validation {
     } // End of dateOfBirthIsValid
     
     public boolean dateIsValid(String day, String month, String year) {
+        /* # This method is marked for replacement, Choicebox Should be used instead. */
         /* # Enforce DD / MM / YYYY */
         if(day.length() > 2 || month.length() > 2 || year.length() > 4) {            
             return false;
