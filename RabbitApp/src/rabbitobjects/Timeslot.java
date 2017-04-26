@@ -5,7 +5,8 @@
  */
 package rabbitobjects;
 
-import java.util.Date;
+import java.sql.Date;
+import java.sql.Time;
 
 /**
  *
@@ -14,42 +15,43 @@ import java.util.Date;
  * # Business that a Customer may browse and book. */
 public class Timeslot {
     
-    private String businessID;       // Business Providing Service.
-    private String customerID;       // Customer Receiving Service.
-    private int employeeID;          // Employee of Business assigned to Service.
-    private Date appointmentDate;    // Date and Time of Service.
+    private String host;                // Business Providing Service. [HOST]
+    private String patron;              // Customer Receiving Service. [PATRON]
+    private String employeeID;          // Employee of Business assigned to Service. [EMPLOYEE]
+    private Date appointmentDate;       // Date and Time of Service. [DATE]
+    private Time duration;              // How long the appointment is expected to last. [DURATION]
        
     public Timeslot(
             String businessID,
             String customerID,
-            int employeeID,
+            String employeeID,
             Date appointmentDate) {
-        this.businessID = businessID;
-        this.customerID = customerID;
+        this.host = businessID;
+        this.patron = customerID;
         this.employeeID = employeeID;
         this.appointmentDate = appointmentDate;          
     }
     /* # Setter */
-    public void setBusinessID(String businessID) {
-        this.businessID = businessID;
+    public void setHost(String host) {
+        this.host = host;
     }
-    public void setCustomerID(String customerID) {
-        this.customerID = customerID;
+    public void setPatron(String patron) {
+        this.patron = patron;
     }
-    public void setEmployeeID(int employeeID) {
+    public void setEmployeeID(String employeeID) {
         this.employeeID = employeeID;
     }
     public void setAppointmentDate(Date date) {
         this.appointmentDate = date;
     }
     /* # Getter */
-    public String getBusinessID() {
-        return this.businessID;
+    public String getHost() {
+        return this.host;
     }
-    public String getCustomerID() {
-        return this.customerID;
+    public String getPatron() {
+        return this.patron;
     }
-    public int getEmployeeID() {
+    public String getEmployeeID() {
         return this.employeeID;
     }
     public Date getAppointmentDate() {

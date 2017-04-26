@@ -215,12 +215,11 @@ public class BusinessViewProfileController implements Initializable{
         if(processProfileEdit()) {
             text_ErrorText.setVisible(false);
             session.updateUser(dummyUser);
-            System.out.println("Successful update!");
             getProfileInformation();
+            onClickCancel();
         } else {
             text_ErrorText.setVisible(true);
             text_ErrorText.setText(ErrorLabels.EDIT_PROFILE_FAILURE_SOMETHINGISINVALID.toString());
-            System.out.println("Unsuccessful update!");
         }
         
     } // End saveProfileEdits
@@ -236,8 +235,7 @@ public class BusinessViewProfileController implements Initializable{
                 newBName,
                 newEmail,
                 newBFName,
-                newBLName;
-        String 
+                newBLName,
                 newAddress,
                 newContactNo,
                 newOpenHH,

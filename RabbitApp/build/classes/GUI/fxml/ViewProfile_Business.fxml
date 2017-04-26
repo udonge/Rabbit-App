@@ -274,7 +274,7 @@
                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
               </rowConstraints>
                <children>
-                  <Button fx:id="btn_Cancel" cancelButton="true" mnemonicParsing="false" text="Cancel" visible="false" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="2" />
+                  <Button fx:id="btn_Cancel" cancelButton="true" mnemonicParsing="false" onMouseClicked="#onClickCancel" text="Cancel" visible="false" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="2" />
                   <Button fx:id="btn_Save" mnemonicParsing="false" onMouseClicked="#onClickSave" text="Save" visible="false" GridPane.columnIndex="1" GridPane.halignment="CENTER" />
                </children>
             </GridPane>

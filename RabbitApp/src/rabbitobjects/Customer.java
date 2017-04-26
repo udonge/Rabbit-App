@@ -18,7 +18,7 @@ public class Customer extends User {
     protected String lastName;
     protected Date dateOfBirth;
     /* # Customers will have a list of Bookings */
-    protected List<Booking> bookings;
+    protected List<Timeslot> bookings;
     
     public Customer
         (   String id, 
@@ -29,7 +29,7 @@ public class Customer extends User {
             String firstName, 
             String lastName, 
             Date dateOfBirth,
-            List<Booking> bookings) {
+            List<Timeslot> bookings) {
             
         super(id, password, email, address, contactNo);
         this.firstName = firstName;
@@ -47,7 +47,7 @@ public class Customer extends User {
     public void setDateOfBirth(Date dateOfBirth) {
         this.dateOfBirth = dateOfBirth;
     }
-    public void setListOfBookings(List<Booking> bookings) {
+    public void setListOfBookings(List<Timeslot> bookings) {
         this.bookings = bookings;
     }
     /* # Getters */
@@ -60,7 +60,7 @@ public class Customer extends User {
     public Date getDateOfBirth() {
         return this.dateOfBirth;
     }
-    public List<Booking> getListOfBookings() {
+    public List<Timeslot> getListOfBookings() {
         return this.bookings;
     }
     /* # To String */

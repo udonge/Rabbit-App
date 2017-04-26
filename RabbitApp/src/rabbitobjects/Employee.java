@@ -14,25 +14,34 @@ import java.util.List;
  */
 public class Employee {
     
-    protected final String eID;
-    protected String firstName;
-    protected String lastName;
-    protected List<Timeslot> timeslots;
+    public String eID;
+    public int profilePicture;
+    public String firstName;
+    public String lastName;
+    public List<Timeslot> timeslots;
+    public Boolean[] daysWorking;
     
     public Employee(
             String eID,
+            int profilePicture,
             String firstName,
             String lastName,
-            List<Timeslot> timeslots) {
+            List<Timeslot> timeslots,
+            Boolean[] daysWorking) {
         
         this.eID = eID;
+        this.profilePicture = profilePicture;
         this.firstName = firstName;
         this.lastName = lastName;
-        this.timeslots = timeslots;       
+        this.timeslots = timeslots;
+        this.daysWorking = daysWorking;
     }
     /* # Setter */
     public void setEmployeeFirstName(String firstName) {
         this.firstName = firstName;
+    }
+    public void setEmployeeProfilePicture(int profilePicture) {
+        this.profilePicture = profilePicture;
     }
     public void setEmployeeLastName(String lastName) {
         this.lastName = lastName;
@@ -40,10 +49,16 @@ public class Employee {
     public void setEmployeeTimeslots(List<Timeslot> timeslots) {
         this.timeslots = timeslots;
     }
+    public void setDaysWorking(Boolean[] daysWorking) {
+        this.daysWorking = daysWorking;
+    }
     
     /* # Getter */
     public String getEID() {
         return this.eID;
+    }
+    public int getProfilePicture() {
+        return this.profilePicture;
     }
     public String getEmployeeFirstName() {
         return this.firstName;
@@ -53,5 +68,8 @@ public class Employee {
     }
     public List<Timeslot> getEmployeeTimeslots() {
         return this.timeslots;
+    }
+    public Boolean[] getDaysWorking() {
+        return this.daysWorking;
     }
 }

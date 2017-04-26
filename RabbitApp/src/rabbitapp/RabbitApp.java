@@ -29,7 +29,7 @@ public class RabbitApp extends Application {
         RabbitFX rabbitfx = new RabbitFX();
         /* # Declare a new session. */
         Session session = new Session();
-       try {
+        try {
            /* # Database Loading. */
            Connection connection = DriverManager.getConnection("jdbc:derby://localhost:1527/Rabbit! - DB", "rabbit_admin", "rabbit");
            /* # Set the schema that this program will read from for Session. */

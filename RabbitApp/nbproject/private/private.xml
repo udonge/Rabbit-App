@@ -5,10 +5,10 @@
         <group name="RabbitApp">
             <file>file:/C:/Users/Reisen/Documents/NetBeansProjects/RabbitApp/src/controllers/BusinessViewProfileController.java</file>
             <file>file:/C:/Users/Reisen/Documents/NetBeansProjects/RabbitApp/src/rabbitmethods/Session.java</file>
+            <file>file:/C:/Users/Reisen/Documents/NetBeansProjects/RabbitApp/src/rabbitobjects/Employee.java</file>
+            <file>file:/C:/Users/Reisen/Documents/NetBeansProjects/RabbitApp/src/rabbitobjects/Timeslot.java</file>
             <file>file:/C:/Users/Reisen/Documents/NetBeansProjects/RabbitApp/src/controllers/LoginController.java</file>
-            <file>file:/C:/Users/Reisen/Documents/NetBeansProjects/RabbitApp/src/rabbitapp/RabbitApp.java</file>
             <file>file:/C:/Users/Reisen/Documents/NetBeansProjects/RabbitApp/src/rabbitapp/RabbitFX.java</file>
-            <file>file:/C:/Users/Reisen/Documents/NetBeansProjects/RabbitApp/src/enums/ErrorLabels.java</file>
         </group>
     </open-files>
 </project-private>

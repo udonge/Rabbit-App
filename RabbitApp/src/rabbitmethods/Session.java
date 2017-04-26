@@ -15,10 +15,9 @@ import java.sql.Date;
 import java.sql.Time;
 import java.util.List;
 import java.util.UUID;
-import rabbitobjects.Booking;
 import rabbitobjects.Business;
 import rabbitobjects.Customer;
-import rabbitobjects.Employee;
+import rabbitobjects.Timeslot;
 import rabbitobjects.User;
 
 /**
@@ -165,7 +164,7 @@ public class Session {
         return customer;
     }
     
-    public List<Booking> constructCustomerBookings() {
+    public List<Timeslot> constructCustomerBookings() {
         return null;
     }
     
