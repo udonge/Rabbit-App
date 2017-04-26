@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.effect.Bloom?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.text.Font?>
+
+<GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.CustomerMainMenuController">
+  <columnConstraints>
+    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+      <ColumnConstraints hgrow="SOMETIMES" maxWidth="500.0" minWidth="500.0" prefWidth="500.0" />
+    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+  </columnConstraints>
+  <rowConstraints>
+      <RowConstraints maxHeight="64.0" minHeight="64.0" prefHeight="64.0" vgrow="SOMETIMES" />
+      <RowConstraints maxHeight="102.0" minHeight="70.0" prefHeight="102.0" vgrow="SOMETIMES" />
+      <RowConstraints maxHeight="50.0" minHeight="50.0" prefHeight="50.0" vgrow="SOMETIMES" />
+      <RowConstraints maxHeight="50.0" minHeight="50.0" prefHeight="50.0" vgrow="SOMETIMES" />
+    <RowConstraints maxHeight="480.0" minHeight="480.0" prefHeight="480.0" vgrow="SOMETIMES" />
+      <RowConstraints vgrow="SOMETIMES" />
+  </rowConstraints>
+   <children>
+      <Label id="login_Title" fx:id="user_Title" styleClass="labelfont" text="Rabbit!" wrapText="true" GridPane.columnIndex="1" GridPane.halignment="CENTER">
+         <font>
+            <Font name="Sylfaen" size="28.0" />
+         </font>
+         <effect>
+            <Bloom threshold="0.58" />
+         </effect>
+      </Label>
+      <ImageView id="user_Logo" fx:id="user_Logo" fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1">
+         <image>
+            <Image url="@assets/Rabbit_logo_512.png" />
+         </image>
+      </ImageView>
+      <Label fx:id="label_GreetingText" styleClass="labelfont" text="Hello, User" textFill="#cdbcbc" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="2">
+         <font>
+            <Font size="15.0" />
+         </font>
+      </Label>
+      <Label fx:id="label_HoverIconDesc" styleClass="labelfont" text="&quot;Icon description on hover&quot;" textFill="#cacca7" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.valignment="BOTTOM">
+         <font>
+            <Font size="15.0" />
+         </font>
+      </Label>
+      <GridPane GridPane.columnIndex="1" GridPane.rowIndex="4">
+        <columnConstraints>
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+        </columnConstraints>
+        <rowConstraints>
+          <RowConstraints maxHeight="150.0" minHeight="150.0" prefHeight="150.0" vgrow="SOMETIMES" />
+          <RowConstraints maxHeight="150.0" minHeight="150.0" prefHeight="150.0" vgrow="SOMETIMES" />
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+        </rowConstraints>
+         <children>
+            <ImageView fx:id="img_ViewBooking" onMouseEntered="#onHoverViewBooking" onMouseExited="#onHoverExit" onMousePressed="#onMouseHoldViewBooking" onMouseReleased="#onClickViewBooking" GridPane.halignment="CENTER">
+               <image>
+                  <Image url="@assets/icon_booking.png" />
+               </image>
+            </ImageView>
+            <ImageView fx:id="img_MakeBooking" onMouseEntered="#onHoverMakeBooking" onMouseExited="#onHoverExit" onMousePressed="#onMouseHoldMakeBooking" onMouseReleased="#onClickMakeBooking" GridPane.columnIndex="1" GridPane.halignment="CENTER">
+               <image>
+                  <Image url="@assets/icon_make_booking.png" />
+               </image>
+            </ImageView>
+            <ImageView fx:id="img_CustomerProfile" onMouseEntered="#onHoverViewProfile" onMouseExited="#onHoverExit" onMousePressed="#onMouseHoldViewProfile" onMouseReleased="#onClickViewProfile" GridPane.columnIndex="2" GridPane.halignment="CENTER">
+               <image>
+                  <Image url="@assets/icon_customer_settings.png" />
+               </image>
+            </ImageView>
+            <ImageView fx:id="img_About" onMouseClicked="#onClickAbout" onMouseEntered="#onHoverAbout" onMouseExited="#onHoverExit" onMousePressed="#onMouseHoldAbout" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="2">
+               <image>
+                  <Image url="@assets/icon_about.png" />
+               </image>
+            </ImageView>
+            <ImageView fx:id="img_Logout" onMouseClicked="#onClickLogout" onMouseEntered="#onHoverLogout" onMouseExited="#onHoverExit" onMousePressed="#onMouseHoldLogout" GridPane.halignment="CENTER" GridPane.rowIndex="2">
+               <image>
+                  <Image url="@assets/icon_logout.png" />
+               </image>
+            </ImageView>
+         </children>
+      </GridPane>
+   </children>
+</GridPane>
