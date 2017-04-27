@@ -129,14 +129,17 @@ public class BusinessViewProfileController implements Initializable{
         } else {
             label_ContactNoValue.setText(user.getContactNo());
         }
-        if(user.getOpeningHours()==null || user.getClosingHours()==null) {
-            
+        if(user.getOpeningHours()==null || user.getClosingHours()==null) {            
             label_HoursOfOperation.setText("Unspecified.");
         } else {
-            SimpleDateFormat s = new SimpleDateFormat("HH:mm");
-            String open = s.format(user.getOpeningHours());
-            String close = s.format(user.getClosingHours());
-            label_HoursOfOperation.setText(open + " : " + close);
+            if(user.getOpeningHours().equals(user.getClosingHours())) {
+                label_HoursOfOperation.setText("24 Hours.");                
+            } else {
+                SimpleDateFormat s = new SimpleDateFormat("HH:mm");
+                String open = s.format(user.getOpeningHours());
+                String close = s.format(user.getClosingHours());
+                label_HoursOfOperation.setText(open + " : " + close);                
+            }
         }       
     } // End getProfileInformation
     
@@ -359,7 +362,6 @@ public class BusinessViewProfileController implements Initializable{
         } else { // This is optional so can be null.
             
         }
-        
         if(open!=null || close!=null) {
             
         } else {

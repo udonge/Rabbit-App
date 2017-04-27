@@ -133,6 +133,7 @@ public class RabbitFX extends RabbitApp {
         
         controller.setSession(session);
         controller.setDriver(this);
+        controller.setTimeslotList();
         
         showScene(stage, root);           
     }

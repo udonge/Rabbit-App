@@ -117,7 +117,9 @@ public class BusinessMainMenuController implements Initializable {
   * #   On Click Icon Methods                                               #
     ######################################################################### */ 
     
-    public void onClickTimeslots() {
+    public void onClickTimeslots() throws IOException {
+        Stage stage = (Stage) img_Timeslots.getScene().getWindow();
+        rabbitfx.viewBusinessManageTimeslot(stage);
         
     }
     
