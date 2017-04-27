@@ -6,16 +6,9 @@
 package controllers;
 
 import java.io.IOException;
-import java.math.RoundingMode;
 import java.net.URL;
 import java.sql.Time;
-import java.text.DecimalFormat;
-import java.time.Duration;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
 import java.util.ResourceBundle;
 import javafx.fxml.FXML;
@@ -44,7 +37,7 @@ public class BusinessManageTimeslotController implements Initializable{
     RabbitFX rabbitfx;
     Session session;
     Glow glow = new Glow();
-    Image nodeDisabled = new Image("/GUI/fxml/assets/logo/logo_doubleflop.png");
+    Image nodeDisabled = new Image("/GUI/fxml/assets/logo/logo_inactive.png");
     Image nodeFullHour = new Image("/GUI/fxml/assets/logo/logo_original.png");
     Image node00Hour = new Image("/GUI/fxml/assets/logo/logo_rightflop.png");
     Image node30Hour = new Image("/GUI/fxml/assets/logo/logo_leftflop.png");
@@ -180,7 +173,7 @@ public class BusinessManageTimeslotController implements Initializable{
     }
 
     public void setAvailableHours(Boolean amORpm) {
-        /* # Disable the hours that are not within the business opening hours. */
+        /* # Enable the hours that are within the business opening hours. */
         Business thisBusiness = (Business) session.currentUser;
         Time open = thisBusiness.getOpeningHours();
         Time close = thisBusiness.getClosingHours();
@@ -324,7 +317,6 @@ public class BusinessManageTimeslotController implements Initializable{
         int firstDigit = Character.getNumericValue(getDigits[4]);
         int secondDigit = Character.getNumericValue(getDigits[5]);
         double hour = 0;
-        /* # 0 - 11 Hours, therefore if first digit is not 0, it is 10 or 11 or 12.*/
         switch(firstDigit) {
             case 0:
                 /* # If 0, it is between 00:00 and 09:59 */

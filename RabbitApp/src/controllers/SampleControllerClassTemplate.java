@@ -35,4 +35,8 @@ public class SampleControllerClassTemplate implements Initializable{
         this.session = session;
     }
     
+ /* #########################################################################
+  * #   Sample Ribbon Seperator                                             #
+    ######################################################################### */    
+    
 }

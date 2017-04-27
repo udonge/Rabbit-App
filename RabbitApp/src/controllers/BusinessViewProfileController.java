@@ -438,8 +438,9 @@ public class BusinessViewProfileController implements Initializable{
         btn_Save.setVisible(false);        
     }
     
-    public void onClickTimeslots() {
-        
+    public void onClickTimeslots() throws IOException {
+        Stage stage = (Stage) img_Timeslots.getScene().getWindow();
+        rabbitfx.viewBusinessManageTimeslot(stage);        
     }
     
     public void onClickEmployees() {

@@ -346,7 +346,7 @@
                      </children>
                   </GridPane>
                   <TextField fx:id="textfield_ActivityDesc" promptText="Describe the service provided in this appointment (24 Chars or Less)" GridPane.rowIndex="1" />
-                  <Label styleClass="labelfont" text="Booking!">
+                  <Label styleClass="labelfont" text="Booking Management." GridPane.halignment="CENTER">
                      <font>
                         <Font size="36.0" />
                      </font>

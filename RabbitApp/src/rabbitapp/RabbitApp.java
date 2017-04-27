@@ -9,12 +9,9 @@ import java.io.IOException;
 import javafx.application.Application;
 import javafx.stage.Stage;
 import java.sql.Connection;
-import java.sql.Date;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import rabbitmethods.Session;
-import rabbitobjects.Business;
-import rabbitobjects.Customer;
 
 /**
  *
