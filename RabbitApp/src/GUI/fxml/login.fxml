@@ -102,7 +102,7 @@
             </ImageView>
             <ImageView id="login_Logo" fx:id="login_LogoAlt" fitHeight="200.0" fitWidth="200.0" onMouseClicked="#onClickLogo" onMouseEntered="#onHoverLogo" onMouseExited="#onHoverExitLogo" preserveRatio="true" styleClass=".rabbitlogo" visible="false" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="2">
                <image>
-                  <Image url="@assets/logo/Rabbit_logo_leftflop.png" />
+                  <Image url="@assets/logo/logo_doubleflop.png" />
                </image>
                <cursor>
                   <Cursor fx:constant="DEFAULT" />

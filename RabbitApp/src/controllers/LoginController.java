@@ -18,6 +18,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.effect.Glow;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
@@ -35,7 +36,7 @@ public class LoginController implements Initializable {
     RabbitFX rabbitfx;
     Glow glow = new Glow();
     
-    
+    Image logo_alt = new Image("/GUI/fxml/assets/logo/logo_doubleflop.png");
     @FXML
  /* #########################################################################
   * #   Declare JavaFX objects                                              #

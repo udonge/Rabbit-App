@@ -36,6 +36,7 @@ public class BusinessManageEmployeeController implements Initializable{
     RabbitFX rabbitfx;
     Session session;
     Validation validation = new Validation();
+    Business thisBusiness;
     
     Boolean editOrAdding = false;
     
@@ -97,6 +98,8 @@ public class BusinessManageEmployeeController implements Initializable{
     }
     public void setSession(Session session) {
         this.session = session;
+        /* # Cast Business User. */
+        this.thisBusiness = (Business) session.currentUser;
     }
     
     public void setProfilePictureChoices() {
@@ -115,9 +118,7 @@ public class BusinessManageEmployeeController implements Initializable{
         for(Image i : profilepics) {
             choicebox_ProfilePicture.getItems().add(profileindex);
             profileindex++;
-        }
-        
-        choicebox_ProfilePicture.getSelectionModel().select(0);
+        }       
         
         /* # Set the profile picture as options are selected. */
         choicebox_ProfilePicture.getSelectionModel().selectedIndexProperty().addListener
@@ -127,11 +128,12 @@ public class BusinessManageEmployeeController implements Initializable{
                 img_ProfilePicture.setImage(profilepics.get(new_value.intValue()));
             }
         });
+        
+        choicebox_ProfilePicture.getSelectionModel().select(0);
     }
     
     public void setEmployeeChoices() {
-        Business business = (Business) session.currentUser;
-        for(Employee e : business.getListOfEmployees()) {
+        for(Employee e : thisBusiness.getListOfEmployees()) {
             if(e.getEID()!=null) {
                 choicebox_SelectEmployee.getItems().add(e.getEID()); 
             }
@@ -140,8 +142,8 @@ public class BusinessManageEmployeeController implements Initializable{
         (new ChangeListener<Number>() {
             public void changed(ObservableValue ov,
                     Number value, Number new_value) {
-                setEmployeeDetails(business.getListOfEmployees().get(new_value.intValue()));
-                img_ProfilePicture.setImage(profilepics.get(business.getListOfEmployees().get(new_value.intValue()).getProfilePicture()));
+                setEmployeeDetails(thisBusiness.getListOfEmployees().get(new_value.intValue()));
+                img_ProfilePicture.setImage(profilepics.get(thisBusiness.getListOfEmployees().get(new_value.intValue()).getProfilePicture()));
             }
         });        
     }
@@ -174,7 +176,12 @@ public class BusinessManageEmployeeController implements Initializable{
     }
     
     public void disableEditIfNoEmployees() {
-        
+        if(thisBusiness.getListOfEmployees().isEmpty()) {
+            btn_EditEmployee.setOpacity(0.4);
+            btn_EditEmployee.setDisable(true);
+        } else {
+            choicebox_SelectEmployee.getSelectionModel().selectFirst();
+        }        
     }
     
     public void setTextFieldList() {
@@ -187,11 +194,8 @@ public class BusinessManageEmployeeController implements Initializable{
         texts.add(text_EmployeeLastName);
         texts.add(text_TimeslotTime);
         texts.add(text_TimeslotDuration);
-        clearEmployeeTextTable();
-      
-    }
-    
-    
+        clearEmployeeTextTable();      
+    }       
 
  /* #########################################################################
   * #   LOGIC METHODS                                                       #
@@ -199,22 +203,56 @@ public class BusinessManageEmployeeController implements Initializable{
     
     public void addEmployee() {
         int profileid = choicebox_ProfilePicture.getSelectionModel().getSelectedIndex();
-        System.out.println(profileid);
         String fname = textfield_EditFirstName.getText();
         String lname = textfield_EditLastName.getText();
         String desc = textarea_EditDesc.getText();
-        Business business = (Business) session.currentUser;
         
         if(validateFields(fname, lname)) {
-            commitEmployeeToDatabase(fname, lname, desc, profileid, business);
+            commitEmployeeToDatabase(fname, lname, desc, profileid, thisBusiness);
             
         } else {
             System.out.println("Add New Employee Fail: Employee Details Invalid");
         }                              
     }
     
-    public void editEmployee() {
-        System.out.println("Edit mode");
+    public void editEmployee(String eid) {
+        int profileid = choicebox_ProfilePicture.getSelectionModel().getSelectedIndex();
+        String 
+            fname,
+            lname,
+            desc;
+        Employee editMe = getThisEmployee(eid);
+        
+        if(fieldIsEmpty(textfield_EditFirstName)) {
+            fname = editMe.getEmployeeFirstName();
+        } else {
+            fname = textfield_EditFirstName.getText();
+        }
+        
+        if(fieldIsEmpty(textfield_EditLastName)) {
+            lname = editMe.getEmployeeLastName();
+        } else {
+            lname = textfield_EditLastName.getText();
+        }
+        
+        if(textarea_EditDesc.getText().isEmpty()) {
+            desc = editMe.getEmployeeDesc();
+        } else {
+            desc = textarea_EditDesc.getText();
+        }
+        
+        if(validateFields(fname, lname)) {
+            editMe.setEmployeeFirstName(fname);
+            editMe.setEmployeeLastName(lname);
+            editMe.setEmployeeProfilePicture(profileid);
+            editMe.setEmployeeDesc(desc);
+            session.updateEmployee(editMe);
+            System.out.println("Editing Employee successful: " + editMe.getEID());
+            hideEditFields();
+            
+        } else {
+            System.out.println("Edit Employee: " + editMe.getEID() + " failed.");
+        }
     }
     
     public void commitEmployeeToDatabase(String fname, String lname, String desc, int profileid, Business business) {
@@ -222,21 +260,23 @@ public class BusinessManageEmployeeController implements Initializable{
         String id = session.generateID("E");
         
         Employee dummyEmployee = new Employee(id, profileid, fname, lname, desc, null);
-        
         session.saveEmployeeToDatabase(dummyEmployee, business);
         /* # Add this employee to business database. */
         business.getListOfEmployees().add(dummyEmployee);
-        /* # Update Choicebox */
+        /* # Update Choicebox. */
         choicebox_SelectEmployee.getItems().add(dummyEmployee.getEID());
+        /* # Set selection to this employee.*/
+        choicebox_SelectEmployee.getSelectionModel().selectLast();
+        System.out.println("Adding New Employee successful: " + dummyEmployee.getEID());
+        /* # Enable Edit button. */
+        btn_EditEmployee.setDisable(false);
+        btn_EditEmployee.setOpacity(1);
+        hideEditFields();
     }
     
     public void deleteEmployee() {
         
-    }
-    
-    public void getEmployeeInformation() {
-        
-    }
+    }     
 
     public boolean validateFields(String fname, String lname) {
         Text text = new Text(); // Dummy text.
@@ -264,7 +304,6 @@ public class BusinessManageEmployeeController implements Initializable{
     
     public void clearEmployeeTextTable() {
         texts.forEach((text) -> {
-            System.out.println(text);
             text.setText("");
         });
     }
@@ -277,6 +316,7 @@ public class BusinessManageEmployeeController implements Initializable{
         /* # Set mode to Adding Employee */
         /* # Edit = False, Add = True */
         editOrAdding = true;
+        clearEmployeeTextTable();
         showEditFields();
     }
     
@@ -284,6 +324,9 @@ public class BusinessManageEmployeeController implements Initializable{
         /* # Set mode to Adding Employee */
         /* # Edit = False, Add = True */
         editOrAdding = false;
+        choicebox_SelectEmployee.getSelectionModel().getSelectedIndex();
+        setEmployeeDetails(thisBusiness.getListOfEmployees().get(0));
+        
         showEditFields();
     }
     
@@ -291,22 +334,39 @@ public class BusinessManageEmployeeController implements Initializable{
         if(editOrAdding) {
             addEmployee();
         } else {
-            editEmployee();           
+            int index = choicebox_SelectEmployee.getSelectionModel().getSelectedIndex();
+            Business business = (Business) session.currentUser;
+            editEmployee(business.getListOfEmployees().get(index).getEID());
         }
-        
     }
     
  /* #########################################################################
   * #   Design Methods                                                      #
     ######################################################################### */     
-        public void setErrorTextField(TextField tf, boolean toggle) {
+    public void setErrorTextField(TextField tf, boolean toggle) {
         ObservableList<String> styleClass = tf.getStyleClass();
         if(toggle) { // Remove
             styleClass.removeAll(Collections.singleton("error")); 
         } else { // Add
             styleClass.add("error");
-        }
+        }      
+    }
         
+    public boolean fieldIsEmpty(TextField field) {
+        return field.getText().isEmpty();
+    }
+    
+    public Employee getThisEmployee(String eid) {
+        Business business = (Business) session.currentUser;
+        List<Employee> employees = business.getListOfEmployees();
+        
+        for(Employee e : employees) {
+            if(e.getEID().equals(eid)) {
+                return e;
+            }
+        }
+        /* # Employee not found */
+        return null;
     }
     
 }

@@ -119,8 +119,9 @@ public class RabbitFX extends RabbitApp {
         
         controller.setSession(session);
         controller.setDriver(this);
-        controller.getProfileInformation();
+        controller.getBusinessProfileInformation();
         controller.setChoiceBox();
+        controller.toggleEditObjectVisibility();
         
         showScene(stage, root);        
         
@@ -150,6 +151,7 @@ public class RabbitFX extends RabbitApp {
         controller.setProfilePictureChoices();
         controller.hideEditFields();
         controller.setTextFieldList();
+        controller.disableEditIfNoEmployees();
         controller.setEmployeeChoices();
         
         showScene(stage, root);            

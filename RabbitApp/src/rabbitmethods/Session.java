@@ -187,9 +187,10 @@ public class Session {
                 String ownerLName = rsBusiness.getString("LASTNAME");
                 Time openTime = rsBusiness.getTime("OPENTIME");
                 Time closeTime = rsBusiness.getTime("CLOSETIME");
+                String desc = rsBusiness.getString("DESCRIPTION");
                 Boolean visibility = rsBusiness.getBoolean("VISIBILITY");
                 /* # Given this information, we build a Business */
-                business = new Business(null,null,null,null,null,businessName,ownerFName,ownerLName,null,openTime,closeTime,visibility); 
+                business = new Business(null,null,null,null,null,businessName,ownerFName,ownerLName,null,openTime,closeTime,desc,visibility); 
                 business.setListOfEmployees(employees);
                           
             }
@@ -282,7 +283,7 @@ public class Session {
     }
     
     public void saveBusinessToDatabase(Business business) {
-        String userCommand = "INSERT INTO " + schema + ".BUSINESS " + "VALUES (?,?,?,?,?,?,?)";
+        String userCommand = "INSERT INTO " + schema + ".BUSINESS " + "VALUES (?,?,?,?,?,?,?,?)";
         Time openTime = null;
         Time closeTime = null;
         if(business.getOpeningHours()!=null) {
@@ -299,7 +300,8 @@ public class Session {
             statement.setTime(4, closeTime);
             statement.setBoolean(5, false);
             statement.setString(6, business.getBusinessOwnerFirstName());
-            statement.setString(7, business.getBusinessOwnerLastName());            
+            statement.setString(7, business.getBusinessOwnerLastName());
+            statement.setString(8, business.getBusinessDescription());
             statement.executeUpdate();            
         }catch(SQLException error) {
             System.out.println(error.getMessage());
@@ -364,7 +366,8 @@ public class Session {
                 "CLOSETIME = ?, " +
                 "VISIBILITY = ?, " +
                 "FIRSTNAME = ?, " +
-                "LASTNAME = ? " +
+                "LASTNAME = ?, " +
+                "DESCRIPTION = ? " +
                 "WHERE ID = '" + user.getID() + "'";
         try {
             PreparedStatement statement = connection.prepareStatement(updateCommand);
@@ -374,10 +377,31 @@ public class Session {
             statement.setBoolean(4, user.getVisibilityToPublic());
             statement.setString(5, user.getBusinessOwnerFirstName());
             statement.setString(6, user.getBusinessOwnerLastName());
+            statement.setString(7, user.getBusinessDescription());
             statement.executeUpdate();
         } catch(SQLException error) {
             System.out.println(error.getMessage());
         }        
+    }
+    
+    public void updateEmployee(Employee employee) {
+        String updateCommand = 
+                "UPDATE " + schema + ".EMPLOYEE SET " +
+                "FIRSTNAME = ?, " +
+                "LASTNAME = ?, " +
+                "DESCRIPTION = ?, " +
+                "PROFILE = ? " +
+                "WHERE EID = '" + employee.getEID() + "'";
+        try {
+            PreparedStatement statement = connection.prepareStatement(updateCommand);
+            statement.setString(1, employee.getEmployeeFirstName());
+            statement.setString(2, employee.getEmployeeLastName());
+            statement.setString(3, employee.getEmployeeDesc());
+            statement.setInt(4, employee.getProfilePicture());
+            statement.executeUpdate();
+        } catch(SQLException error) {
+            System.out.println(error.getMessage());
+        }
     }
     
     public String generateID(String type) {

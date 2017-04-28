@@ -22,6 +22,7 @@ public class Business extends User {
     protected List<Employee> employees;
     protected Time openingHours;
     protected Time closingHours;
+    protected String desc;
     boolean openToPublic;
     
     public Business
@@ -36,6 +37,7 @@ public class Business extends User {
             List<Employee> employees,
             Time openingHours,
             Time closingHours,
+            String desc,
             boolean openToPublic) {
             
             super(id, password, email, address, contactNo);
@@ -45,6 +47,7 @@ public class Business extends User {
             this.employees = employees;
             this.openingHours = openingHours;
             this.closingHours = closingHours;
+            this.desc = desc;
             this.openToPublic = false;
     }
     /* # Setters */
@@ -65,6 +68,9 @@ public class Business extends User {
     }
     public void setClosingHours(Time closingHours) {
         this.closingHours = closingHours;
+    }
+    public void setBusinessDescription(String desc) {
+        this.desc = desc;
     }
     public void toggleVisibilityToPublic() {
         this.openToPublic = !this.openToPublic;
@@ -88,6 +94,9 @@ public class Business extends User {
     }
     public Time getClosingHours() {
         return this.closingHours;
+    }
+    public String getBusinessDescription() {
+        return this.desc;
     }
     public boolean getVisibilityToPublic() {
         return this.openToPublic;

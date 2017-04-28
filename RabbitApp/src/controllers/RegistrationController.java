@@ -166,7 +166,6 @@ public class RegistrationController implements  Initializable {
         textfield_BusinessLastName.setText(""); 
         textfield_BusinessContactNo.setText("");
         textfield_BusinessAddress.setText("");
-        confirmed = false;
     } // End resetUserText
     
  /* #########################################################################
@@ -218,24 +217,12 @@ public class RegistrationController implements  Initializable {
         return requirementCheck>2;
     } // End validateCustomerTextFields
     
-    boolean confirmed = false;
     public void onClickCustomerConfirm() {
         /* # Run textfield checks for appropriate selections. */
-        if(validateCustomerTextFields()==false) {
-            btn_CustomerRegister.setText("Confirm");
-            confirmed = false;
-            label_CustomerFinishedForm.setVisible(false);
-        }
-        if(confirmed==false) {
-            if(validateCustomerTextFields()) {
-                btn_CustomerRegister.setText("Register");
-                label_CustomerFinishedForm.setVisible(true);
-                confirmed = true;
-                return;
-            }
-        }
-        if(confirmed==true) {
+        if(validateCustomerTextFields()) {
             registerCustomer();
+        } else {
+            System.out.println("Customer Registration Failure.");
         }
     } // End onClickCustomerConfirm
     
@@ -324,22 +311,12 @@ public class RegistrationController implements  Initializable {
     
     public void onClickBusinessConfirm() {
         /* # Run textfield checks for appropriate selections. */
-        if(validateBusinessTextFields()==false) {
-            btn_BusinessRegister.setText("Confirm");
-            confirmed = false;
-            label_BusinessFinishedForm.setVisible(false);
-        }
-        if(confirmed==false) {
-            if(validateBusinessTextFields()) {
-                btn_BusinessRegister.setText("Register");
-                label_BusinessFinishedForm.setVisible(true);
-                confirmed = true;
-                return;
-            }
-        }
-        if(confirmed==true) {
+        if(validateBusinessTextFields()) {
             registerBusiness();
-        }       
+        } else {
+            System.out.println("Business Registration Failure.");
+        }
+  
     }
     
     public void registerBusiness() {
@@ -358,7 +335,7 @@ public class RegistrationController implements  Initializable {
         if(!textfield_BusinessContactNo.getText().isEmpty()) {
             contactNo = textfield_BusinessContactNo.getText();
         }
-        Business business = new Business(id,password, email, address, contactNo, businessName, firstName, lastName, null, null, null, false);
+        Business business = new Business(id,password, email, address, contactNo, businessName, firstName, lastName, null, null, null, null, false);
         session.users.add(business);
         session.saveToDatabase(business);
         resetUserText();

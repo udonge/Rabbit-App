@@ -252,7 +252,7 @@ public class BusinessManageTimeslotController implements Initializable{
         
     public void enableNode(ImageView node) {
         node.setDisable(false);
-        node.setOpacity(1);
+        node.setOpacity(0.8);
         node.setImage(nodeFullHour);        
     }
     
@@ -281,6 +281,7 @@ public class BusinessManageTimeslotController implements Initializable{
         String idOfClickedNode = event.getPickResult().getIntersectedNode().getId();
         ImageView clickedImage = (ImageView) event.getSource();
         setGlow(clickedImage);
+        clickedImage.setOpacity(1);
  
         /* # Some effect so we know it has been clicked. */      
     }
