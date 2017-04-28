@@ -13,7 +13,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1280.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8.0.111">
+<GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.BusinessManageEmployeeController">
   <columnConstraints>
     <ColumnConstraints hgrow="SOMETIMES" />
   </columnConstraints>
@@ -95,9 +95,9 @@
                         <Font size="18.0" />
                      </font>
                   </Text>
-                  <Button fx:id="btn_AddEmployee" mnemonicParsing="false" text="Add New Employee" GridPane.halignment="CENTER" GridPane.rowIndex="2" />
+                  <Button fx:id="btn_AddEmployee" mnemonicParsing="false" onMouseClicked="#onClickAddEmployee" text="Add New Employee" GridPane.halignment="CENTER" GridPane.rowIndex="2" />
                   <Button fx:id="btn_DeleteEmployee" mnemonicParsing="false" text="Delete This Employee" textFill="#d71515" GridPane.halignment="CENTER" GridPane.rowIndex="4" />
-                  <Button fx:id="btn_EditEmployee" mnemonicParsing="false" text="Edit This Employee" GridPane.halignment="CENTER" GridPane.rowIndex="3" />
+                  <Button fx:id="btn_EditEmployee" mnemonicParsing="false" onMouseClicked="#onClickEditEmployee" text="Edit This Employee" GridPane.halignment="CENTER" GridPane.rowIndex="3" />
                </children>
             </GridPane>
             <GridPane gridLinesVisible="true" GridPane.columnIndex="1" GridPane.rowIndex="1">
@@ -174,8 +174,8 @@
                         <TextField fx:id="textfield_EditFirstName" maxWidth="200.0" minWidth="200.0" nodeOrientation="LEFT_TO_RIGHT" prefWidth="200.0" promptText="First name of employee" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
                         <TextField fx:id="textfield_EditLastName" maxWidth="200.0" minWidth="200.0" nodeOrientation="LEFT_TO_RIGHT" prefWidth="200.0" promptText="Last name of employee" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.rowIndex="2" />
                         <TextArea fx:id="textarea_EditDesc" maxWidth="200.0" minWidth="200.0" nodeOrientation="LEFT_TO_RIGHT" prefHeight="200.0" prefWidth="200.0" promptText="Description of employee role." GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.rowIndex="3" />
-                        <ChoiceBox fx:id="choicebox_ProfilePicture" prefWidth="150.0" GridPane.columnIndex="3" GridPane.halignment="CENTER" />
-                        <Button fx:id="btn_SaveEdit" mnemonicParsing="false" text="Save" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.rowIndex="4" />
+                        <ChoiceBox fx:id="choicebox_ProfilePicture" prefWidth="50.0" GridPane.columnIndex="3" GridPane.halignment="CENTER" />
+                        <Button fx:id="btn_SaveEdit" mnemonicParsing="false" onMouseClicked="#onClickSave" text="Save" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.rowIndex="4" />
                         <Button fx:id="btn_CancelEdit" mnemonicParsing="false" text="Cancel" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.rowIndex="5" />
                         <Text fx:id="text_EmployeeID" fill="#fffdfd" strokeType="OUTSIDE" strokeWidth="0.0" text="# ID OF EMPLOYEE" GridPane.columnIndex="1">
                            <font>
@@ -202,7 +202,7 @@
                               <Font size="24.0" />
                            </font>
                         </Text>
-                        <Text fx:id="text_TimeDuration" fill="#fffdfd" strokeType="OUTSIDE" strokeWidth="0.0" text="# DESCRIPTION OF EMPLOYEE" wrappingWidth="500.0" GridPane.columnIndex="1" GridPane.rowIndex="5">
+                        <Text fx:id="text_TimeslotDuration" fill="#fffdfd" strokeType="OUTSIDE" strokeWidth="0.0" text="# DESCRIPTION OF EMPLOYEE" wrappingWidth="500.0" GridPane.columnIndex="1" GridPane.rowIndex="5">
                            <font>
                               <Font size="24.0" />
                            </font>

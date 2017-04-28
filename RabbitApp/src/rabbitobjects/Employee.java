@@ -14,27 +14,27 @@ import java.util.List;
  */
 public class Employee {
     
-    public String eID;
-    public int profilePicture;
-    public String firstName;
-    public String lastName;
-    public List<Timeslot> timeslots;
-    public Boolean[] daysWorking;
+    protected String eID;
+    protected int profilePicture;
+    protected String firstName;
+    protected String lastName;
+    protected String desc;
+    protected List<Timeslot> timeslots;
     
     public Employee(
             String eID,
             int profilePicture,
             String firstName,
             String lastName,
-            List<Timeslot> timeslots,
-            Boolean[] daysWorking) {
+            String desc,
+            List<Timeslot> timeslots) {
         
         this.eID = eID;
         this.profilePicture = profilePicture;
         this.firstName = firstName;
         this.lastName = lastName;
+        this.desc = desc;
         this.timeslots = timeslots;
-        this.daysWorking = daysWorking;
     }
     /* # Setter */
     public void setEmployeeFirstName(String firstName) {
@@ -46,11 +46,11 @@ public class Employee {
     public void setEmployeeLastName(String lastName) {
         this.lastName = lastName;
     }
+    public void setEmployeeDesc(String desc) {
+        this.desc = desc;
+    }    
     public void setEmployeeTimeslots(List<Timeslot> timeslots) {
         this.timeslots = timeslots;
-    }
-    public void setDaysWorking(Boolean[] daysWorking) {
-        this.daysWorking = daysWorking;
     }
     
     /* # Getter */
@@ -66,10 +66,11 @@ public class Employee {
     public String getEmployeeLastName() {
         return this.lastName;
     }
+    public String getEmployeeDesc() {
+        return this.desc;
+    }
     public List<Timeslot> getEmployeeTimeslots() {
         return this.timeslots;
     }
-    public Boolean[] getDaysWorking() {
-        return this.daysWorking;
-    }
+    
 }

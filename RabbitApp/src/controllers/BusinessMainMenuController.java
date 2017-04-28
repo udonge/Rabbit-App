@@ -123,8 +123,9 @@ public class BusinessMainMenuController implements Initializable {
         
     }
     
-    public void onClickEmployees() {
-        
+    public void onClickEmployees() throws IOException {
+        Stage stage = (Stage) img_Employees.getScene().getWindow();
+        rabbitfx.viewBusinessManageEmployee(stage);
     }
     
     public void onClickViewProfile() throws IOException {

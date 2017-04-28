@@ -209,7 +209,7 @@
                     </rowConstraints>
                      <children>
                         <TextField fx:id="textfield_EditBusinessName" promptText="New Business Name" GridPane.halignment="CENTER" />
-                        <TextField fx:id="textfield_EditEmail" promptText="New Email" GridPane.rowIndex="1" />
+                        <TextField fx:id="textfield_EditEmail" promptText="New Email" styleClass="error-field" GridPane.rowIndex="1" />
                         <TextField fx:id="textfield_EditAddress" promptText="New Address" GridPane.rowIndex="3" />
                         <TextField fx:id="textfield_EditContactNo" promptText="New Contact No" GridPane.rowIndex="4" />
                         <GridPane GridPane.rowIndex="5">

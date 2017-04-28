@@ -17,6 +17,7 @@ import java.util.List;
 import java.util.UUID;
 import rabbitobjects.Business;
 import rabbitobjects.Customer;
+import rabbitobjects.Employee;
 import rabbitobjects.Timeslot;
 import rabbitobjects.User;
 
@@ -59,6 +60,10 @@ public class Session {
         /* # Set currentUser to null*/
         currentUser = null;
     }
+    
+ /* #########################################################################
+  * #   Load / Read from Database                                           #
+    ######################################################################### */   
     
     public void readFromDatabase() {
         /* # Populate the User list with data stored in Database. 
@@ -172,6 +177,7 @@ public class Session {
         /* # Build Business Data, note we must repeat for Employees and Timeslots */
         String command = ("SELECT * FROM " + schema + ".BUSINESS WHERE ID = '" + userID +"'");
         Business business = null;
+        List<Employee> employees = new ArrayList<>();       
         try {
             Statement statement = connection.createStatement();
             ResultSet rsBusiness = statement.executeQuery(command);
@@ -183,22 +189,43 @@ public class Session {
                 Time closeTime = rsBusiness.getTime("CLOSETIME");
                 Boolean visibility = rsBusiness.getBoolean("VISIBILITY");
                 /* # Given this information, we build a Business */
-                business = new Business(null,null,null,null,null,businessName,ownerFName,ownerLName,null,openTime,closeTime,visibility);              
+                business = new Business(null,null,null,null,null,businessName,ownerFName,ownerLName,null,openTime,closeTime,visibility); 
+                business.setListOfEmployees(employees);
+                          
             }
         } catch(SQLException error) {
             System.out.println(error.getMessage());
         }
         /* # Construct Employee List */
-        
+        constructListOfEmployees(employees, userID);
         return business;
     }
-    /* # SAVE METHODS */
     
-    public void endSession() {
-        for(User user : users) {
-            saveToDatabase(user);
+    public void constructListOfEmployees(List<Employee> list, String userID) {
+        String command = ("SELECT * FROM " + schema + ".EMPLOYEE WHERE BID = '" + userID + "'");
+        Employee employee = null;
+        List<Timeslot> timeslots = new ArrayList<>();
+        try {
+            Statement statement = connection.createStatement();
+            ResultSet rsEmployee = statement.executeQuery(command);
+            while(rsEmployee.next()) {
+                String eID = rsEmployee.getString("EID");
+                int profileID = rsEmployee.getInt("PROFILE");
+                String fname = rsEmployee.getString("FIRSTNAME");
+                String lname = rsEmployee.getString("LASTNAME");
+                String desc = rsEmployee.getString("DESCRIPTION");
+                employee = new Employee(eID, profileID, fname, lname, desc, timeslots);
+                list.add(employee);
+            }
+            
+        } catch(SQLException error) {
+            System.out.println(error.getMessage());
         }
     }
+    
+ /* #########################################################################
+  * #   Save/Add to Database                                                #
+    ######################################################################### */    
     
     public void saveToDatabase(User user) {
         /* # Given a user, we save their details to the database through an insert command. */      
@@ -280,6 +307,29 @@ public class Session {
         
         /* # Save Employees here. */
     }
+    
+    public void saveEmployeeToDatabase(Employee employee, Business business) {
+        String userCommand = "INSERT INTO " + schema + ".EMPLOYEE " + "VALUES (?,?,?,?,?,?)";
+        try {
+            PreparedStatement statement = connection.prepareStatement(userCommand);
+            statement.setString(1, employee.getEID());
+            statement.setString(2, business.getID());
+            statement.setString(3, employee.getEmployeeFirstName());
+            statement.setString(4, employee.getEmployeeLastName());
+            statement.setString(5, employee.getEmployeeDesc());
+            statement.setInt(6, employee.getProfilePicture());
+            
+            statement.executeUpdate();
+            
+        } catch (SQLException error) {
+            System.out.println(error.getMessage());
+        }
+        
+    }
+ /* #########################################################################
+  * #   Update Database                                                     #
+    ######################################################################### */     
+    
     public void updateUser(User user) {
         /* # Update the details in database using a Dummy User. */
         String updateCommand = 

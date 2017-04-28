@@ -12,7 +12,9 @@ import java.net.URL;
 import java.sql.Time;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Collections;
 import java.util.ResourceBundle;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
@@ -325,6 +327,7 @@ public class BusinessViewProfileController implements Initializable{
         /* # Parse in empty error text for now. */
         if(bname!=null) {
             if(validation.businessNameIsValid(bname, error)) {
+                
             } else {
                 return false;
             }
@@ -334,9 +337,11 @@ public class BusinessViewProfileController implements Initializable{
         
         if(email!=null) {
             if(validation.emailFieldIsValid(email, error, session)) {
-            } else {
+                
+            } else {              
                 if(email.equals(session.currentUser.getEmail())) {
                 } else {
+                    setErrorTextField(textfield_EditEmail, false);
                     return false;
                 }
             }
@@ -347,6 +352,8 @@ public class BusinessViewProfileController implements Initializable{
         if(fname!=null && lname!=null) {
             if(validation.nameFieldsAreValid(fname, lname, error)) {
             } else {
+                setErrorTextField(textfield_EditFirstName, false);
+                setErrorTextField(textfield_EditLastName, false);
                 return false;
             }
         } else { // These are REQUIRED fields so should never be null.
@@ -381,6 +388,16 @@ public class BusinessViewProfileController implements Initializable{
         updateUser.setAddress(address);
         updateUser.setContactNo(contactNo);
         return true;
+    }
+    
+    public void setErrorTextField(TextField tf, boolean toggle) {
+        ObservableList<String> styleClass = tf.getStyleClass();
+        if(toggle) { // Remove
+            styleClass.removeAll(Collections.singleton("error")); 
+        } else { // Add
+            styleClass.add("error");
+        }
+        
     }
     
  /* #########################################################################
@@ -433,6 +450,9 @@ public class BusinessViewProfileController implements Initializable{
     }
     
     public void onClickCancel() {
+        setErrorTextField(textfield_EditEmail, true);
+        setErrorTextField(textfield_EditFirstName, true);
+        setErrorTextField(textfield_EditLastName, true);
         editPane.setVisible(false);
         btn_Cancel.setVisible(false);
         btn_Save.setVisible(false);        
