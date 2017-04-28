@@ -1,0 +1,364 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ChoiceBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.RadioButton?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.ToggleButton?>
+<?import javafx.scene.control.ToggleGroup?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.BusinessManageTimeslotController">
+  <columnConstraints>
+    <ColumnConstraints hgrow="SOMETIMES" maxWidth="1280.0" minWidth="1280.0" prefWidth="1280.0" />
+  </columnConstraints>
+  <rowConstraints>
+    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+  </rowConstraints>
+   <children>
+      <GridPane>
+        <columnConstraints>
+          <ColumnConstraints hgrow="SOMETIMES" maxWidth="200.0" minWidth="200.0" prefWidth="200.0" />
+            <ColumnConstraints hgrow="SOMETIMES" />
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="50.0" minWidth="50.0" prefWidth="50.0" />
+        </columnConstraints>
+        <rowConstraints>
+            <RowConstraints maxHeight="200.0" minHeight="200.0" prefHeight="200.0" vgrow="SOMETIMES" />
+          <RowConstraints maxHeight="400.0" minHeight="400.0" prefHeight="400.0" vgrow="SOMETIMES" />
+          <RowConstraints maxHeight="200.0" minHeight="200.0" prefHeight="200.0" vgrow="SOMETIMES" />
+        </rowConstraints>
+         <children>
+            <ImageView fx:id="img_Logo" fitHeight="200.0" fitWidth="200.0" GridPane.halignment="CENTER">
+               <image>
+                  <Image url="@assets/BusinessRabbit.png" />
+               </image>
+            </ImageView>
+            <GridPane GridPane.rowIndex="1">
+              <columnConstraints>
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+              </columnConstraints>
+              <rowConstraints>
+                <RowConstraints maxHeight="50.0" minHeight="50.0" prefHeight="50.0" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+              </rowConstraints>
+               <children>
+                  <ChoiceBox fx:id="choicebox_SelectEmployee" prefWidth="150.0" GridPane.halignment="CENTER" />
+                  <GridPane GridPane.rowIndex="1">
+                    <columnConstraints>
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="50.0" minWidth="50.0" prefWidth="50.0" />
+                      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                    </columnConstraints>
+                    <rowConstraints>
+                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                    </rowConstraints>
+                     <children>
+                        <RadioButton fx:id="radiobtn_Sunday" mnemonicParsing="false" text="Sunday" textFill="#cdbcbc" GridPane.columnIndex="1" GridPane.halignment="LEFT" />
+                        <RadioButton fx:id="radiobtn_Monday" mnemonicParsing="false" text="Monday" textFill="#cdbcbc" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.rowIndex="1" />
+                        <RadioButton fx:id="radiobtn_Tuesday" mnemonicParsing="false" text="Tuesday" textFill="#cdbcbc" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.rowIndex="2" />
+                        <RadioButton fx:id="radiobtn_Wednesday" mnemonicParsing="false" text="Wednesday" textFill="#cdbcbc" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.rowIndex="3" />
+                        <RadioButton fx:id="radiobtn_Thursday" mnemonicParsing="false" prefHeight="27.0" prefWidth="87.0" text="Thursday" textFill="#cdbcbc" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.rowIndex="4" />
+                        <RadioButton fx:id="radiobtn_Friday" mnemonicParsing="false" text="Friday" textFill="#cdbcbc" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.rowIndex="5" />
+                        <RadioButton fx:id="radiobtn_Saturday" mnemonicParsing="false" text="Saturday" textFill="#cdbcbc" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.rowIndex="6" />
+                     </children>
+                  </GridPane>
+               </children>
+            </GridPane>
+            <ImageView fx:id="img_Return" onMouseClicked="#onClickReturn" GridPane.halignment="CENTER" GridPane.rowIndex="2">
+               <image>
+                  <Image url="@assets/icon_return.png" />
+               </image>
+            </ImageView>
+            <GridPane GridPane.columnIndex="1" GridPane.rowIndex="1">
+              <columnConstraints>
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+              </columnConstraints>
+              <rowConstraints>
+                <RowConstraints maxHeight="50.0" minHeight="50.0" prefHeight="50.0" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints maxHeight="50.0" minHeight="50.0" prefHeight="50.0" vgrow="SOMETIMES" />
+              </rowConstraints>
+               <children>
+                  <ImageView fx:id="img_00Hour" disable="true" fitHeight="200.0" fitWidth="200.0" onMouseClicked="#onClickHour" visible="false" GridPane.halignment="CENTER" GridPane.rowIndex="1">
+                     <image>
+                        <Image url="@assets/Rabbit_logo_512.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView fx:id="img_01Hour" disable="true" fitHeight="200.0" fitWidth="200.0" onMouseClicked="#onClickHour" visible="false" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1">
+                     <image>
+                        <Image url="@assets/Rabbit_logo_512.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView fx:id="img_02Hour" disable="true" fitHeight="200.0" fitWidth="200.0" onMouseClicked="#onClickHour" visible="false" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="1">
+                     <image>
+                        <Image url="@assets/Rabbit_logo_512.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView fx:id="img_03Hour" disable="true" fitHeight="200.0" fitWidth="200.0" onMouseClicked="#onClickHour" visible="false" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.rowIndex="1">
+                     <image>
+                        <Image url="@assets/Rabbit_logo_512.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView fx:id="img_04Hour" disable="true" fitHeight="200.0" fitWidth="200.0" onMouseClicked="#onClickHour" visible="false" GridPane.columnIndex="4" GridPane.halignment="CENTER" GridPane.rowIndex="1">
+                     <image>
+                        <Image url="@assets/Rabbit_logo_512.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView fx:id="img_05Hour" disable="true" fitHeight="200.0" fitWidth="200.0" onMouseClicked="#onClickHour" visible="false" GridPane.columnIndex="5" GridPane.halignment="CENTER" GridPane.rowIndex="1">
+                     <image>
+                        <Image url="@assets/Rabbit_logo_512.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView fx:id="img_06Hour" disable="true" fitHeight="200.0" fitWidth="200.0" onMouseClicked="#onClickHour" visible="false" GridPane.halignment="CENTER" GridPane.rowIndex="2">
+                     <image>
+                        <Image url="@assets/Rabbit_logo_512.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView fx:id="img_07Hour" disable="true" fitHeight="200.0" fitWidth="200.0" onMouseClicked="#onClickHour" visible="false" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="2">
+                     <image>
+                        <Image url="@assets/Rabbit_logo_512.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView fx:id="img_08Hour" disable="true" fitHeight="200.0" fitWidth="200.0" onMouseClicked="#onClickHour" visible="false" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="2">
+                     <image>
+                        <Image url="@assets/Rabbit_logo_512.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView fx:id="img_09Hour" disable="true" fitHeight="200.0" fitWidth="200.0" onMouseClicked="#onClickHour" visible="false" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.rowIndex="2">
+                     <image>
+                        <Image url="@assets/Rabbit_logo_512.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView fx:id="img_10Hour" disable="true" fitHeight="200.0" fitWidth="200.0" onMouseClicked="#onClickHour" visible="false" GridPane.columnIndex="4" GridPane.halignment="CENTER" GridPane.rowIndex="2">
+                     <image>
+                        <Image url="@assets/Rabbit_logo_512.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView fx:id="img_11Hour" disable="true" fitHeight="200.0" fitWidth="200.0" onMouseClicked="#onClickHour" visible="false" GridPane.columnIndex="5" GridPane.halignment="CENTER" GridPane.rowIndex="2">
+                     <image>
+                        <Image url="@assets/Rabbit_logo_512.png" />
+                     </image>
+                  </ImageView>
+                  <Text fill="#cdbcbc" strokeType="OUTSIDE" strokeWidth="0.0" text="12:00" GridPane.halignment="CENTER" GridPane.valignment="BOTTOM">
+                     <font>
+                        <Font size="24.0" />
+                     </font>
+                  </Text>
+                  <Text fill="#cdbcbc" strokeType="OUTSIDE" strokeWidth="0.0" text="01:00" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="BOTTOM">
+                     <font>
+                        <Font size="24.0" />
+                     </font>
+                  </Text>
+                  <Text fill="#cdbcbc" strokeType="OUTSIDE" strokeWidth="0.0" text="02:00" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.valignment="BOTTOM">
+                     <font>
+                        <Font size="24.0" />
+                     </font>
+                  </Text>
+                  <Text fill="#cdbcbc" strokeType="OUTSIDE" strokeWidth="0.0" text="03:00" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.valignment="BOTTOM">
+                     <font>
+                        <Font size="24.0" />
+                     </font>
+                  </Text>
+                  <Text fill="#cdbcbc" strokeType="OUTSIDE" strokeWidth="0.0" text="04:00" GridPane.columnIndex="4" GridPane.halignment="CENTER" GridPane.valignment="BOTTOM">
+                     <font>
+                        <Font size="24.0" />
+                     </font>
+                  </Text>
+                  <Text fill="#cdbcbc" strokeType="OUTSIDE" strokeWidth="0.0" text="05:00" GridPane.columnIndex="5" GridPane.halignment="CENTER" GridPane.valignment="BOTTOM">
+                     <font>
+                        <Font size="24.0" />
+                     </font>
+                  </Text>
+                  <Text fill="#cdbcbc" strokeType="OUTSIDE" strokeWidth="0.0" text="06:00" GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.valignment="TOP">
+                     <font>
+                        <Font size="24.0" />
+                     </font>
+                  </Text>
+                  <Text fill="#cdbcbc" strokeType="OUTSIDE" strokeWidth="0.0" text="07:00" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.valignment="TOP">
+                     <font>
+                        <Font size="24.0" />
+                     </font>
+                  </Text>
+                  <Text fill="#cdbcbc" strokeType="OUTSIDE" strokeWidth="0.0" text="08:00" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.valignment="TOP">
+                     <font>
+                        <Font size="24.0" />
+                     </font>
+                  </Text>
+                  <Text fill="#cdbcbc" strokeType="OUTSIDE" strokeWidth="0.0" text="09:00" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.valignment="TOP">
+                     <font>
+                        <Font size="24.0" />
+                     </font>
+                  </Text>
+                  <Text fill="#cdbcbc" strokeType="OUTSIDE" strokeWidth="0.0" text="10:00" GridPane.columnIndex="4" GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.valignment="TOP">
+                     <font>
+                        <Font size="24.0" />
+                     </font>
+                  </Text>
+                  <Text fill="#cdbcbc" strokeType="OUTSIDE" strokeWidth="0.0" text="11:00" GridPane.columnIndex="5" GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.valignment="TOP">
+                     <font>
+                        <Font size="24.0" />
+                     </font>
+                  </Text>
+                  <Text fx:id="text_AMorPM" fill="#cdbcbc" strokeType="OUTSIDE" strokeWidth="0.0" text="AM / PM" GridPane.columnIndex="6" GridPane.halignment="CENTER">
+                     <font>
+                        <Font size="24.0" />
+                     </font>
+                  </Text>
+                  <ImageView fx:id="img_12Hour" disable="true" fitHeight="200.0" fitWidth="200.0" onMouseClicked="#onClickHour" GridPane.halignment="CENTER" GridPane.rowIndex="1">
+                     <image>
+                        <Image url="@assets/Rabbit_logo_512.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView fx:id="img_13Hour" disable="true" fitHeight="200.0" fitWidth="200.0" onMouseClicked="#onClickHour" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1">
+                     <image>
+                        <Image url="@assets/Rabbit_logo_512.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView fx:id="img_14Hour" disable="true" fitHeight="200.0" fitWidth="200.0" onMouseClicked="#onClickHour" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="1">
+                     <image>
+                        <Image url="@assets/Rabbit_logo_512.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView fx:id="img_15Hour" disable="true" fitHeight="200.0" fitWidth="200.0" onMouseClicked="#onClickHour" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.rowIndex="1">
+                     <image>
+                        <Image url="@assets/Rabbit_logo_512.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView fx:id="img_16Hour" disable="true" fitHeight="200.0" fitWidth="200.0" onMouseClicked="#onClickHour" GridPane.columnIndex="4" GridPane.halignment="CENTER" GridPane.rowIndex="1">
+                     <image>
+                        <Image url="@assets/Rabbit_logo_512.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView fx:id="img_17Hour" disable="true" fitHeight="200.0" fitWidth="200.0" onMouseClicked="#onClickHour" GridPane.columnIndex="5" GridPane.halignment="CENTER" GridPane.rowIndex="1">
+                     <image>
+                        <Image url="@assets/Rabbit_logo_512.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView fx:id="img_18Hour" disable="true" fitHeight="200.0" fitWidth="200.0" onMouseClicked="#onClickHour" GridPane.halignment="CENTER" GridPane.rowIndex="2">
+                     <image>
+                        <Image url="@assets/Rabbit_logo_512.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView fx:id="img_19Hour" disable="true" fitHeight="200.0" fitWidth="200.0" onMouseClicked="#onClickHour" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="2">
+                     <image>
+                        <Image url="@assets/Rabbit_logo_512.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView fx:id="img_20Hour" disable="true" fitHeight="200.0" fitWidth="200.0" onMouseClicked="#onClickHour" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="2">
+                     <image>
+                        <Image url="@assets/Rabbit_logo_512.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView fx:id="img_21Hour" disable="true" fitHeight="200.0" fitWidth="200.0" onMouseClicked="#onClickHour" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.rowIndex="2">
+                     <image>
+                        <Image url="@assets/Rabbit_logo_512.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView fx:id="img_22Hour" disable="true" fitHeight="200.0" fitWidth="200.0" onMouseClicked="#onClickHour" GridPane.columnIndex="4" GridPane.halignment="CENTER" GridPane.rowIndex="2">
+                     <image>
+                        <Image url="@assets/Rabbit_logo_512.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView fx:id="img_23Hour" disable="true" fitHeight="200.0" fitWidth="200.0" onMouseClicked="#onClickHour" GridPane.columnIndex="5" GridPane.halignment="CENTER" GridPane.rowIndex="2">
+                     <image>
+                        <Image url="@assets/Rabbit_logo_512.png" />
+                     </image>
+                  </ImageView>
+               </children>
+            </GridPane>
+            <GridPane GridPane.columnIndex="1" GridPane.rowIndex="2">
+              <columnConstraints>
+                <ColumnConstraints hgrow="SOMETIMES" />
+              </columnConstraints>
+              <rowConstraints>
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+              </rowConstraints>
+            </GridPane>
+            <GridPane GridPane.columnIndex="1">
+              <columnConstraints>
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+              </columnConstraints>
+              <rowConstraints>
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                <RowConstraints maxHeight="50.0" minHeight="50.0" prefHeight="50.0" vgrow="SOMETIMES" />
+              </rowConstraints>
+               <children>
+                  <GridPane GridPane.rowIndex="2">
+                    <columnConstraints>
+                      <ColumnConstraints hgrow="SOMETIMES" maxWidth="100.0" minWidth="100.0" prefWidth="100.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="20.0" minWidth="20.0" prefWidth="20.0" />
+                      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="20.0" minWidth="20.0" prefWidth="20.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                    </columnConstraints>
+                    <rowConstraints>
+                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                    </rowConstraints>
+                     <children>
+                        <GridPane GridPane.rowIndex="1">
+                          <columnConstraints>
+                            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                          </columnConstraints>
+                          <rowConstraints>
+                            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                          </rowConstraints>
+                           <children>
+                              <ToggleButton fx:id="toggle_HalfHour00" maxWidth="50.0" minWidth="50.0" mnemonicParsing="false" prefWidth="50.0" text=":00" GridPane.halignment="RIGHT">
+                                 <toggleGroup>
+                                    <ToggleGroup fx:id="Duration" />
+                                 </toggleGroup></ToggleButton>
+                              <ToggleButton fx:id="toggle_HalfHour30" maxWidth="50.0" minWidth="50.0" mnemonicParsing="false" prefWidth="50.0" text=":30" toggleGroup="$Duration" GridPane.columnIndex="1" />
+                           </children>
+                        </GridPane>
+                        <ToggleButton fx:id="toggle_FullHour" maxWidth="100.0" minWidth="100.0" mnemonicParsing="false" prefWidth="100.0" selected="true" text="Full Hour" toggleGroup="$Duration" GridPane.halignment="CENTER" />
+                        <Button fx:id="btn_Save" mnemonicParsing="false" text="Save" GridPane.columnIndex="4" GridPane.halignment="RIGHT" GridPane.rowIndex="1" />
+                        <RadioButton fx:id="radiobtn_PM" mnemonicParsing="false" onMouseClicked="#onSelectAMorPM" text="PM" textFill="#cacca7" GridPane.columnIndex="2" GridPane.rowIndex="1">
+                           <toggleGroup>
+                              <ToggleGroup fx:id="AMorPM" />
+                           </toggleGroup>
+                        </RadioButton>
+                        <RadioButton fx:id="radiobtn_AM" mnemonicParsing="false" onMouseClicked="#onSelectAMorPM" selected="true" text="AM" textFill="#cacca7" toggleGroup="$AMorPM" GridPane.columnIndex="2" />
+                     </children>
+                  </GridPane>
+                  <TextField fx:id="textfield_ActivityDesc" promptText="Describe the service provided in this appointment (24 Chars or Less)" GridPane.rowIndex="1" />
+                  <Label styleClass="labelfont" text="Booking Management." GridPane.halignment="CENTER">
+                     <font>
+                        <Font size="36.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="label_HoverIconDesc" styleClass="labelfont" text="Hover Icon Desc" textFill="#cacca7" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                  </Label>
+               </children>
+            </GridPane>
+         </children>
+      </GridPane>
+   </children>
+</GridPane>
