@@ -10,6 +10,7 @@ import controllers.BusinessManageEmployeeController;
 import controllers.BusinessManageTimeslotController;
 import controllers.BusinessViewProfileController;
 import controllers.CustomerMainMenuController;
+import controllers.CustomerViewProfileController;
 import controllers.LoginController;
 import controllers.RegistrationController;
 import java.io.IOException;
@@ -108,7 +109,15 @@ public class RabbitFX extends RabbitApp {
     }
     
     public void viewProfileCustomer(Stage stage) throws IOException {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/GUI/fxml/ViewProfile_Customer.fxml"));
+        Parent root = loader.load();
+        CustomerViewProfileController controller = loader.getController();
         
+        controller.setSession(session);
+        controller.setDriver(this);
+        controller.getProfileInformation();
+        
+        showScene(stage, root); 
     }
     
     public void viewProfileBusiness(Stage stage) throws IOException {
