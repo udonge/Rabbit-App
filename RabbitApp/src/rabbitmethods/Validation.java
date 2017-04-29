@@ -351,7 +351,7 @@ public class Validation {
         return false;       
     } // End charIsNotAnException
     
-    public char[] turnStringToCharArray(String input) {
+    public static char[] turnStringToCharArray(String input) {
         char[] array = input.toCharArray();
         return array;
     }

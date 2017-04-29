@@ -272,7 +272,10 @@
                         <Font size="36.0" />
                      </font>
                   </Label>
-                  <Label fx:id="label_ID" styleClass="labelfont" text="ID: B123456789" textFill="#b20c0c" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="2" />
+                  <Label fx:id="label_ID" styleClass="labelfont" text="ID: B123456789" textFill="#b20c0c" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.rowIndex="2">
+                     <GridPane.margin>
+                        <Insets left="25.0" />
+                     </GridPane.margin></Label>
                   <Label fx:id="label_HoverIconDesc" styleClass="labelfont" text="Hover Icon Desc" textFill="#cacca7" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="1">
                      <font>
                         <Font size="18.0" />

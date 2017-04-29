@@ -12,6 +12,8 @@ import java.net.URL;
 import java.sql.Date;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.ResourceBundle;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -28,6 +30,7 @@ import rabbitmethods.Session;
 import rabbitmethods.Validation;
 import rabbitobjects.Business;
 import rabbitobjects.Customer;
+import rabbitobjects.Employee;
 
 /**
  *
@@ -329,13 +332,15 @@ public class RegistrationController implements  Initializable {
         /* # Optionals */
         String address = null;
         String contactNo = null;
+        boolean[] daysOpen = new boolean[7];
+        List<Employee> listOfEmployees = new ArrayList<>();
         if(!textfield_BusinessAddress.getText().isEmpty()) {
             address = textfield_BusinessAddress.getText();
         }
         if(!textfield_BusinessContactNo.getText().isEmpty()) {
             contactNo = textfield_BusinessContactNo.getText();
         }
-        Business business = new Business(id,password, email, address, contactNo, businessName, firstName, lastName, null, null, null, null, false);
+        Business business = new Business(id,password, email, address, contactNo, businessName, firstName, lastName, listOfEmployees, null, null, null, daysOpen, false);
         session.users.add(business);
         session.saveToDatabase(business);
         resetUserText();

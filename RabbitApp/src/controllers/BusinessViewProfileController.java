@@ -17,6 +17,7 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
@@ -43,6 +44,9 @@ public class BusinessViewProfileController implements Initializable {
     Glow glow = new Glow();
     InnerShadow innershadow = new InnerShadow();
     Business thisBusiness;
+    
+    
+    public String[] days = {"Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"};
 
     public String[] hours = { 
         "00", "01", "02", "03", "04", "05", "06", "07", "08", "09",
@@ -88,6 +92,15 @@ public class BusinessViewProfileController implements Initializable {
             choicebox_CloseMM,
             choicebox_OpenHH,
             choicebox_OpenMM;
+    
+    public CheckBox
+            checkbox_Sunday,
+            checkbox_Monday,
+            checkbox_Tuesday,
+            checkbox_Wednesday,
+            checkbox_Thursday,
+            checkbox_Friday,
+            checkbox_Saturday;
     
     public TextField
             textfield_NewEmail,
@@ -161,6 +174,40 @@ public class BusinessViewProfileController implements Initializable {
                 text_OpeningHours.setText(open + " : " + close);
             }
         }
+        setSelectedDays();
+
+    }
+    
+    public void setSelectedDays() {
+        for(int i = 0 ; i < thisBusiness.getDaysOpen().length ; i++) {
+            if(thisBusiness.getDaysOpen()[i]) {
+                switch(i) {
+                    case 0: // Sunday
+                        checkbox_Sunday.setSelected(true);
+                        break;
+                    case 1: // Monday
+                        checkbox_Monday.setSelected(true);
+                        break;
+                    case 2: // Tuesday
+                        checkbox_Tuesday.setSelected(true);
+                        break;
+                    case 3: // Wednesday
+                        checkbox_Wednesday.setSelected(true);
+                        break;
+                    case 4: // Thursday
+                        checkbox_Thursday.setSelected(true);
+                        break;
+                    case 5: // Friday
+                        checkbox_Friday.setSelected(true);
+                        break;
+                    case 6: // Saturday
+                        checkbox_Saturday.setSelected(true);
+                        break;
+                    default: // Wtf?
+                        break;
+                }
+            }
+        }
     }
     
     public void setProfileInformationInTextFields() {
@@ -232,6 +279,18 @@ public class BusinessViewProfileController implements Initializable {
         text_To.setVisible(!text_To.isVisible());
         text_OpenColon.setVisible(!text_OpenColon.isVisible());
         text_CloseColon.setVisible(!text_CloseColon.isVisible());
+        
+        toggleCheckBoxEnabled();
+    }
+    
+    public void toggleCheckBoxEnabled() {
+        checkbox_Sunday.setDisable(!checkbox_Sunday.isDisabled());
+        checkbox_Monday.setDisable(!checkbox_Monday.isDisabled());
+        checkbox_Tuesday.setDisable(!checkbox_Tuesday.isDisabled());
+        checkbox_Wednesday.setDisable(!checkbox_Wednesday.isDisabled());
+        checkbox_Thursday.setDisable(!checkbox_Thursday.isDisabled());
+        checkbox_Friday.setDisable(!checkbox_Friday.isDisabled());
+        checkbox_Saturday.setDisable(!checkbox_Saturday.isDisabled());
     }
     
  /* #########################################################################
@@ -253,6 +312,10 @@ public class BusinessViewProfileController implements Initializable {
         if(hoverNode.getId().equals(img_EditProfile.getId())) {
             label_HoverIconDesc.setText(AlertLabels.HOVER_DESCRIPTION_VIEW_BUSINESS_PROFILE.toString());
         }        
+    }
+    
+    public void onClickDayCheckBox(MouseEvent event) {
+        
     }
     
     public void onHoverExitImg(MouseEvent event) {
@@ -466,7 +529,6 @@ public class BusinessViewProfileController implements Initializable {
         }
         
         setUserChanges(thisBusiness, bname, email, fname, lname, address, contactNo, open, close, desc);
-        
         return true;
     }
 
@@ -480,6 +542,21 @@ public class BusinessViewProfileController implements Initializable {
         user.setAddress(address);
         user.setContactNo(contactNo);
         user.setBusinessDescription(desc);
+        user.setDaysOpen(setOpenDays());
+    }
+    
+    public boolean[] setOpenDays() {
+        boolean[] days = new boolean[7];
+        
+        days[0] = checkbox_Sunday.isSelected();
+        days[1] = checkbox_Monday.isSelected();
+        days[2] = checkbox_Tuesday.isSelected();
+        days[3] = checkbox_Wednesday.isSelected();
+        days[4] = checkbox_Thursday.isSelected();
+        days[5] = checkbox_Friday.isSelected();
+        days[6] = checkbox_Saturday.isSelected();
+
+        return days;
     }
     
  /* #########################################################################

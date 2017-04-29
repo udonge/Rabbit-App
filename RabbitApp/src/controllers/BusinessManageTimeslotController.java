@@ -8,6 +8,10 @@ package controllers;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.Time;
+import java.time.Duration;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -38,9 +42,13 @@ public class BusinessManageTimeslotController implements Initializable{
     Session session;
     Glow glow = new Glow();
     Image nodeDisabled = new Image("/GUI/fxml/assets/logo/logo_inactive.png");
+    Image nodeDefault = new Image("/GUI/fxml/assets/logo/logo_doubleflop.png");
     Image nodeFullHour = new Image("/GUI/fxml/assets/logo/logo_original.png");
     Image node00Hour = new Image("/GUI/fxml/assets/logo/logo_rightflop.png");
     Image node30Hour = new Image("/GUI/fxml/assets/logo/logo_leftflop.png");
+    Business thisBusiness;
+    
+    List<String> daysSelected = new ArrayList();
     
     @FXML
  /* #########################################################################
@@ -120,6 +128,7 @@ public class BusinessManageTimeslotController implements Initializable{
     }
     public void setSession(Session session) {
         this.session = session;
+        this.thisBusiness = (Business) session.currentUser;
     }
     
     
@@ -174,7 +183,6 @@ public class BusinessManageTimeslotController implements Initializable{
 
     public void setAvailableHours(Boolean amORpm) {
         /* # Enable the hours that are within the business opening hours. */
-        Business thisBusiness = (Business) session.currentUser;
         Time open = thisBusiness.getOpeningHours();
         Time close = thisBusiness.getClosingHours();
         
@@ -232,7 +240,6 @@ public class BusinessManageTimeslotController implements Initializable{
         
         for(ImageView node : list) {
             double v = getHourThatObjectRepresents(turnStringToCharArray(node.getId()));
-            System.out.println(v + " " + s + " " + e);
             if(v==s) {
                 /* # We have found our starting point. */
                 enableNode(node);
@@ -253,7 +260,7 @@ public class BusinessManageTimeslotController implements Initializable{
     public void enableNode(ImageView node) {
         node.setDisable(false);
         node.setOpacity(0.8);
-        node.setImage(nodeFullHour);        
+        node.setImage(nodeDefault);        
     }
     
     public void disableNode(ImageView node) {
@@ -275,6 +282,7 @@ public class BusinessManageTimeslotController implements Initializable{
  /* #########################################################################
   * #   On Click Methods                                                    #
     ######################################################################### */
+    
     public void onClickHour(MouseEvent event) {
         /* # When user clicks on an Hour image. */
         System.out.println("Beep beep!");
@@ -348,4 +356,41 @@ public class BusinessManageTimeslotController implements Initializable{
         char[] array = input.toCharArray();
         return array;
     }
+    
+    public void calculateDuration() {
+        
+        int days = 0;
+        Time open = thisBusiness.getOpeningHours();
+        Time close = thisBusiness.getClosingHours();
+        if(close.before(open)) {
+            days = days + 1;
+        }
+        
+        LocalTime openHour = LocalTime.parse(open.toString());
+        LocalTime closeHour = LocalTime.parse(close.toString());
+        
+        LocalDateTime openTime = LocalDateTime.of(LocalDate.now(), openHour);
+        LocalDateTime closeTime = LocalDateTime.of(LocalDate.now().plusDays(days), closeHour);
+        
+        Duration duration = Duration.between(openTime, closeTime);
+        
+        long timespan = duration.toMinutes();
+        System.out.println(openTime.getDayOfWeek());
+        System.out.println(closeTime.getDayOfWeek());
+        System.out.println(openTime);
+        System.out.println("Timespan: " + timespan);
+        System.out.println("That makes " + timespan / 30 + " possible timeslots.");
+                    
+    }
+    
+    public void generateTimeslots(long duration) {
+        List<LocalDateTime> list = new ArrayList<>();
+        long maxTimeslots = duration / 30 ;
+        
+        
+        for(int i = 0 ; i < maxTimeslots ; i++ ) {
+            
+        }
+    }
+    
 }

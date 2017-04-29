@@ -23,6 +23,7 @@ public class Business extends User {
     protected Time openingHours;
     protected Time closingHours;
     protected String desc;
+    boolean[] daysOpen;    
     boolean openToPublic;
     
     public Business
@@ -38,6 +39,7 @@ public class Business extends User {
             Time openingHours,
             Time closingHours,
             String desc,
+            boolean[] daysOpen,
             boolean openToPublic) {
             
             super(id, password, email, address, contactNo);
@@ -48,6 +50,7 @@ public class Business extends User {
             this.openingHours = openingHours;
             this.closingHours = closingHours;
             this.desc = desc;
+            this.daysOpen = daysOpen;
             this.openToPublic = false;
     }
     /* # Setters */
@@ -71,6 +74,9 @@ public class Business extends User {
     }
     public void setBusinessDescription(String desc) {
         this.desc = desc;
+    }
+    public void setDaysOpen(boolean[] daysOpen) {
+        this.daysOpen = daysOpen;
     }
     public void toggleVisibilityToPublic() {
         this.openToPublic = !this.openToPublic;
@@ -98,12 +104,10 @@ public class Business extends User {
     public String getBusinessDescription() {
         return this.desc;
     }
+    public boolean[] getDaysOpen() {
+        return this.daysOpen;
+    }
     public boolean getVisibilityToPublic() {
         return this.openToPublic;
-    }
-    @Override
-    public String toString() {
-        String customer = this.getID();
-        return customer;
     }
 }

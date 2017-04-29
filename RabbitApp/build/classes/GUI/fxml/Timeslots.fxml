@@ -225,62 +225,62 @@
                   </Text>
                   <ImageView fx:id="img_12Hour" disable="true" fitHeight="200.0" fitWidth="200.0" onMouseClicked="#onClickHour" GridPane.halignment="CENTER" GridPane.rowIndex="1">
                      <image>
-                        <Image url="@assets/Rabbit_logo_512.png" />
+                        <Image url="@assets/logo/logo_doubleflop.png" />
                      </image>
                   </ImageView>
                   <ImageView fx:id="img_13Hour" disable="true" fitHeight="200.0" fitWidth="200.0" onMouseClicked="#onClickHour" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1">
                      <image>
-                        <Image url="@assets/Rabbit_logo_512.png" />
+                        <Image url="@assets/logo/logo_doubleflop.png" />
                      </image>
                   </ImageView>
                   <ImageView fx:id="img_14Hour" disable="true" fitHeight="200.0" fitWidth="200.0" onMouseClicked="#onClickHour" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="1">
                      <image>
-                        <Image url="@assets/Rabbit_logo_512.png" />
+                        <Image url="@assets/logo/logo_doubleflop.png" />
                      </image>
                   </ImageView>
                   <ImageView fx:id="img_15Hour" disable="true" fitHeight="200.0" fitWidth="200.0" onMouseClicked="#onClickHour" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.rowIndex="1">
                      <image>
-                        <Image url="@assets/Rabbit_logo_512.png" />
+                        <Image url="@assets/logo/logo_doubleflop.png" />
                      </image>
                   </ImageView>
                   <ImageView fx:id="img_16Hour" disable="true" fitHeight="200.0" fitWidth="200.0" onMouseClicked="#onClickHour" GridPane.columnIndex="4" GridPane.halignment="CENTER" GridPane.rowIndex="1">
                      <image>
-                        <Image url="@assets/Rabbit_logo_512.png" />
+                        <Image url="@assets/logo/logo_doubleflop.png" />
                      </image>
                   </ImageView>
                   <ImageView fx:id="img_17Hour" disable="true" fitHeight="200.0" fitWidth="200.0" onMouseClicked="#onClickHour" GridPane.columnIndex="5" GridPane.halignment="CENTER" GridPane.rowIndex="1">
                      <image>
-                        <Image url="@assets/Rabbit_logo_512.png" />
+                        <Image url="@assets/logo/logo_doubleflop.png" />
                      </image>
                   </ImageView>
                   <ImageView fx:id="img_18Hour" disable="true" fitHeight="200.0" fitWidth="200.0" onMouseClicked="#onClickHour" GridPane.halignment="CENTER" GridPane.rowIndex="2">
                      <image>
-                        <Image url="@assets/Rabbit_logo_512.png" />
+                        <Image url="@assets/logo/logo_doubleflop.png" />
                      </image>
                   </ImageView>
                   <ImageView fx:id="img_19Hour" disable="true" fitHeight="200.0" fitWidth="200.0" onMouseClicked="#onClickHour" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="2">
                      <image>
-                        <Image url="@assets/Rabbit_logo_512.png" />
+                        <Image url="@assets/logo/logo_doubleflop.png" />
                      </image>
                   </ImageView>
                   <ImageView fx:id="img_20Hour" disable="true" fitHeight="200.0" fitWidth="200.0" onMouseClicked="#onClickHour" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="2">
                      <image>
-                        <Image url="@assets/Rabbit_logo_512.png" />
+                        <Image url="@assets/logo/logo_doubleflop.png" />
                      </image>
                   </ImageView>
                   <ImageView fx:id="img_21Hour" disable="true" fitHeight="200.0" fitWidth="200.0" onMouseClicked="#onClickHour" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.rowIndex="2">
                      <image>
-                        <Image url="@assets/Rabbit_logo_512.png" />
+                        <Image url="@assets/logo/logo_doubleflop.png" />
                      </image>
                   </ImageView>
                   <ImageView fx:id="img_22Hour" disable="true" fitHeight="200.0" fitWidth="200.0" onMouseClicked="#onClickHour" GridPane.columnIndex="4" GridPane.halignment="CENTER" GridPane.rowIndex="2">
                      <image>
-                        <Image url="@assets/Rabbit_logo_512.png" />
+                        <Image url="@assets/logo/logo_doubleflop.png" />
                      </image>
                   </ImageView>
                   <ImageView fx:id="img_23Hour" disable="true" fitHeight="200.0" fitWidth="200.0" onMouseClicked="#onClickHour" GridPane.columnIndex="5" GridPane.halignment="CENTER" GridPane.rowIndex="2">
                      <image>
-                        <Image url="@assets/Rabbit_logo_512.png" />
+                        <Image url="@assets/logo/logo_doubleflop.png" />
                      </image>
                   </ImageView>
                </children>

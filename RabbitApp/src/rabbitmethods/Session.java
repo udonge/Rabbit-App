@@ -177,7 +177,8 @@ public class Session {
         /* # Build Business Data, note we must repeat for Employees and Timeslots */
         String command = ("SELECT * FROM " + schema + ".BUSINESS WHERE ID = '" + userID +"'");
         Business business = null;
-        List<Employee> employees = new ArrayList<>();       
+        List<Employee> employees = new ArrayList<>();
+        boolean[] daysOpen = new boolean[7];
         try {
             Statement statement = connection.createStatement();
             ResultSet rsBusiness = statement.executeQuery(command);
@@ -188,9 +189,12 @@ public class Session {
                 Time openTime = rsBusiness.getTime("OPENTIME");
                 Time closeTime = rsBusiness.getTime("CLOSETIME");
                 String desc = rsBusiness.getString("DESCRIPTION");
+                String openDays = rsBusiness.getString("OPENDAYS");
                 Boolean visibility = rsBusiness.getBoolean("VISIBILITY");
                 /* # Given this information, we build a Business */
-                business = new Business(null,null,null,null,null,businessName,ownerFName,ownerLName,null,openTime,closeTime,desc,visibility); 
+                /* # Construct Days Open Array */
+                constructDaysOpenArray(daysOpen, openDays);
+                business = new Business(null,null,null,null,null,businessName,ownerFName,ownerLName,null,openTime,closeTime,desc,daysOpen,visibility); 
                 business.setListOfEmployees(employees);
                           
             }
@@ -221,6 +225,20 @@ public class Session {
             
         } catch(SQLException error) {
             System.out.println(error.getMessage());
+        }
+    }
+    
+    public void constructDaysOpenArray(boolean[] days, String dbValue) {
+        char[] decipher = Validation.turnStringToCharArray(dbValue);
+        /* # 0 = Sunday, 6 = Saturday */
+        for(char i : decipher) {
+            int index = Character.getNumericValue(i);
+            if(index>=0 && index <= 6) {
+                days[index] = true;
+            } else {
+                System.out.println(index);
+                System.out.println("Error parsing day string, check Database. ");
+            }
         }
     }
     
@@ -283,9 +301,10 @@ public class Session {
     }
     
     public void saveBusinessToDatabase(Business business) {
-        String userCommand = "INSERT INTO " + schema + ".BUSINESS " + "VALUES (?,?,?,?,?,?,?,?)";
+        String userCommand = "INSERT INTO " + schema + ".BUSINESS " + "VALUES (?,?,?,?,?,?,?,?,?)";
         Time openTime = null;
         Time closeTime = null;
+        String dayStringCode = convertBooleanArrayToDayCode(business.getDaysOpen());
         if(business.getOpeningHours()!=null) {
             openTime = business.getOpeningHours();
         }
@@ -302,12 +321,11 @@ public class Session {
             statement.setString(6, business.getBusinessOwnerFirstName());
             statement.setString(7, business.getBusinessOwnerLastName());
             statement.setString(8, business.getBusinessDescription());
+            statement.setString(9, dayStringCode);
             statement.executeUpdate();            
         }catch(SQLException error) {
             System.out.println(error.getMessage());
-        }
-        
-        /* # Save Employees here. */
+        }        
     }
     
     public void saveEmployeeToDatabase(Employee employee, Business business) {
@@ -325,8 +343,19 @@ public class Session {
             
         } catch (SQLException error) {
             System.out.println(error.getMessage());
+        }       
+    }
+    
+    public String convertBooleanArrayToDayCode(boolean[] days) {
+        String dayCode = "";
+        for(int i = 0 ; i < days.length ; i++) {
+            if(days[i]) {
+                dayCode = dayCode + i;
+                System.out.println(i);
+            }
         }
-        
+        System.out.println("Complete Day Code: " + dayCode);
+        return dayCode;
     }
  /* #########################################################################
   * #   Update Database                                                     #
@@ -367,7 +396,8 @@ public class Session {
                 "VISIBILITY = ?, " +
                 "FIRSTNAME = ?, " +
                 "LASTNAME = ?, " +
-                "DESCRIPTION = ? " +
+                "DESCRIPTION = ?, " +
+                "OPENDAYS = ? " +
                 "WHERE ID = '" + user.getID() + "'";
         try {
             PreparedStatement statement = connection.prepareStatement(updateCommand);
@@ -378,6 +408,7 @@ public class Session {
             statement.setString(5, user.getBusinessOwnerFirstName());
             statement.setString(6, user.getBusinessOwnerLastName());
             statement.setString(7, user.getBusinessDescription());
+            statement.setString(8, convertBooleanArrayToDayCode(user.getDaysOpen()));
             statement.executeUpdate();
         } catch(SQLException error) {
             System.out.println(error.getMessage());
