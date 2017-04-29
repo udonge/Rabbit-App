@@ -98,8 +98,9 @@ public class CustomerMainMenuController implements Initializable {
         onHoverEffectApplyTo(img_ViewBooking);
     }
     
-    public void onClickViewProfile() {
-    // TODO    
+    public void onClickViewProfile() throws IOException {
+        Stage stage = (Stage) img_CustomerProfile.getScene().getWindow();
+        rabbitfx.viewProfileCustomer(stage);      
     }
     public void onMouseHoldViewProfile() {
         onMouseHoldEffectApplyTo(img_CustomerProfile);
