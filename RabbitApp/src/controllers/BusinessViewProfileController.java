@@ -314,10 +314,6 @@ public class BusinessViewProfileController implements Initializable {
         }        
     }
     
-    public void onClickDayCheckBox(MouseEvent event) {
-        
-    }
-    
     public void onHoverExitImg(MouseEvent event) {
         ImageView hoverExitNode = (ImageView) event.getSource();
         hoverExitNode.setEffect(null);
@@ -338,6 +334,7 @@ public class BusinessViewProfileController implements Initializable {
         setErrorTextField(textfield_NewFirstName, true);
         setErrorTextField(textfield_NewLastName, true);        
         toggleEditObjectVisibility();
+        setSelectedDays();
     }
     
     public void onClickEdit() {

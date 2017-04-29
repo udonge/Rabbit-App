@@ -209,11 +209,11 @@ public class Session {
     public void constructListOfEmployees(List<Employee> list, String userID) {
         String command = ("SELECT * FROM " + schema + ".EMPLOYEE WHERE BID = '" + userID + "'");
         Employee employee = null;
-        List<Timeslot> timeslots = new ArrayList<>();
         try {
             Statement statement = connection.createStatement();
             ResultSet rsEmployee = statement.executeQuery(command);
             while(rsEmployee.next()) {
+                List<Timeslot> timeslots = new ArrayList<>();
                 String eID = rsEmployee.getString("EID");
                 int profileID = rsEmployee.getInt("PROFILE");
                 String fname = rsEmployee.getString("FIRSTNAME");
@@ -351,7 +351,6 @@ public class Session {
         for(int i = 0 ; i < days.length ; i++) {
             if(days[i]) {
                 dayCode = dayCode + i;
-                System.out.println(i);
             }
         }
         System.out.println("Complete Day Code: " + dayCode);

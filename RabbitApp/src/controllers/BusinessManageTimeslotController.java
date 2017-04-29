@@ -7,14 +7,20 @@ package controllers;
 
 import java.io.IOException;
 import java.net.URL;
+import java.sql.Date;
 import java.sql.Time;
+import java.text.SimpleDateFormat;
+import java.time.DayOfWeek;
 import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.temporal.TemporalAdjusters;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
@@ -32,6 +38,8 @@ import javafx.stage.Stage;
 import rabbitapp.RabbitFX;
 import rabbitmethods.Session;
 import rabbitobjects.Business;
+import rabbitobjects.Employee;
+import rabbitobjects.Timeslot;
 
 /**
  *
@@ -47,8 +55,12 @@ public class BusinessManageTimeslotController implements Initializable{
     Image node00Hour = new Image("/GUI/fxml/assets/logo/logo_rightflop.png");
     Image node30Hour = new Image("/GUI/fxml/assets/logo/logo_leftflop.png");
     Business thisBusiness;
+    List<ImageView> selection = new ArrayList<>();
+    public String[] days = {"Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"};
+    boolean[] daysSelected;
+    List<Image> profilepics = new ArrayList<>();
+    Employee thisEmployee;
     
-    List<String> daysSelected = new ArrayList();
     
     @FXML
  /* #########################################################################
@@ -58,12 +70,15 @@ public class BusinessManageTimeslotController implements Initializable{
             textfield_ActivityDesc;
     
     public Text
-            text_AMorPM;
+            text_AMorPM,
+            text_EmployeeName,
+            text_HoursOfOperation,
+            text_EmployeeDesc;
     
     public Button
             btn_Save;
     
-    public ChoiceBox
+    public ChoiceBox<String>
             choicebox_SelectEmployee;
     
     public Label
@@ -86,6 +101,7 @@ public class BusinessManageTimeslotController implements Initializable{
             toggle_HalfHour30;
     
     public ImageView
+            img_ProfilePicture,
             img_Logo,
             img_00Hour,
             img_01Hour,
@@ -121,7 +137,21 @@ public class BusinessManageTimeslotController implements Initializable{
     @Override
     public void initialize(URL fxmlFileLocation, ResourceBundle resources) {
         
-    }    
+    }
+
+    public void setProfilePictureChoices() {
+        profilepics.add(new Image("/GUI/fxml/assets/profile/profile_bear.png"));
+        profilepics.add(new Image("/GUI/fxml/assets/profile/profile_bird.png"));
+        profilepics.add(new Image("/GUI/fxml/assets/profile/profile_boy.png"));
+        profilepics.add(new Image("/GUI/fxml/assets/profile/profile_flower.png"));
+        profilepics.add(new Image("/GUI/fxml/assets/profile/profile_fox.png"));
+        profilepics.add(new Image("/GUI/fxml/assets/profile/profile_girlA.png"));
+        profilepics.add(new Image("/GUI/fxml/assets/profile/profile_girlB.png"));
+        profilepics.add(new Image("/GUI/fxml/assets/profile/profile_leaf.png"));
+        profilepics.add(new Image("/GUI/fxml/assets/profile/profile_lotus.png"));
+        profilepics.add(new Image("/GUI/fxml/assets/profile/profile_turtle.png"));
+    }
+           
     
     public void setDriver(RabbitFX rabbitfx) {
         this.rabbitfx = rabbitfx;
@@ -129,6 +159,7 @@ public class BusinessManageTimeslotController implements Initializable{
     public void setSession(Session session) {
         this.session = session;
         this.thisBusiness = (Business) session.currentUser;
+        this.daysSelected = thisBusiness.getDaysOpen();
     }
     
     
@@ -163,22 +194,54 @@ public class BusinessManageTimeslotController implements Initializable{
         hoursPM.add(img_22Hour);
         hoursPM.add(img_23Hour);
         /* # Menu starts at AM.*/
-        toggleAMorPM();
+        SimpleDateFormat s = new SimpleDateFormat("HH:mm");
+        String open = s.format(thisBusiness.getOpeningHours());
+        String close = s.format(thisBusiness.getClosingHours());
+        text_HoursOfOperation.setText(open + " : " + close);
         setAvailableHours(true);
+        toggleAMorPM();        
     }
     
     public void toggleAMorPM() {
         /* # As you toggle, make one set visible, and the other invisible. */
-        hoursAM.forEach((node) -> {
-            node.setOpacity(0.4);
-            node.setImage(nodeDisabled);
+        toggleList(hoursAM);
+        toggleList(hoursPM);
+    }
+    
+    public void toggleList(List<ImageView> list) {
+        list.forEach((node) -> {
+            if(selection.contains(node)) {
+                /* # If this node is in the selection list. */
+                nodeStateSelected(node);
+            } else {
+                /* # If it is not selected. */
+                if(node.isDisabled()) {
+                    /* # Is it disabled? */
+                    nodeStateDisabled(node);
+                } else {
+                    /* # Enabled but not selected. */
+                    nodeStateDefault(node);
+                }
+            }
             node.setVisible(!node.isVisible());
         });
-        hoursPM.forEach((node) -> {
-            node.setOpacity(0.4);
-            node.setImage(nodeDisabled);
-            node.setVisible(!node.isVisible());
-        });
+        
+    }
+    
+    public void nodeStateSelected(ImageView node) {
+        node.setOpacity(1);
+        node.setEffect(glow);
+        node.setImage(nodeFullHour);
+    }
+    
+    public void nodeStateDisabled(ImageView node) {
+        node.setOpacity(0.4);
+        node.setImage(nodeDisabled);        
+} 
+    
+    public void nodeStateDefault(ImageView node) {
+        node.setOpacity(0.8);
+        node.setImage(nodeDefault);        
     }
 
     public void setAvailableHours(Boolean amORpm) {
@@ -234,12 +297,12 @@ public class BusinessManageTimeslotController implements Initializable{
     }
     
     public void enableHourNode(List<ImageView> list, Time start, Time end) {
-        double s = start.getHours();
-        double e = end.getHours();
+        int s = start.getHours();
+        int e = end.getHours();
         boolean foundStartNode = false;
         
         for(ImageView node : list) {
-            double v = getHourThatObjectRepresents(turnStringToCharArray(node.getId()));
+            int v = getHourThatObjectRepresents(turnStringToCharArray(node.getId()));
             if(v==s) {
                 /* # We have found our starting point. */
                 enableNode(node);
@@ -258,15 +321,69 @@ public class BusinessManageTimeslotController implements Initializable{
     }
         
     public void enableNode(ImageView node) {
-        node.setDisable(false);
-        node.setOpacity(0.8);
-        node.setImage(nodeDefault);        
+        node.setDisable(false);     
     }
     
     public void disableNode(ImageView node) {
         node.setDisable(true);
-        node.setOpacity(0.4);
-        node.setImage(nodeDisabled);
+    }
+    
+    public void setPossibleDays() {
+        boolean[] daysOpen = thisBusiness.getDaysOpen();
+        for(int i = 0 ; i < daysOpen.length ; i++ ) {
+            if(daysOpen[i]) {
+                switch(i) {
+                    case 0: // Sunday
+                        radiobtn_Sunday.setDisable(false);
+                        radiobtn_Sunday.setSelected(true);
+                        break;
+                    case 1: // Monday
+                        radiobtn_Monday.setDisable(false);
+                        radiobtn_Monday.setSelected(true);
+                        break;
+                    case 2: // Tuesday
+                        radiobtn_Tuesday.setDisable(false);
+                        radiobtn_Tuesday.setSelected(true);
+                        break;
+                    case 3: // Wednesday
+                        radiobtn_Wednesday.setDisable(false);
+                        radiobtn_Wednesday.setSelected(true);
+                        break;
+                    case 4: // Thursday
+                        radiobtn_Thursday.setDisable(false);
+                        radiobtn_Thursday.setSelected(true);
+                        break;
+                    case 5: // Friday
+                        radiobtn_Friday.setDisable(false);
+                        radiobtn_Friday.setSelected(true);
+                        break;
+                    case 6: // Saturday
+                        radiobtn_Saturday.setDisable(false);
+                        radiobtn_Saturday.setSelected(true);
+                        break;
+                    default: // Wtf?
+                        break;
+                }
+            }
+        }
+    }
+    
+    public void setEmployeeList() {
+        thisBusiness.getListOfEmployees().stream().filter((e) -> (e.getEID()!=null)).forEachOrdered((e) -> {
+            choicebox_SelectEmployee.getItems().add(e.getEID());
+        });
+        choicebox_SelectEmployee.getSelectionModel().selectedIndexProperty().addListener
+        (new ChangeListener<Number>() {
+            public void changed(ObservableValue ov,
+                    Number value, Number new_value) {
+                thisEmployee = thisBusiness.getListOfEmployees().get(new_value.intValue());
+                img_ProfilePicture.setImage(profilepics.get(thisBusiness.getListOfEmployees().get(new_value.intValue()).getProfilePicture()));
+                text_EmployeeName.setText(thisEmployee.getEmployeeFirstName() + " " + thisEmployee.getEmployeeLastName());
+                text_EmployeeDesc.setText(thisEmployee.getEmployeeDesc());
+                
+            }
+        });  
+        choicebox_SelectEmployee.getSelectionModel().selectFirst();
     }
     
     
@@ -285,11 +402,12 @@ public class BusinessManageTimeslotController implements Initializable{
     
     public void onClickHour(MouseEvent event) {
         /* # When user clicks on an Hour image. */
-        System.out.println("Beep beep!");
-        String idOfClickedNode = event.getPickResult().getIntersectedNode().getId();
         ImageView clickedImage = (ImageView) event.getSource();
-        setGlow(clickedImage);
-        clickedImage.setOpacity(1);
+        if(!imageIsAlreadySelected(clickedImage)) {
+            addSelectedHourToList(clickedImage);
+        } else {
+            removeSelectedHourFromList(clickedImage);
+        }
  
         /* # Some effect so we know it has been clicked. */      
     }
@@ -297,16 +415,21 @@ public class BusinessManageTimeslotController implements Initializable{
     public void onSelectAMorPM() {
         if(radiobtn_AM.isSelected()) {
             /* # First reset the states. */
-            toggleAMorPM();
             setAvailableHours(true);
+            toggleAMorPM();
             text_AMorPM.setText("AM");
         }
         if(radiobtn_PM.isSelected()) {
             /* # First reset the states. */
-            toggleAMorPM();
             setAvailableHours(false);
+            toggleAMorPM();
             text_AMorPM.setText("PM");
         }
+    }
+    
+    public void onClickSave() {
+        String thisEID = choicebox_SelectEmployee.getSelectionModel().getSelectedItem();
+        generateTimeslots();
     }
     
     public void onClickReturn() throws IOException {
@@ -319,13 +442,13 @@ public class BusinessManageTimeslotController implements Initializable{
   * #   Logic Handling                                                      #
     ######################################################################### */
     
-    public double getHourThatObjectRepresents(char[] getDigits) {
+    public int getHourThatObjectRepresents(char[] getDigits) {
         /* # This method is rather primitive, but it is better than a method per Image...
          * # Due to naming, we know that the 4th index and 5th index represent the Hours. 
          * # Consider img_XXHour. */
         int firstDigit = Character.getNumericValue(getDigits[4]);
         int secondDigit = Character.getNumericValue(getDigits[5]);
-        double hour = 0;
+        int hour = 0;
         switch(firstDigit) {
             case 0:
                 /* # If 0, it is between 00:00 and 09:59 */
@@ -346,6 +469,21 @@ public class BusinessManageTimeslotController implements Initializable{
         return hour;
     }
     
+    public void addSelectedHourToList(ImageView image) {
+        selection.add(image);
+        nodeStateSelected(image);
+    }
+    
+    public void removeSelectedHourFromList(ImageView image) {
+        selection.remove(image);
+        image.setEffect(null);
+        nodeStateDefault(image);
+    }
+    
+    public boolean imageIsAlreadySelected(ImageView image) {
+        return selection.stream().anyMatch((i) -> (image.getId().equals(i.getId())));
+    }
+    
     
     
  /* #########################################################################
@@ -357,20 +495,20 @@ public class BusinessManageTimeslotController implements Initializable{
         return array;
     }
     
-    public void calculateDuration() {
+    public long calculateDuration() {
         
-        int days = 0;
+        int daycount = 0;
         Time open = thisBusiness.getOpeningHours();
         Time close = thisBusiness.getClosingHours();
         if(close.before(open)) {
-            days = days + 1;
+            daycount = daycount + 1;
         }
         
         LocalTime openHour = LocalTime.parse(open.toString());
         LocalTime closeHour = LocalTime.parse(close.toString());
         
         LocalDateTime openTime = LocalDateTime.of(LocalDate.now(), openHour);
-        LocalDateTime closeTime = LocalDateTime.of(LocalDate.now().plusDays(days), closeHour);
+        LocalDateTime closeTime = LocalDateTime.of(LocalDate.now().plusDays(daycount), closeHour);
         
         Duration duration = Duration.between(openTime, closeTime);
         
@@ -379,18 +517,146 @@ public class BusinessManageTimeslotController implements Initializable{
         System.out.println(closeTime.getDayOfWeek());
         System.out.println(openTime);
         System.out.println("Timespan: " + timespan);
-        System.out.println("That makes " + timespan / 30 + " possible timeslots.");
-                    
+        System.out.println("That makes " + (timespan / 30) * calculateDaysOfOperation() + " possible timeslots.");
+        System.out.println("With " + (timespan / 30) + " per day.");
+          
+        return timespan;
     }
     
-    public void generateTimeslots(long duration) {
-        List<LocalDateTime> list = new ArrayList<>();
-        long maxTimeslots = duration / 30 ;
+    public int calculateDaysOfOperation() {
+        boolean[] dayArray = thisBusiness.getDaysOpen();
+        int daysActive = 0;
+        for(boolean d : dayArray) {
+            if(d) {
+                daysActive++;
+            }
+        }
+        return daysActive;
+    }
+    
+    public void generateTimeslots() {
+        List<LocalTime> list = convertListToSetOfTime(selection);
+        List<LocalDate> listOfDates = new ArrayList<>();
+        
+        boolean[] daysOpen = thisBusiness.getDaysOpen();
+        
+        LocalDateTime currentDate = LocalDateTime.now();
+        List<Timeslot> thisEmployeesTimeslots = thisEmployee.getEmployeeTimeslots();
+                
+        
+        for(int i = 0 ; i < days.length ; i++) {
+            /* # For each day selected.*/
+            if(daysOpen[i]) {
+                String day = days[i];
+                /* # Get the next instances of selected dates. */
+                LocalDate nextInstance = getNextInstanceOfDay(day);
+                listOfDates.add(nextInstance);
+                /* # For this day, construct a set of Timeslots. */                
+                for(LocalTime l : list) {
+                    Date date = Date.valueOf(nextInstance);
+                    Time time = Time.valueOf(l);
+                    Timeslot timeslot = new Timeslot(
+                            thisBusiness.getID(),
+                            null,
+                            thisEmployee.getEID(),
+                            date,
+                            time,
+                            "Test");
+                    if(thisTimeSlotAlreadyExists(timeslot, thisEmployee.getEmployeeTimeslots())) {
+                        thisEmployee.getEmployeeTimeslots().add(timeslot);
+                    } else {
+                        System.out.println("There is already this timeslot");
+                    }
+                }
+            }
+        }
+        System.out.println("============================");
+        System.out.println("[Timeslot for " + thisEmployee.getEID());
+        System.out.println("============================");
+        
+        for(Timeslot t : thisEmployee.getEmployeeTimeslots()) {
+            System.out.println(
+                    "Host: " + t.getHost() + 
+                    " EID: " + t.getEmployeeID() + 
+                    " Date: " + t.getAppointmentDate().toString() + 
+                    " Time: " + t.getAppointmentTime() + 
+                    " Description: " + t.getDescription());
+        }
         
         
-        for(int i = 0 ; i < maxTimeslots ; i++ ) {
+        /* # For each day selected, generate a set of timeslots. */
+    }
+    
+    public boolean thisTimeSlotAlreadyExists(Timeslot timeslot, List<Timeslot> employeeTimeSlot) {
+        for(Timeslot t : employeeTimeSlot) {
+            if(t.getEmployeeID().equals(timeslot.getEmployeeID())) {
+                if(t.getAppointmentDate().equals(timeslot.getAppointmentDate())) {
+                    if(t.getAppointmentTime().equals(timeslot.getAppointmentTime())) {
+                        return false;
+                    }
+                }                
+            }
+        }
+        return true;
+    }
+    
+    
+    public List<LocalTime> convertListToSetOfTime(List<ImageView> list) {
+        List<LocalTime> listToReturn = new ArrayList<>();
+        for(ImageView v : list) {
+            int hour = getHourThatObjectRepresents(turnStringToCharArray(v.getId()));
+            String hh;
             
+            if(hour<10) {
+                hh = "0" + hour;
+            } else {
+                hh = Integer.toString(hour);
+            }
+            
+            LocalTime time = LocalTime.parse(hh+":00");
+            listToReturn.add(time);
+        }
+        
+        return listToReturn;
+    }
+    
+    public LocalDate getNextInstanceOfDay(String day) {
+        
+        LocalDate currentDate = LocalDate.now();
+        LocalDate nextInstanceOfDay;
+        switch(day) {
+            
+            case "sunday":
+            case "Sunday":
+            case "SUNDAY":
+                return nextInstanceOfDay = currentDate.with(TemporalAdjusters.next(DayOfWeek.SUNDAY)); 
+            case "monday":
+            case "Monday":
+            case "MONDAY":
+                return nextInstanceOfDay = currentDate.with(TemporalAdjusters.next(DayOfWeek.MONDAY));
+            case "tuesday":
+            case "Tuesday":
+            case "TUESDAY":
+                return nextInstanceOfDay = currentDate.with(TemporalAdjusters.next(DayOfWeek.TUESDAY));
+            case "wednesday":
+            case "Wednesday":
+            case "WEDNESDAY":
+                return nextInstanceOfDay = currentDate.with(TemporalAdjusters.next(DayOfWeek.WEDNESDAY));
+            case "thursday":
+            case "Thursday":
+            case "THURSDAY":
+                return nextInstanceOfDay = currentDate.with(TemporalAdjusters.next(DayOfWeek.THURSDAY));
+            case "friday":
+            case "Friday":
+            case "FRIDAY":
+                return nextInstanceOfDay = currentDate.with(TemporalAdjusters.next(DayOfWeek.FRIDAY));
+            case "saturday":
+            case "Saturday":
+            case "SATURDAY":
+                return nextInstanceOfDay = currentDate.with(TemporalAdjusters.next(DayOfWeek.SATURDAY));
+            default:
+                System.out.println("Error adjusting date.");
+                return nextInstanceOfDay = currentDate;
         }
     }
-    
 }

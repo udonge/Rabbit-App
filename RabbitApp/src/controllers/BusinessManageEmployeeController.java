@@ -5,6 +5,8 @@
  */
 package controllers;
 
+import enums.AlertLabels;
+import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -17,11 +19,16 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.effect.Glow;
+import javafx.scene.effect.InnerShadow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.text.Text;
+import javafx.stage.Stage;
 import rabbitapp.RabbitFX;
 import rabbitmethods.Session;
 import rabbitmethods.Validation;
@@ -37,6 +44,8 @@ public class BusinessManageEmployeeController implements Initializable{
     Session session;
     Validation validation = new Validation();
     Business thisBusiness;
+    Glow glow = new Glow();
+    InnerShadow innershadow = new InnerShadow();
     
     Boolean editOrAdding = false;
     
@@ -84,6 +93,9 @@ public class BusinessManageEmployeeController implements Initializable{
     
     public TextArea
             textarea_EditDesc;
+    
+    public Label
+            label_HoverIconDesc;
 
  /* #########################################################################
   * #   CONSTRUCTOR METHODS                                                 #
@@ -123,13 +135,14 @@ public class BusinessManageEmployeeController implements Initializable{
         /* # Set the profile picture as options are selected. */
         choicebox_ProfilePicture.getSelectionModel().selectedIndexProperty().addListener
         (new ChangeListener<Number>() {
+            @Override
             public void changed(ObservableValue ov,
                     Number value, Number new_value) {
                 img_ProfilePicture.setImage(profilepics.get(new_value.intValue()));
             }
         });
         
-        choicebox_ProfilePicture.getSelectionModel().select(0);
+        img_ProfilePicture.setVisible(false);
     }
     
     public void setEmployeeChoices() {
@@ -142,11 +155,12 @@ public class BusinessManageEmployeeController implements Initializable{
         (new ChangeListener<Number>() {
             public void changed(ObservableValue ov,
                     Number value, Number new_value) {
+                img_ProfilePicture.setVisible(true);
                 setEmployeeDetails(thisBusiness.getListOfEmployees().get(new_value.intValue()));
                 img_ProfilePicture.setImage(profilepics.get(thisBusiness.getListOfEmployees().get(new_value.intValue()).getProfilePicture()));
             }
         });        
-    }
+    }    
     
     public void setEmployeeDetails(Employee employee) {
         text_EmployeeID.setText(employee.getEID());
@@ -339,6 +353,44 @@ public class BusinessManageEmployeeController implements Initializable{
             editEmployee(business.getListOfEmployees().get(index).getEID());
         }
     }
+    
+    public void onClickReturn() throws IOException {
+        Stage stage = (Stage) img_Return.getScene().getWindow();
+        rabbitfx.businessStage(stage);        
+    }
+    
+    public void onHoverImg(MouseEvent event) {
+        ImageView hoverNode = (ImageView) event.getSource();
+        onHoverEffectsApplyTo(hoverNode);
+        if(hoverNode.getId().equals(img_Timeslots.getId())) {
+            label_HoverIconDesc.setText(AlertLabels.HOVER_DESCRIPTION_MANAGE_TIMESLOTS.toString());
+        }
+        
+        if(hoverNode.getId().equals(img_Return.getId())) {
+            label_HoverIconDesc.setText(AlertLabels.HOVER_DESCRIPTION_RETURN.toString());
+        }         
+    }
+    
+    public void onHoverImgExit(MouseEvent event) {
+        ImageView hoverNode = (ImageView) event.getSource();
+        hoverNode.setEffect(null);
+        label_HoverIconDesc.setText("");
+    }
+    
+    public void onHoverEffectsApplyTo(ImageView image) {
+        image.setEffect(null);
+        image.setEffect(glow);
+    }
+
+    public void onMouseHoldImg(MouseEvent event) {
+       ImageView mouseHoldNode = (ImageView) event.getSource();
+       onMouseHoldEffectApplyTo(mouseHoldNode);
+    }
+    
+    public void onMouseHoldEffectApplyTo(ImageView image) {
+        image.setEffect(null);
+        image.setEffect(innershadow);            
+    }    
     
  /* #########################################################################
   * #   Design Methods                                                      #

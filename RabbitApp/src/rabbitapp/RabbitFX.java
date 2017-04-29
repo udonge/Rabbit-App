@@ -136,7 +136,9 @@ public class RabbitFX extends RabbitApp {
         controller.setSession(session);
         controller.setDriver(this);
         controller.setTimeslotList();
-        controller.calculateDuration();
+        controller.setPossibleDays();
+        controller.setProfilePictureChoices();
+        controller.setEmployeeList();
         
         showScene(stage, root);           
     }

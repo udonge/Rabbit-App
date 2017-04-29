@@ -67,8 +67,24 @@ public class BusinessMainMenuController implements Initializable {
         glow.setLevel(0.5);
         innershadow.setOffsetX(6);
         innershadow.setOffsetY(6);
-        innershadow.setColor(Color.BLACK); 
+        innershadow.setColor(Color.BLACK);
+        
+        if(sessionUser.getOpeningHours()==null || sessionUser.getClosingHours()==null) {
+            disableNode(img_Timeslots);
+        }
     }
+    
+    public void enableNode(ImageView node) {
+        node.setDisable(false);
+        node.setOpacity(0.8);      
+    }
+    
+    public void disableNode(ImageView node) {
+        node.setDisable(true);
+        node.setOpacity(0.4);
+    }
+    
+
     
  /* #########################################################################
   * #   On Hover Icon Methods                                               #
@@ -89,8 +105,12 @@ public class BusinessMainMenuController implements Initializable {
     }
     
     public void onHoverTimeslots() {
-        label_HoverIconDesc.setText(AlertLabels.HOVER_DESCRIPTION_MANAGE_TIMESLOTS.toString());
-        onHoverEffectsApplyTo(img_Timeslots);
+        if(img_Timeslots.isDisabled()) {
+            label_HoverIconDesc.setText("You must set your opening hours first.");
+        } else {
+            label_HoverIconDesc.setText(AlertLabels.HOVER_DESCRIPTION_MANAGE_TIMESLOTS.toString());
+            onHoverEffectsApplyTo(img_Timeslots);            
+        }
     }
     
     public void onHoverEmployees() {

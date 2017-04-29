@@ -38,7 +38,7 @@
                   <Image url="@assets/BusinessRabbit.png" />
                </image>
             </ImageView>
-            <ImageView fx:id="img_Return" GridPane.halignment="CENTER" GridPane.rowIndex="2">
+            <ImageView fx:id="img_Return" onMouseClicked="#onClickReturn" onMouseEntered="#onHoverImg" onMouseExited="#onHoverImgExit" onMousePressed="#onMouseHoldImg" GridPane.halignment="CENTER" GridPane.rowIndex="2">
                <image>
                   <Image url="@assets/icon_return.png" />
                </image>
@@ -221,7 +221,7 @@
                 <RowConstraints maxHeight="200.0" minHeight="200.0" prefHeight="200.0" vgrow="SOMETIMES" />
               </rowConstraints>
                <children>
-                  <ImageView fx:id="img_Timeslots" GridPane.halignment="CENTER">
+                  <ImageView fx:id="img_Timeslots" onMouseEntered="#onHoverImg" onMouseExited="#onHoverImgExit" onMousePressed="#onMouseHoldImg" GridPane.halignment="CENTER">
                      <image>
                         <Image url="@assets/icon_Timeslots.png" />
                      </image>
