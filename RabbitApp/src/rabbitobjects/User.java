@@ -11,11 +11,11 @@ package rabbitobjects;
  */
 public abstract class User {
     
-    protected String id;
-    protected String password;
-    protected String email;
-    protected String address;
-    protected String contactNo;
+    private String id;
+    private String password;
+    private String email;
+    private String address;
+    private String contactNo;
     
     /* # Constructor for User class. */
     public User (String id, String password, String email, String address, String contactNo) {
