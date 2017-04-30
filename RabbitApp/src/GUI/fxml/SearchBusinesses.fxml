@@ -7,16 +7,16 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-
-<AnchorPane id="AnchorPane" prefHeight="360" prefWidth="640" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8" fx:controller="GUI.fxml.SearchBusinessesController">
+<AnchorPane id="AnchorPane" prefHeight="360" prefWidth="640" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.SearchBusinessesController">
    <children>
-      <TextField layoutX="178.0" layoutY="101.0" promptText="Search..." />
-      <Button layoutX="345.0" layoutY="101.0" mnemonicParsing="false" text="Go" />
-      <Button layoutX="14.0" layoutY="14.0" mnemonicParsing="false" text="Back" />
+      <TextField id="searchText" layoutX="226.0" layoutY="76.0" promptText="Search..." />
+      <Button layoutX="14.0" layoutY="14.0" mnemonicParsing="false" onAction="#searchBusinessByDesc" text="Back" />
       <Text layoutX="147.0" layoutY="52.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Search Businesses">
          <font>
             <Font size="39.0" />
          </font>
       </Text>
+      <Button layoutX="191.0" layoutY="103.0" mnemonicParsing="false" onAction="#searchBusinessByName" text="Search by Name" />
+      <Button layoutX="310.0" layoutY="103.0" mnemonicParsing="false" onAction="#searchBusinessByDesc" text="Search by Description" />
    </children>
 </AnchorPane>

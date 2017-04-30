@@ -8,8 +8,12 @@ package controllers;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
+import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import rabbitobjects.Business;
+import javafx.scene.control.TextField;
+import javafx.scene.input.InputMethodEvent;
+import rabbitobjects.*;
 
 /**
  * FXML Controller class
@@ -21,37 +25,47 @@ public class SearchBusinessesController implements Initializable {
     /**
      * Initializes the controller class.
      */
+    @FXML private TextField searchText;
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
     }    
-    
-        public String searchBusinessByName(String searchTerm, ArrayList<Business> businesses)
+
+    @FXML
+    private ArrayList<Business> searchBusinessByName(InputMethodEvent event)
     {
+        ArrayList<Business> businesses = new ArrayList<Business>();
+        
+        String searchTerm = searchText.getText();
         String output = "Not found";
+        ArrayList<Business> outputBusinesses = new ArrayList<Business>();
         for(int i=0;i<businesses.size();i++)
         {
             if (businesses.get(i).getBusinessName().contains(searchTerm))
             {
-                output = businesses.get(i).getID();
+                outputBusinesses.add(businesses.get(i));
                 break;
             }
         }
-        return output;
+        return outputBusinesses;
     }
-    
-    public String searchBusinessByDesc(String searchTerm, ArrayList<Business> businesses)
+
+    @FXML
+    private ArrayList<Business> searchBusinessByDesc(ActionEvent event)
     {
-        String output = "Not found";
+        ArrayList<Business> businesses = new ArrayList<Business>();
+
+        String searchTerm = searchText.getText();
+        ArrayList<Business> outputBusinesses = new ArrayList<Business>();
         for(int i=0;i<businesses.size();i++)
         {
             if (businesses.get(i).getBusinessDescription().contains(searchTerm))
             {
-                output = businesses.get(i).getID();
+                outputBusinesses.add(businesses.get(i));
                 break;
             }
         }
-        return output;
+        return outputBusinesses;
     }
     
 }
