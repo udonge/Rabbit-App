@@ -266,11 +266,6 @@
                         <Image url="@assets/1493070650_G12_Folder1_Art.png" />
                      </image>
                   </ImageView>
-                  <ImageView fx:id="img_Timeslots" onMouseClicked="#onClickTimeslots" onMouseEntered="#onHoverTimeslots" onMouseExited="#onHoverExit" onMousePressed="#onMouseHoldTimeslots" GridPane.columnIndex="1">
-                     <image>
-                        <Image url="@assets/icon_Timeslots.png" />
-                     </image>
-                  </ImageView>
                </children>
             </GridPane>
          </children>

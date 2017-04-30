@@ -10,10 +10,6 @@ import enums.AlertLabels;
 import enums.ErrorLabels;
 import java.io.IOException;
 import java.net.URL;
-import java.sql.Time;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.time.LocalDate;
 import java.util.ResourceBundle;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -106,8 +102,13 @@ public class CustomerViewProfileController implements Initializable{
         label_FirstNameValue.setText(user.getFirstName());
         label_LastNameValue.setText(user.getLastName());
         label_EmailValue.setText(user.getEmail());
-        label_DateOfBirthValue.setText(String.format("%02d/%02d/%d", user.getDateOfBirth().getDate(), (user.getDateOfBirth().getMonth()+1), (1900+user.getDateOfBirth().getYear())));
+        //The current issue is that d.o.b is optional.
         /* # Optional Values **/
+        if(user.getDateOfBirth()==null) {
+            label_DateOfBirthValue.setText("None");
+        } else {
+            label_DateOfBirthValue.setText(String.format("%02d/%02d/%d", user.getDateOfBirth().getDate(), (user.getDateOfBirth().getMonth()+1), (1900+user.getDateOfBirth().getYear())));
+        }
         if(user.getAddress()==null) {
             label_AddressValue.setText("None");
         } else {
@@ -126,8 +127,10 @@ public class CustomerViewProfileController implements Initializable{
         textfield_EditFirstName.setText(user.getFirstName());
         textfield_EditLastName.setText(user.getLastName());
         textfield_EditEmail.setText(user.getEmail());
-        datepicker_EditDateOfBirth.setValue(user.getDateOfBirth().toLocalDate());
         /* # Optionals Check */
+        if(user.getDateOfBirth()!=null) {
+            datepicker_EditDateOfBirth.setValue(user.getDateOfBirth().toLocalDate());
+        }
         if(user.getAddress()!=null) {
             textfield_EditAddress.setText(user.getAddress());
         }
@@ -190,7 +193,12 @@ public class CustomerViewProfileController implements Initializable{
         } else {
             newLName = textfield_EditLastName.getText();
         }
-        newDateOfBirth = new Date((datepicker_EditDateOfBirth.getValue().getYear()-1900), (datepicker_EditDateOfBirth.getValue().getMonthValue()-1), datepicker_EditDateOfBirth.getValue().getDayOfMonth());
+        if(datepicker_EditDateOfBirth.valueProperty().get()== null) {
+            newDateOfBirth = user.getDateOfBirth();
+        }
+        else {
+            newDateOfBirth = new Date((datepicker_EditDateOfBirth.getValue().getYear()-1900), (datepicker_EditDateOfBirth.getValue().getMonthValue()-1), datepicker_EditDateOfBirth.getValue().getDayOfMonth());
+        }
         /* # If Optionals are empty. 
          * # Optionals have to check if the object is not Null before calling... 
          * # Otherwise you get null pointer exception. */
@@ -281,7 +289,6 @@ public class CustomerViewProfileController implements Initializable{
 
     public void onHoverExit() {
         label_HoverIconDesc.setText("");
-        img_Timeslots.setEffect(null);
         img_EditProfile.setEffect(null);
         img_Return.setEffect(null);        
     }
@@ -319,7 +326,7 @@ public class CustomerViewProfileController implements Initializable{
     
     public void onClickReturn() throws IOException {
         Stage stage = (Stage) img_Return.getScene().getWindow();
-        rabbitfx.businessStage(stage);      
+        rabbitfx.customerStage(stage);      
     }
     
  /* #########################################################################
