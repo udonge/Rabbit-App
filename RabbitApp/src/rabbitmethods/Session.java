@@ -378,13 +378,33 @@ public class Session {
             System.out.println(error.getMessage());
         }
         if(user instanceof Customer) {
-            saveCustomerToDatabase((Customer) user);
+            updateCustomerUser((Customer) user);
         }
         if(user instanceof Business) {
             updateBusinessUser((Business) user);
         }                
         
     } // End updateUser
+    
+    public void updateCustomerUser(Customer user) {
+        String updateCommand = 
+                "UPDATE " + schema + ".CUSTOMERS SET " +
+                "FIRSTNAME = ?," +
+                "LASTNAME = ?, " +
+                "DATEOFBIRTH = ? " +
+                "WHERE ID = '" + user.getID() + "'";
+        
+        try {
+            PreparedStatement statement = connection.prepareStatement(updateCommand);
+            statement.setString(1, user.getFirstName());
+            statement.setString(2, user.getLastName());
+            statement.setDate(3, user.getDateOfBirth());
+            statement.executeUpdate();
+            
+        } catch (SQLException error) {
+            System.out.println(error.getMessage());
+        }
+    }
     
     public void updateBusinessUser(Business user) {
         String updateCommand = 
