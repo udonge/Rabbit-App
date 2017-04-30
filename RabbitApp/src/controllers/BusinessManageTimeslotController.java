@@ -18,18 +18,21 @@ import java.time.LocalTime;
 import java.time.temporal.TemporalAdjusters;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.ResourceBundle;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonBar.ButtonData;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.RadioButton;
-import javafx.scene.control.TextField;
-import javafx.scene.control.ToggleButton;
 import javafx.scene.effect.Glow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -68,11 +71,8 @@ public class BusinessManageTimeslotController implements Initializable{
  /* #########################################################################
   * #   Declare JavaFX Objects                                              #
     ######################################################################### */               
-    public TextField
-            textfield_ActivityDesc;
     
     public Text
-            text_AMorPM,
             text_00or12,
             text_01or13,
             text_02or14,
@@ -110,11 +110,6 @@ public class BusinessManageTimeslotController implements Initializable{
     public RadioButton
             radiobtn_AM,
             radiobtn_PM;
-    
-    public ToggleButton
-            toggle_FullHour,
-            toggle_HalfHour00,
-            toggle_HalfHour30;
     
     public ImageView
             img_ProfilePicture,
@@ -224,15 +219,32 @@ public class BusinessManageTimeslotController implements Initializable{
         toggleList(hoursPM);
         if(radiobtn_AM.isSelected()) {
             text_00or12.setText("00:00");
-            text_00or12.setText("00:00");
-            text_00or12.setText("00:00");
-            text_00or12.setText("00:00");
-            text_00or12.setText("00:00");
-            text_00or12.setText("00:00");
-            text_00or12.setText("00:00");
-            text_00or12.setText("00:00");
-
+            text_01or13.setText("01:00");
+            text_02or14.setText("02:00");
+            text_03or15.setText("03:00");
+            text_04or16.setText("04:00");
+            text_05or17.setText("05:00");
+            text_06or18.setText("06:00");
+            text_07or19.setText("07:00");
+            text_08or20.setText("08:00");
+            text_09or21.setText("09:00");
+            text_10or22.setText("10:00");   
+            text_11or23.setText("11:00");
         }
+        if(radiobtn_PM.isSelected()) {
+            text_00or12.setText("12:00");
+            text_01or13.setText("13:00");
+            text_02or14.setText("14:00");
+            text_03or15.setText("15:00");
+            text_04or16.setText("16:00");
+            text_05or17.setText("17:00");
+            text_06or18.setText("18:00");
+            text_07or19.setText("19:00");
+            text_08or20.setText("20:00");
+            text_09or21.setText("21:00");
+            text_10or22.setText("22:00");   
+            text_11or23.setText("23:00");
+        }        
     }
     
     public void toggleList(List<ImageView> list) {
@@ -444,19 +456,20 @@ public class BusinessManageTimeslotController implements Initializable{
             /* # First reset the states. */
             setAvailableHours(true);
             toggleAMorPM();
-            text_AMorPM.setText("AM");
         }
         if(radiobtn_PM.isSelected()) {
             /* # First reset the states. */
             setAvailableHours(false);
             toggleAMorPM();
-            text_AMorPM.setText("PM");
         }
     }
     
     public void onClickSave() {
-        generateWorkshift();
-        clearSelectedHoursFromList();
+        if(generateWorkshift()) {
+            clearSelectedHoursFromList();
+        } else {
+            System.out.println("User cancelled changes.");
+        }
     }
     
     public void onClickReturn() throws IOException {
@@ -569,25 +582,23 @@ public class BusinessManageTimeslotController implements Initializable{
         return daysActive;
     }
     
-    public void generateWorkshift() {
+    public boolean generateWorkshift() {
         List<LocalTime> listOfStartTime = getStartTimeFromSelection(selection);
         List<LocalDate> listOfDates = new ArrayList<>();
         
         boolean[] daysOpen = thisBusiness.getDaysOpen();
         
         LocalDateTime currentDate = LocalDateTime.now();
-        List<Timeslot> thisEmployeesTimeslots = thisEmployee.getEmployeeTimeslots();
-                
-        long duration;
-        switch(getDurationOfAppointment()) {
-            case 1:
-                duration = 60;
-                break;
-            default:
-                duration = 30;
-                break;
-        }
+        List<Timeslot> newTimeslots = new ArrayList<>();            
         
+        if(!thisEmployee.getEmployeeTimeslots().isEmpty()) {
+            if(alertOverwrite()) {
+                
+            } else {
+                System.out.println("Changes cancelled.");
+                return false;
+            }
+        }
         
         for(int i = 0 ; i < days.length ; i++) {
             /* # For each day selected.*/
@@ -599,7 +610,7 @@ public class BusinessManageTimeslotController implements Initializable{
                 /* # For this day, construct a set of Timeslots. */                
                 for(LocalTime l : listOfStartTime) {
                     Date date = Date.valueOf(nextInstance);
-                    LocalTime end = l.plusMinutes(duration);
+                    LocalTime end = l.plusHours(1);
                     Time startTime = Time.valueOf(l);
                     Time endTime = Time.valueOf(end);
                     Timeslot timeslot = new Timeslot(
@@ -610,21 +621,23 @@ public class BusinessManageTimeslotController implements Initializable{
                             endTime,
                             startTime,
                             "Test");
-                    if(thisTimeSlotAlreadyExists(timeslot, thisEmployee.getEmployeeTimeslots())) {
-                    thisEmployee.getEmployeeTimeslots().add(timeslot);                        
-                    System.out.println(
-                    "Successfully Added: " +
-                    "Host: " + timeslot.getHost() + 
-                    " EID: " + timeslot.getEmployeeID() + 
-                    " Date: " + timeslot.getAppointmentDate().toString() + 
-                    " Time: " + timeslot.getAppointmentTime() + " to " + timeslot.getAppointmentTimeEnd() +
-                    " Description: " + timeslot.getDescription());
-                    } else {
-                        System.out.println("There is already this timeslot");
-                    }
+                        newTimeslots.add(timeslot);                        
+                        System.out.println(
+                        "Successfully Added: " +
+                        "Host: " + timeslot.getHost() + 
+                        " EID: " + timeslot.getEmployeeID() + 
+                        " Date: " + timeslot.getAppointmentDate().toString() + 
+                        " Time: " + timeslot.getAppointmentTime() + " to " + timeslot.getAppointmentTimeEnd() +
+                        " Description: " + timeslot.getDescription());
                 }
             }
         }
+        session.removeTimeslotsOfEmployeeFromDatabase(thisEmployee);
+        for(Timeslot t : newTimeslots) {
+            session.saveTimeslotToDatabase(t);
+        }
+        thisEmployee.setEmployeeTimeslots(newTimeslots);
+        session.constructTimeslotsOfEmployee(thisEmployee.getEID(), newTimeslots);
         
         System.out.println("============================");
         System.out.println("[Timeslot for " + thisEmployee.getEID());
@@ -638,9 +651,22 @@ public class BusinessManageTimeslotController implements Initializable{
                     " Time: " + t.getAppointmentTime() + " to " + t.getAppointmentTimeEnd() +
                     " Description: " + t.getDescription());
         }
+               
+        return true;
+    }
+    
+    public boolean alertOverwrite() {
+        Alert alert = new Alert(AlertType.CONFIRMATION);
+        alert.setTitle("Confirm overwrite?");
+        alert.setContentText("You are about to overwrite your previous settings.");
+        ButtonType okConfirm = new ButtonType("OK");
+        ButtonType noCancel = new ButtonType("Cancel", ButtonData.CANCEL_CLOSE);
         
+        alert.getButtonTypes().setAll(okConfirm, noCancel);
         
-        /* # For each day selected, generate a set of timeslots. */
+        Optional<ButtonType> result = alert.showAndWait();
+        
+        return result.get() == okConfirm;
     }
     
     public boolean thisTimeSlotAlreadyExists(Timeslot timeslot, List<Timeslot> employeeTimeSlot) {
@@ -656,24 +682,12 @@ public class BusinessManageTimeslotController implements Initializable{
         return true;
     }
     
-    public int getDurationOfAppointment() {
-        if(toggle_FullHour.isSelected()) {
-            return 1;
-        }
-        if(toggle_HalfHour00.isSelected()) {
-            return 2;
-        } else {
-            return 3;
-        }
-    }
-    
     
     public List<LocalTime> getStartTimeFromSelection(List<ImageView> list) {
         List<LocalTime> listToReturn = new ArrayList<>();
         for(ImageView v : list) {
             int hour = getHourThatObjectRepresents(turnStringToCharArray(v.getId()));
             String hh;
-            String mm;
             
             if(hour<10) {
                 hh = "0" + hour;
@@ -681,17 +695,8 @@ public class BusinessManageTimeslotController implements Initializable{
                 hh = Integer.toString(hour);
             }
             
-            switch(getDurationOfAppointment()) {
-                case 3: // Half Hour 30
-                    mm = "30";
-                    break;
-                default:
-                    mm = "00";
-                    break;
-            }
             
-            
-            LocalTime time = LocalTime.parse(hh+":"+mm);
+            LocalTime time = LocalTime.parse(hh+":"+"00");
             listToReturn.add(time);
         }
         

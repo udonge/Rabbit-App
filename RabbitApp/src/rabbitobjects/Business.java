@@ -16,15 +16,15 @@ import java.util.List;
  */
 public class Business extends User {
     
-    private String businessName;
-    private String ownerFirstName;
-    private String ownerLastName;
-    private List<Employee> employees;
-    private Time openingHours;
-    private Time closingHours;
-    private String desc;
-    private boolean[] daysOpen;    
-    private boolean openToPublic;
+    protected String businessName;
+    protected String ownerFirstName;
+    protected String ownerLastName;
+    protected List<Employee> employees;
+    protected Time openingHours;
+    protected Time closingHours;
+    protected String desc;
+    boolean[] daysOpen;    
+    boolean openToPublic;
     
     public Business
         (   String id, 

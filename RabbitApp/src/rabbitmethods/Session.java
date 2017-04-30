@@ -219,11 +219,34 @@ public class Session {
                 String fname = rsEmployee.getString("FIRSTNAME");
                 String lname = rsEmployee.getString("LASTNAME");
                 String desc = rsEmployee.getString("DESCRIPTION");
+                
+                constructTimeslotsOfEmployee(eID, timeslots);
+                
                 employee = new Employee(eID, profileID, fname, lname, desc, timeslots);
                 list.add(employee);
             }
             
         } catch(SQLException error) {
+            System.out.println(error.getMessage());
+        }
+    }
+    
+    public void constructTimeslotsOfEmployee(String EID, List<Timeslot> list) {
+        String command = ("SELECT * FROM " + schema + ".TIMESLOT  WHERE EID = '" + EID + "'");
+        try {
+            Statement statement = connection.createStatement();
+            ResultSet rsTimeslot = statement.executeQuery(command);
+            while(rsTimeslot.next()) {
+                String host = rsTimeslot.getString("HOST");
+                String patron = rsTimeslot.getString("PATRON");
+                Date date = rsTimeslot.getDate("DATE");
+                String desc = rsTimeslot.getString("DESCRIPTION");
+                Time start = rsTimeslot.getTime("STARTTIME");
+                Time end = rsTimeslot.getTime("ENDTIME");
+                Timeslot timeslot = new Timeslot(host, patron, EID, date, start, end, desc);
+                list.add(timeslot);
+            }
+        } catch (SQLException error) {
             System.out.println(error.getMessage());
         }
     }
@@ -346,6 +369,28 @@ public class Session {
         }       
     }
     
+    public void saveTimeslotToDatabase(Timeslot timeslot) {
+        String userCommand = "INSERT INTO " + schema + ".TIMESLOT " + "VALUES (?,?,?,?,?,?,?)";
+        String patron = null;
+        if(timeslot.getPatron()!=null) {
+            patron = timeslot.getPatron();
+        }
+        try {
+            PreparedStatement statement = connection.prepareStatement(userCommand);
+            statement.setString(1, timeslot.getHost());
+            statement.setString(2, patron);
+            statement.setString(3, timeslot.getEmployeeID());
+            statement.setDate(4, timeslot.getAppointmentDate());
+            statement.setString(5, timeslot.getDescription());
+            statement.setTime(6, timeslot.getAppointmentTime());
+            statement.setTime(7, timeslot.getAppointmentTimeEnd());
+            
+            statement.executeUpdate();
+        } catch ( SQLException error ) {
+            System.out.println(error.getMessage());
+        }
+    }
+    
     public String convertBooleanArrayToDayCode(boolean[] days) {
         String dayCode = "";
         for(int i = 0 ; i < days.length ; i++) {
@@ -449,6 +494,23 @@ public class Session {
             statement.setString(3, employee.getEmployeeDesc());
             statement.setInt(4, employee.getProfilePicture());
             statement.executeUpdate();
+        } catch(SQLException error) {
+            System.out.println(error.getMessage());
+        }
+    }
+    
+ /* #########################################################################
+  * #   Remove From Database                                                #
+    ######################################################################### */    
+    
+    public void removeTimeslotsOfEmployeeFromDatabase(Employee employee) {
+        /* # Just remove the whole thing for now... too troublesome for individuals. */
+        String removeCommand = 
+                "DELETE FROM " + schema + ".TIMESLOT " +
+                "WHERE EID = '" + employee.getEID() + "'";
+        try {
+            Statement statement = connection.createStatement();
+            statement.execute(removeCommand);
         } catch(SQLException error) {
             System.out.println(error.getMessage());
         }

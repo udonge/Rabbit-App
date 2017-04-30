@@ -14,11 +14,11 @@ import java.util.List;
  * # Customer is a subclass of abstract User class, so it will inherit fields from User.
  */
 public class Customer extends User {
-    private String firstName;
-    private String lastName;
-    private Date dateOfBirth;
+    protected String firstName;
+    protected String lastName;
+    protected Date dateOfBirth;
     /* # Customers will have a list of Bookings */
-    private List<Timeslot> bookings;
+    protected List<Timeslot> bookings;
     
     public Customer
         (   String id, 

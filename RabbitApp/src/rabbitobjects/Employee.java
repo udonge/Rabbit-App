@@ -14,12 +14,12 @@ import java.util.List;
  */
 public class Employee {
     
-    private String eID;
-    private int profilePicture;
-    private String firstName;
-    private String lastName;
-    private String desc;
-    private List<Timeslot> timeslots;
+    protected String eID;
+    protected int profilePicture;
+    protected String firstName;
+    protected String lastName;
+    protected String desc;
+    protected List<Timeslot> timeslots;
     
     public Employee(
             String eID,
