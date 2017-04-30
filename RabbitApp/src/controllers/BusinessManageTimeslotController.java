@@ -24,6 +24,7 @@ import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.RadioButton;
@@ -44,6 +45,7 @@ import rabbitobjects.Timeslot;
 /**
  *
  * @author Reisen
+ * # Manage Employee Timeslots and Workshifts.
  */
 public class BusinessManageTimeslotController implements Initializable{
     RabbitFX rabbitfx;
@@ -71,6 +73,18 @@ public class BusinessManageTimeslotController implements Initializable{
     
     public Text
             text_AMorPM,
+            text_00or12,
+            text_01or13,
+            text_02or14,
+            text_03or15,
+            text_04or16,
+            text_05or17,
+            text_06or18,
+            text_07or19,
+            text_08or20,
+            text_09or21,
+            text_10or22,
+            text_11or23,
             text_EmployeeName,
             text_HoursOfOperation,
             text_EmployeeDesc;
@@ -84,14 +98,16 @@ public class BusinessManageTimeslotController implements Initializable{
     public Label
             label_HoverIconDesc;
     
+    public CheckBox
+            checkbox_Sunday,
+            checkbox_Monday,
+            checkbox_Tuesday,
+            checkbox_Wednesday,
+            checkbox_Thursday,
+            checkbox_Friday,
+            checkbox_Saturday;
+    
     public RadioButton
-            radiobtn_Sunday,
-            radiobtn_Monday,
-            radiobtn_Tuesday,
-            radiobtn_Wednesday,
-            radiobtn_Thursday,
-            radiobtn_Friday,
-            radiobtn_Saturday,
             radiobtn_AM,
             radiobtn_PM;
     
@@ -206,6 +222,17 @@ public class BusinessManageTimeslotController implements Initializable{
         /* # As you toggle, make one set visible, and the other invisible. */
         toggleList(hoursAM);
         toggleList(hoursPM);
+        if(radiobtn_AM.isSelected()) {
+            text_00or12.setText("00:00");
+            text_00or12.setText("00:00");
+            text_00or12.setText("00:00");
+            text_00or12.setText("00:00");
+            text_00or12.setText("00:00");
+            text_00or12.setText("00:00");
+            text_00or12.setText("00:00");
+            text_00or12.setText("00:00");
+
+        }
     }
     
     public void toggleList(List<ImageView> list) {
@@ -334,32 +361,32 @@ public class BusinessManageTimeslotController implements Initializable{
             if(daysOpen[i]) {
                 switch(i) {
                     case 0: // Sunday
-                        radiobtn_Sunday.setDisable(false);
-                        radiobtn_Sunday.setSelected(true);
+                        checkbox_Sunday.setDisable(false);
+                        checkbox_Sunday.setSelected(true);
                         break;
                     case 1: // Monday
-                        radiobtn_Monday.setDisable(false);
-                        radiobtn_Monday.setSelected(true);
+                        checkbox_Monday.setDisable(false);
+                        checkbox_Monday.setSelected(true);
                         break;
                     case 2: // Tuesday
-                        radiobtn_Tuesday.setDisable(false);
-                        radiobtn_Tuesday.setSelected(true);
+                        checkbox_Tuesday.setDisable(false);
+                        checkbox_Tuesday.setSelected(true);
                         break;
                     case 3: // Wednesday
-                        radiobtn_Wednesday.setDisable(false);
-                        radiobtn_Wednesday.setSelected(true);
+                        checkbox_Wednesday.setDisable(false);
+                        checkbox_Wednesday.setSelected(true);
                         break;
                     case 4: // Thursday
-                        radiobtn_Thursday.setDisable(false);
-                        radiobtn_Thursday.setSelected(true);
+                        checkbox_Thursday.setDisable(false);
+                        checkbox_Thursday.setSelected(true);
                         break;
                     case 5: // Friday
-                        radiobtn_Friday.setDisable(false);
-                        radiobtn_Friday.setSelected(true);
+                        checkbox_Friday.setDisable(false);
+                        checkbox_Friday.setSelected(true);
                         break;
                     case 6: // Saturday
-                        radiobtn_Saturday.setDisable(false);
-                        radiobtn_Saturday.setSelected(true);
+                        checkbox_Saturday.setDisable(false);
+                        checkbox_Saturday.setSelected(true);
                         break;
                     default: // Wtf?
                         break;
@@ -428,8 +455,8 @@ public class BusinessManageTimeslotController implements Initializable{
     }
     
     public void onClickSave() {
-        String thisEID = choicebox_SelectEmployee.getSelectionModel().getSelectedItem();
-        generateTimeslots();
+        generateWorkshift();
+        clearSelectedHoursFromList();
     }
     
     public void onClickReturn() throws IOException {
@@ -475,9 +502,18 @@ public class BusinessManageTimeslotController implements Initializable{
     }
     
     public void removeSelectedHourFromList(ImageView image) {
-        selection.remove(image);
         image.setEffect(null);
         nodeStateDefault(image);
+        selection.remove(image);        
+    }
+    
+    public void clearSelectedHoursFromList() {
+        ImageView x;
+        while(!selection.isEmpty()) {
+            x = selection.get(0);
+            removeSelectedHourFromList(x);
+        }
+        System.out.println("Selection cleared.");
     }
     
     public boolean imageIsAlreadySelected(ImageView image) {
@@ -495,11 +531,10 @@ public class BusinessManageTimeslotController implements Initializable{
         return array;
     }
     
-    public long calculateDuration() {
+    public long calculateDuration(Time open, Time close) {
         
         int daycount = 0;
-        Time open = thisBusiness.getOpeningHours();
-        Time close = thisBusiness.getClosingHours();
+
         if(close.before(open)) {
             daycount = daycount + 1;
         }
@@ -534,8 +569,8 @@ public class BusinessManageTimeslotController implements Initializable{
         return daysActive;
     }
     
-    public void generateTimeslots() {
-        List<LocalTime> list = convertListToSetOfTime(selection);
+    public void generateWorkshift() {
+        List<LocalTime> listOfStartTime = getStartTimeFromSelection(selection);
         List<LocalDate> listOfDates = new ArrayList<>();
         
         boolean[] daysOpen = thisBusiness.getDaysOpen();
@@ -543,6 +578,16 @@ public class BusinessManageTimeslotController implements Initializable{
         LocalDateTime currentDate = LocalDateTime.now();
         List<Timeslot> thisEmployeesTimeslots = thisEmployee.getEmployeeTimeslots();
                 
+        long duration;
+        switch(getDurationOfAppointment()) {
+            case 1:
+                duration = 60;
+                break;
+            default:
+                duration = 30;
+                break;
+        }
+        
         
         for(int i = 0 ; i < days.length ; i++) {
             /* # For each day selected.*/
@@ -552,24 +597,35 @@ public class BusinessManageTimeslotController implements Initializable{
                 LocalDate nextInstance = getNextInstanceOfDay(day);
                 listOfDates.add(nextInstance);
                 /* # For this day, construct a set of Timeslots. */                
-                for(LocalTime l : list) {
+                for(LocalTime l : listOfStartTime) {
                     Date date = Date.valueOf(nextInstance);
-                    Time time = Time.valueOf(l);
+                    LocalTime end = l.plusMinutes(duration);
+                    Time startTime = Time.valueOf(l);
+                    Time endTime = Time.valueOf(end);
                     Timeslot timeslot = new Timeslot(
                             thisBusiness.getID(),
                             null,
                             thisEmployee.getEID(),
                             date,
-                            time,
+                            endTime,
+                            startTime,
                             "Test");
                     if(thisTimeSlotAlreadyExists(timeslot, thisEmployee.getEmployeeTimeslots())) {
-                        thisEmployee.getEmployeeTimeslots().add(timeslot);
+                    thisEmployee.getEmployeeTimeslots().add(timeslot);                        
+                    System.out.println(
+                    "Successfully Added: " +
+                    "Host: " + timeslot.getHost() + 
+                    " EID: " + timeslot.getEmployeeID() + 
+                    " Date: " + timeslot.getAppointmentDate().toString() + 
+                    " Time: " + timeslot.getAppointmentTime() + " to " + timeslot.getAppointmentTimeEnd() +
+                    " Description: " + timeslot.getDescription());
                     } else {
                         System.out.println("There is already this timeslot");
                     }
                 }
             }
         }
+        
         System.out.println("============================");
         System.out.println("[Timeslot for " + thisEmployee.getEID());
         System.out.println("============================");
@@ -579,7 +635,7 @@ public class BusinessManageTimeslotController implements Initializable{
                     "Host: " + t.getHost() + 
                     " EID: " + t.getEmployeeID() + 
                     " Date: " + t.getAppointmentDate().toString() + 
-                    " Time: " + t.getAppointmentTime() + 
+                    " Time: " + t.getAppointmentTime() + " to " + t.getAppointmentTimeEnd() +
                     " Description: " + t.getDescription());
         }
         
@@ -600,12 +656,24 @@ public class BusinessManageTimeslotController implements Initializable{
         return true;
     }
     
+    public int getDurationOfAppointment() {
+        if(toggle_FullHour.isSelected()) {
+            return 1;
+        }
+        if(toggle_HalfHour00.isSelected()) {
+            return 2;
+        } else {
+            return 3;
+        }
+    }
     
-    public List<LocalTime> convertListToSetOfTime(List<ImageView> list) {
+    
+    public List<LocalTime> getStartTimeFromSelection(List<ImageView> list) {
         List<LocalTime> listToReturn = new ArrayList<>();
         for(ImageView v : list) {
             int hour = getHourThatObjectRepresents(turnStringToCharArray(v.getId()));
             String hh;
+            String mm;
             
             if(hour<10) {
                 hh = "0" + hour;
@@ -613,7 +681,17 @@ public class BusinessManageTimeslotController implements Initializable{
                 hh = Integer.toString(hour);
             }
             
-            LocalTime time = LocalTime.parse(hh+":00");
+            switch(getDurationOfAppointment()) {
+                case 3: // Half Hour 30
+                    mm = "30";
+                    break;
+                default:
+                    mm = "00";
+                    break;
+            }
+            
+            
+            LocalTime time = LocalTime.parse(hh+":"+mm);
             listToReturn.add(time);
         }
         
