@@ -108,7 +108,7 @@ public class BusinessMainMenuController implements Initializable {
         if(img_Timeslots.isDisabled()) {
             label_HoverIconDesc.setText("You must set your opening hours first.");
         } else {
-            label_HoverIconDesc.setText(AlertLabels.HOVER_DESCRIPTION_MANAGE_TIMESLOTS.toString());
+            label_HoverIconDesc.setText(AlertLabels.HOVER_DESCRIPTION_MANAGE_WORKSHIFTS.toString());
             onHoverEffectsApplyTo(img_Timeslots);            
         }
     }

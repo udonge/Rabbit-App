@@ -6,6 +6,10 @@
 package controllers;
 
 import enums.AlertLabels;
+import javafx.scene.image.*;
+import javafx.scene.control.*;
+import javafx.scene.effect.*;
+import javafx.scene.text.*;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.Time;
@@ -16,17 +20,7 @@ import java.util.ResourceBundle;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Button;
-import javafx.scene.control.CheckBox;
-import javafx.scene.control.ChoiceBox;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
-import javafx.scene.effect.Glow;
-import javafx.scene.effect.InnerShadow;
-import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import rabbitapp.RabbitFX;
 import rabbitmethods.Session;
@@ -301,7 +295,7 @@ public class BusinessViewProfileController implements Initializable {
         ImageView hoverNode = (ImageView) event.getSource();
         onHoverEffectsApplyTo(hoverNode);
         if(hoverNode.getId().equals(img_Timeslots.getId())) {
-            label_HoverIconDesc.setText(AlertLabels.HOVER_DESCRIPTION_MANAGE_TIMESLOTS.toString());
+            label_HoverIconDesc.setText(AlertLabels.HOVER_DESCRIPTION_MANAGE_WORKSHIFTS.toString());
         }
         if(hoverNode.getId().equals(img_Employees.getId())) {
             label_HoverIconDesc.setText(AlertLabels.HOVER_DESCRIPTION_MANAGE_EMPLOYEES.toString());

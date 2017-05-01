@@ -34,6 +34,7 @@ import rabbitmethods.Session;
 import rabbitmethods.Validation;
 import rabbitobjects.Business;
 import rabbitobjects.Employee;
+import rabbitobjects.Timeslot;
 
 /**
  *
@@ -44,6 +45,7 @@ public class BusinessManageEmployeeController implements Initializable{
     Session session;
     Validation validation = new Validation();
     Business thisBusiness;
+    Employee thisEmployee;
     Glow glow = new Glow();
     InnerShadow innershadow = new InnerShadow();
     
@@ -85,7 +87,7 @@ public class BusinessManageEmployeeController implements Initializable{
             text_EmployeeFirstName,
             text_EmployeeLastName,
             text_TimeslotTime,
-            text_TimeslotDuration;
+            text_TimeslotDesc;
     
     public TextField
             textfield_EditFirstName,
@@ -157,10 +159,13 @@ public class BusinessManageEmployeeController implements Initializable{
                     Number value, Number new_value) {
                 img_ProfilePicture.setVisible(true);
                 setEmployeeDetails(thisBusiness.getListOfEmployees().get(new_value.intValue()));
-                img_ProfilePicture.setImage(profilepics.get(thisBusiness.getListOfEmployees().get(new_value.intValue()).getProfilePicture()));
+                img_ProfilePicture.setImage(profilepics.get(thisBusiness.getListOfEmployees().get(new_value.intValue()).getProfilePicture()));               
+                thisEmployee = thisBusiness.getListOfEmployees().get(new_value.intValue());
             }
-        });        
-    }    
+        });
+        
+        choicebox_SelectEmployee.getSelectionModel().selectFirst();
+    }
     
     public void setEmployeeDetails(Employee employee) {
         text_EmployeeID.setText(employee.getEID());
@@ -207,7 +212,7 @@ public class BusinessManageEmployeeController implements Initializable{
         texts.add(text_EmployeeFirstName);
         texts.add(text_EmployeeLastName);
         texts.add(text_TimeslotTime);
-        texts.add(text_TimeslotDuration);
+        texts.add(text_TimeslotDesc);
         clearEmployeeTextTable();      
     }       
 
@@ -363,7 +368,7 @@ public class BusinessManageEmployeeController implements Initializable{
         ImageView hoverNode = (ImageView) event.getSource();
         onHoverEffectsApplyTo(hoverNode);
         if(hoverNode.getId().equals(img_Timeslots.getId())) {
-            label_HoverIconDesc.setText(AlertLabels.HOVER_DESCRIPTION_MANAGE_TIMESLOTS.toString());
+            label_HoverIconDesc.setText(AlertLabels.HOVER_DESCRIPTION_MANAGE_WORKSHIFTS.toString());
         }
         
         if(hoverNode.getId().equals(img_Return.getId())) {

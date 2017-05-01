@@ -7,6 +7,9 @@ package rabbitobjects;
 
 import java.sql.Date;
 import java.sql.Time;
+import java.text.SimpleDateFormat;
+import javafx.scene.text.Text;
+import rabbitmethods.Formatters;
 
 /**
  *
@@ -85,4 +88,15 @@ public class Timeslot {
     public String getDescription() {
         return this.description;
     }
+    
+ /* #########################################################################
+  * #   Timeslot Methods                                                    #
+    ######################################################################### */     
+    
+    public static void setTextToDateOfTimeslot(Text text, Timeslot timeslot) {
+        SimpleDateFormat toDateDay = Formatters.formatDateToStringDDMMEEEE();
+        Date date = timeslot.getAppointmentDate();
+        String newText = toDateDay.format(date);
+        text.setText(newText);
+    }    
 }

@@ -8,6 +8,11 @@ and open the template in the editor.
     Author     : Reisen
 */
 
+@font-face {
+    font-family: Rock Salt;
+    src: url('assets/font/RockSalt.ttf');
+}
+
 .root {
     -fx-background-color: #504e52;
     

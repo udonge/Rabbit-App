@@ -202,7 +202,7 @@
                               <Font size="24.0" />
                            </font>
                         </Text>
-                        <Text fx:id="text_TimeslotDuration" fill="#fffdfd" strokeType="OUTSIDE" strokeWidth="0.0" text="# DESCRIPTION OF EMPLOYEE" wrappingWidth="500.0" GridPane.columnIndex="1" GridPane.rowIndex="5">
+                        <Text fx:id="text_TimeslotDesc" fill="#fffdfd" strokeType="OUTSIDE" strokeWidth="0.0" text="# DESCRIPTION OF EMPLOYEE" wrappingWidth="500.0" GridPane.columnIndex="1" GridPane.rowIndex="5">
                            <font>
                               <Font size="24.0" />
                            </font>

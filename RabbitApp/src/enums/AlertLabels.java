@@ -28,8 +28,8 @@ public enum AlertLabels {
         /* # Business Descriptions */
         HOVER_DESCRIPTION_VIEW_BUSINESS_PROFILE("'Manage your business profile and settings.'"),
         HOVER_DESCRIPTION_EDIT_BUSINESS_PROFILE("'Edit the details for your business profile'"),
-        HOVER_DESCRIPTION_MANAGE_EMPLOYEES("'Manage your employees and their shifts.'"),
-        HOVER_DESCRIPTION_MANAGE_TIMESLOTS("'View and manage your business appointments.'");
+        HOVER_DESCRIPTION_MANAGE_EMPLOYEES("'Manage your employees.'"),
+        HOVER_DESCRIPTION_MANAGE_WORKSHIFTS("'Set the working hours of your employees.'");
     /* # */
     
     private final String alertDescription;
