@@ -18,6 +18,10 @@ and open the template in the editor.
     
 }
 
+.accordion .titled-pane > *.content{
+    -fx-background-color: transparent ;
+}
+
 .labelfont {
     -fx-font-family: "Rock Salt";    
 }

@@ -20,8 +20,8 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
-import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.control.TitledPane;
 import javafx.scene.effect.Glow;
 import javafx.scene.effect.InnerShadow;
 import javafx.scene.image.Image;
@@ -34,76 +34,94 @@ import rabbitmethods.Session;
 import rabbitmethods.Validation;
 import rabbitobjects.Business;
 import rabbitobjects.Employee;
-import rabbitobjects.Timeslot;
 
 /**
  *
  * @author Reisen
+ * # The recommended set up for controller classes for RabbitFX.
  */
 public class BusinessManageEmployeeController implements Initializable{
-    RabbitFX rabbitfx;
-    Session session;
-    Validation validation = new Validation();
-    Business thisBusiness;
-    Employee thisEmployee;
+    private RabbitFX rabbitfx;
+    private Session session;
+    private Validation validation = new Validation();
+    
+    /* # Controller Variables */
+    private Business thisBusiness;
+    private Employee thisEmployee;
+    private List<Image> profileIcons = new ArrayList<>();
+    private List<Text> texts = new ArrayList<>();
+    private List<TextField> textfields = new ArrayList<>();
+  
+    @FXML
     Glow glow = new Glow();
     InnerShadow innershadow = new InnerShadow();
-    
-    Boolean editOrAdding = false;
-    
-    List<Image> profilepics = new ArrayList<>();
-    List<TextField> textfields = new ArrayList<>();
-    List<Text> texts = new ArrayList<>();
-    
-    @FXML
- /* #########################################################################
-  * #   DECLARE JAVAFX OBJECTS                                              #
-    ######################################################################### */
-    public Button
-            btn_AddEmployee,
-            btn_EditEmployee,
-            btn_DeleteEmployee,
-            btn_EditTimeslot,
-            btn_SaveEdit,
-            btn_RemoveTimeslot,
-            btn_CancelEdit;
-    
+    /* # Root Pane */
     public ChoiceBox<String>
-            choicebox_SelectEmployee,
-            choicebox_SelectTimeslot;
-    
-    public ChoiceBox<Integer> 
-            choicebox_ProfilePicture;
-    
-    public ImageView
-            img_Logo,
-            img_ProfilePicture,
-            img_Return,
-            img_Timeslots;
-    
-    public Text
-            text_EmployeeDesc,
-            text_EmployeeID,
-            text_EmployeeFirstName,
-            text_EmployeeLastName,
-            text_TimeslotTime,
-            text_TimeslotDesc;
-    
-    public TextField
-            textfield_EditFirstName,
-            textfield_EditLastName;
-    
-    public TextArea
-            textarea_EditDesc;
+            choicebox_SelectEmployee;
     
     public Label
+            label_Title,
             label_HoverIconDesc;
-
- /* #########################################################################
-  * #   CONSTRUCTOR METHODS                                                 #
-    ######################################################################### */    
+    
+    public Button 
+            btn_Return,
+            btn_AddEmployee;
+    
+    public Text
+            text_EmployeeName,
+            text_EmployeeDesc;
+            
+    public ImageView
+            img_ProfilePicture,
+            img_Timeslots,
+            img_Return;
+    
+    /* # Add/Edit Pane */
+    public TitledPane
+            pane_Edit,
+            pane_Timeslots,
+            pane_History;
+    
+    public ImageView
+            img_EditProfilePicture;
+            
+    public ChoiceBox<Integer>
+            choicebox_EditProfilePicture;
+    
+    public TextField
+            textfield_NewFirstName,
+            textfield_NewLastName,
+            textfield_NewDesc;
+    
+    public Button
+            btn_Save,
+            btn_Cancel,
+            btn_DeleteEmployee;
+    
+    public Text
+            text_AddEmployeeError;
+    
+    
+    
     @Override
     public void initialize(URL fxmlFileLocation, ResourceBundle resources) {
+        profileIcons.add(new Image("/GUI/fxml/assets/profile/profile_bear.png"));
+        profileIcons.add(new Image("/GUI/fxml/assets/profile/profile_bird.png"));
+        profileIcons.add(new Image("/GUI/fxml/assets/profile/profile_boy.png"));
+        profileIcons.add(new Image("/GUI/fxml/assets/profile/profile_flower.png"));
+        profileIcons.add(new Image("/GUI/fxml/assets/profile/profile_fox.png"));
+        profileIcons.add(new Image("/GUI/fxml/assets/profile/profile_girlA.png"));
+        profileIcons.add(new Image("/GUI/fxml/assets/profile/profile_girlB.png"));
+        profileIcons.add(new Image("/GUI/fxml/assets/profile/profile_leaf.png"));
+        profileIcons.add(new Image("/GUI/fxml/assets/profile/profile_lotus.png"));
+        profileIcons.add(new Image("/GUI/fxml/assets/profile/profile_turtle.png"));
+        
+        textfields.add(textfield_NewFirstName);
+        textfields.add(textfield_NewLastName);
+        textfields.add(textfield_NewDesc);
+        
+        texts.add(text_EmployeeDesc);
+        texts.add(text_EmployeeName);     
         
     }    
     
@@ -112,195 +130,327 @@ public class BusinessManageEmployeeController implements Initializable{
     }
     public void setSession(Session session) {
         this.session = session;
-        /* # Cast Business User. */
         this.thisBusiness = (Business) session.currentUser;
     }
     
-    public void setProfilePictureChoices() {
-        profilepics.add(new Image("/GUI/fxml/assets/profile/profile_bear.png"));
-        profilepics.add(new Image("/GUI/fxml/assets/profile/profile_bird.png"));
-        profilepics.add(new Image("/GUI/fxml/assets/profile/profile_boy.png"));
-        profilepics.add(new Image("/GUI/fxml/assets/profile/profile_flower.png"));
-        profilepics.add(new Image("/GUI/fxml/assets/profile/profile_fox.png"));
-        profilepics.add(new Image("/GUI/fxml/assets/profile/profile_girlA.png"));
-        profilepics.add(new Image("/GUI/fxml/assets/profile/profile_girlB.png"));
-        profilepics.add(new Image("/GUI/fxml/assets/profile/profile_leaf.png"));
-        profilepics.add(new Image("/GUI/fxml/assets/profile/profile_lotus.png"));
-        profilepics.add(new Image("/GUI/fxml/assets/profile/profile_turtle.png"));
-        
-        int profileindex = 0;
-        for(Image i : profilepics) {
-            choicebox_ProfilePicture.getItems().add(profileindex);
-            profileindex++;
-        }       
-        
-        /* # Set the profile picture as options are selected. */
-        choicebox_ProfilePicture.getSelectionModel().selectedIndexProperty().addListener
-        (new ChangeListener<Number>() {
-            @Override
-            public void changed(ObservableValue ov,
-                    Number value, Number new_value) {
-                img_ProfilePicture.setImage(profilepics.get(new_value.intValue()));
-            }
-        });
-        
-        img_ProfilePicture.setVisible(false);
+ /* #########################################################################
+  * #   GUI Interaction                                                     #
+    ######################################################################### */
+    
+    public void onClickImg(MouseEvent event) throws IOException {
+        ImageView clickNode = (ImageView) event.getSource();
+        imgPurpose(clickNode);
     }
     
-    public void setEmployeeChoices() {
-        for(Employee e : thisBusiness.getListOfEmployees()) {
-            if(e.getEID()!=null) {
-                choicebox_SelectEmployee.getItems().add(e.getEID()); 
-            }
-        }
-        choicebox_SelectEmployee.getSelectionModel().selectedIndexProperty().addListener
-        (new ChangeListener<Number>() {
-            public void changed(ObservableValue ov,
-                    Number value, Number new_value) {
-                img_ProfilePicture.setVisible(true);
-                setEmployeeDetails(thisBusiness.getListOfEmployees().get(new_value.intValue()));
-                img_ProfilePicture.setImage(profilepics.get(thisBusiness.getListOfEmployees().get(new_value.intValue()).getProfilePicture()));               
-                thisEmployee = thisBusiness.getListOfEmployees().get(new_value.intValue());
-            }
-        });
-        
-        choicebox_SelectEmployee.getSelectionModel().selectFirst();
+    public void onClickButton(MouseEvent event) {
+        Button button = (Button) event.getSource();
+        btnPurpose(button);
     }
     
-    public void setEmployeeDetails(Employee employee) {
-        text_EmployeeID.setText(employee.getEID());
-        text_EmployeeFirstName.setText(employee.getEmployeeFirstName());
-        text_EmployeeLastName.setText(employee.getEmployeeLastName());
-        text_EmployeeDesc.setText(employee.getEmployeeDesc());
+    public void onHoverImg(MouseEvent event) {
+        ImageView hoverNode = (ImageView) event.getSource();
+        onHoverEffectsApplyTo(hoverNode);
+        setHoverIconDescText(hoverNode);
     }
     
-    public void showEditFields() {
-        /* # Toggle edit field visibility. 
-         * # Since we are using the same field for edit and add. */
-        textfield_EditFirstName.setVisible(true);
-        textfield_EditLastName.setVisible(true);
-        textarea_EditDesc.setVisible(true);
-        btn_SaveEdit.setVisible(true);
-        btn_CancelEdit.setVisible(true);
-        choicebox_ProfilePicture.setVisible(true);
-    }
+    public void onHoverExitImg(MouseEvent event) {
+        ImageView hoverNode = (ImageView) event.getSource();
+        hoverNode.setEffect(null);
+        label_HoverIconDesc.setText("");
+    }        
     
-    public void hideEditFields() {
-        textfield_EditFirstName.setVisible(false);
-        textfield_EditLastName.setVisible(false);
-        textarea_EditDesc.setVisible(false);
-        btn_SaveEdit.setVisible(false);
-        btn_CancelEdit.setVisible(false);
-        choicebox_ProfilePicture.setVisible(false);        
+    public void onMouseHoldImg(MouseEvent event) {
+       ImageView mouseHoldNode = (ImageView) event.getSource();
+       onMouseHoldEffectApplyTo(mouseHoldNode);
     }
-    
-    public void disableEditIfNoEmployees() {
-        if(thisBusiness.getListOfEmployees().isEmpty()) {
-            btn_EditEmployee.setOpacity(0.4);
-            btn_EditEmployee.setDisable(true);
-        } else {
-            choicebox_SelectEmployee.getSelectionModel().selectFirst();
-        }        
-    }
-    
-    public void setTextFieldList() {
-        textfields.add(textfield_EditFirstName);
-        textfields.add(textfield_EditLastName);
-        
-        texts.add(text_EmployeeDesc);
-        texts.add(text_EmployeeID);
-        texts.add(text_EmployeeFirstName);
-        texts.add(text_EmployeeLastName);
-        texts.add(text_TimeslotTime);
-        texts.add(text_TimeslotDesc);
-        clearEmployeeTextTable();      
-    }       
 
  /* #########################################################################
-  * #   LOGIC METHODS                                                       #
+  * #   GUI Effects                                                         #
     ######################################################################### */   
     
-    public void addEmployee() {
-        int profileid = choicebox_ProfilePicture.getSelectionModel().getSelectedIndex();
-        String fname = textfield_EditFirstName.getText();
-        String lname = textfield_EditLastName.getText();
-        String desc = textarea_EditDesc.getText();
-        
-        if(validateFields(fname, lname)) {
-            commitEmployeeToDatabase(fname, lname, desc, profileid, thisBusiness);
-            
-        } else {
-            System.out.println("Add New Employee Fail: Employee Details Invalid");
-        }                              
+    public void onHoverEffectsApplyTo(ImageView image) {
+        image.setEffect(null);
+        image.setEffect(glow);
+    }    
+    
+    public void onMouseHoldEffectApplyTo(ImageView image) {
+        image.setEffect(null);
+        image.setEffect(innershadow);            
     }
     
-    public void editEmployee(String eid) {
-        int profileid = choicebox_ProfilePicture.getSelectionModel().getSelectedIndex();
-        String 
-            fname,
-            lname,
-            desc;
-        Employee editMe = getThisEmployee(eid);
+ /* #########################################################################
+  * #   GUI Logic                                                           #
+    ######################################################################### */
+    
+    public void setHoverIconDescText(ImageView v) {
+        String id =  v.getId();
         
-        if(fieldIsEmpty(textfield_EditFirstName)) {
+         if(id.equals(img_Timeslots.getId())) {
+            label_HoverIconDesc.setText(AlertLabels.HOVER_DESCRIPTION_MANAGE_WORKSHIFTS.toString());
+        }
+        
+        if(id.equals(img_Return.getId())) {
+            label_HoverIconDesc.setText(AlertLabels.HOVER_DESCRIPTION_RETURN.toString());
+        }   
+    }
+    
+    public void imgPurpose(ImageView v) throws IOException {
+        String id = v.getId();
+        
+        if(id.equals(img_Timeslots.getId())) {
+            // Navigate to This Employees Timeslots.
+        }
+        
+        if(id.equals(img_Return.getId())) {
+            Stage stage = (Stage) img_Return.getScene().getWindow();
+            rabbitfx.businessStage(stage); 
+        }         
+    }
+    
+    public void btnPurpose(Button b) {
+        String id = b.getId();
+        
+        if(id.equals(btn_Save.getId())) {
+            text_AddEmployeeError.setText("");     
+            img_ProfilePicture.setVisible(true);
+            pane_Timeslots.setVisible(true);
+            pane_History.setVisible(true);              
+            if(pane_Edit.getText().equals("Edit")) {
+                if(editEmployee()) {
+                    setEmployeeDetails(thisEmployee);
+                    clearTextFieldError();
+                    clearTextFields();
+                    System.out.println("Edit confirmed.");
+                }
+            } else {
+                if(addEmployee()) {
+                    
+                    System.out.println("Adding confirmed.");
+                    pane_Edit.setText("Edit");
+                    pane_Edit.setExpanded(false);                    
+                } else {
+                    
+                }
+
+            }
+        }
+        
+        if(id.equals(btn_AddEmployee.getId())) {
+            clearTextFields();
+            clearEmployeeTextTable();
+            pane_Edit.setText("Add");
+            pane_Edit.setExpanded(true);
+            img_ProfilePicture.setVisible(false);            
+            pane_Timeslots.setVisible(false);
+            pane_History.setVisible(false);
+        }
+        
+        if(id.equals(btn_Cancel.getId())) {
+            clearTextFields();
+            text_AddEmployeeError.setText("");                   
+            setEmployeeDetails(thisEmployee);            
+            pane_Edit.setText("Edit");
+            pane_Edit.setExpanded(false);
+            img_ProfilePicture.setVisible(true);
+            pane_Timeslots.setVisible(true);
+            pane_History.setVisible(true);            
+        }
+    }
+    
+    public void setErrorTextField(TextField tf, boolean toggle) {
+        ObservableList<String> styleClass = tf.getStyleClass();
+        if(toggle) { // Remove
+            styleClass.removeAll(Collections.singleton("error")); 
+        } else { // Add
+            styleClass.add("error");
+        }      
+    }    
+    
+    public void clearTextFieldError() {
+        textfields.forEach((field) -> {
+            setErrorTextField(field, true);
+        });
+    }
+
+    public void clearEmployeeTextTable() {
+        texts.forEach((text) -> {
+            text.setText("");
+        });
+    }    
+    
+ /* #########################################################################
+  * #   Set-Up Employee Page                                                #
+    ######################################################################### */
+
+    public void setEmployeeChoiceBox() {
+        /* # Populate Select Employee list. */
+        List<Employee> employeeList = thisBusiness.getListOfEmployees();
+        ChoiceBox<String> selectEmployee = choicebox_SelectEmployee;
+        clearEmployeeTextTable();
+        
+        for(Employee e : employeeList) {
+            if(e.getEID()!=null) {
+                String eid = e.getEID();
+                selectEmployee.getItems().add(eid);                
+            }
+        }
+        
+        setEmployeeChoiceBoxListener();
+        selectEmployee.getSelectionModel().selectFirst();
+    } // End setEmployeeChoiceBox
+    
+    private void setEmployeeChoiceBoxListener() {
+        ChoiceBox<String> selectEmployee = choicebox_SelectEmployee;
+        
+        selectEmployee.getSelectionModel().selectedIndexProperty().addListener
+        (new ChangeListener<Number>() {
+            public void changed(ObservableValue ov,
+                    Number value, Number new_value) {
+                employeeChoiceBoxListener(new_value.intValue());
+            }
+        });        
+    }
+    
+    private void employeeChoiceBoxListener(int index) {
+        /* # Set current employee to selected index. */
+        thisEmployee = thisBusiness.getListOfEmployees().get(index);
+        
+        img_ProfilePicture.setVisible(true);
+        img_ProfilePicture.setImage(profileIcons.get(thisEmployee.getProfilePicture()));
+        clearTextFields();
+        setEmployeeDetails(thisEmployee);
+    }
+    
+    private void setEmployeeDetails(Employee e) {
+        img_ProfilePicture.setImage(profileIcons.get(e.getProfilePicture()));
+        choicebox_EditProfilePicture.getSelectionModel().select(e.getProfilePicture());
+        text_EmployeeName.setText(e.getEmployeeFirstName() + " " + e.getEmployeeLastName());
+        text_EmployeeDesc.setText(e.getEmployeeDesc());
+    }
+    
+ /* #########################################################################
+  * #   Set-Up Edit Page                                                    #
+    ######################################################################### */    
+    
+    public void setEditProfileIconChoiceBox() {
+        int index = 0;
+        ChoiceBox<Integer> editIcon = choicebox_EditProfilePicture;
+        
+        for(Image i : profileIcons) {
+            editIcon.getItems().add(index);
+            index++;
+        }
+        
+        setProfileChoiceBoxListener(editIcon);
+        
+    }
+    
+    private void setProfileChoiceBoxListener(ChoiceBox box) {
+           
+        box.getSelectionModel().selectedIndexProperty().addListener
+        (new ChangeListener<Number>() {
+            public void changed(ObservableValue ov,
+                    Number value, Number new_value) {
+                editProfileChoiceBoxListener(new_value.intValue());
+            }
+        });         
+    }
+    
+    private void editProfileChoiceBoxListener(int index) {       
+        img_EditProfilePicture.setImage(profileIcons.get(index));
+    }    
+ /* #########################################################################
+  * #   Add Employee                                                        #
+    ######################################################################### */
+    
+    public boolean addEmployee() {
+        int profileid = choicebox_EditProfilePicture.getSelectionModel().getSelectedIndex();
+        String fname = textfield_NewFirstName.getText();
+        String lname = textfield_NewLastName.getText();
+        String desc = textfield_NewDesc.getText();
+
+        if(validateFields(fname, lname)) {
+            String id = session.generateID("E");
+        
+            Employee dummyEmployee = new Employee(id, profileid, fname, lname, desc, null);
+            session.saveEmployeeToDatabase(dummyEmployee, thisBusiness);
+            thisBusiness.getListOfEmployees().add(dummyEmployee);
+            /* # Update Choicebox. */
+            choicebox_SelectEmployee.getItems().add(dummyEmployee.getEID());
+            /* # Set selection to this employee.*/
+            choicebox_SelectEmployee.getSelectionModel().selectLast();  
+            text_AddEmployeeError.setText("");
+            return true;
+        } else {
+            text_AddEmployeeError.setVisible(true);
+            text_AddEmployeeError.setText("Invalid Fields.");
+            System.out.println("Unsuccessful.");
+            return false;
+        }
+    }    
+    
+ /* #########################################################################
+  * #   Edit Employee                                                       #
+    ######################################################################### */          
+    
+    public boolean editEmployee() {
+        int profileid = choicebox_EditProfilePicture.getSelectionModel().getSelectedIndex();
+        String fname, lname, desc;
+        Employee editMe = thisEmployee;
+        
+        /* # Check First Name. */
+        if(fieldIsEmpty(textfield_NewFirstName)) {
+            /* # If empty, leave name as it is. */
             fname = editMe.getEmployeeFirstName();
         } else {
-            fname = textfield_EditFirstName.getText();
+            /* # If not, set as what is in the textfield. */
+            fname = textfield_NewFirstName.getText();
         }
         
-        if(fieldIsEmpty(textfield_EditLastName)) {
+        /* # Check Last Name. */        
+        if(fieldIsEmpty(textfield_NewLastName)) {
             lname = editMe.getEmployeeLastName();
         } else {
-            lname = textfield_EditLastName.getText();
+            lname = textfield_NewLastName.getText();
         }
         
-        if(textarea_EditDesc.getText().isEmpty()) {
+        /* # Check Description */        
+        if(textfield_NewDesc.getText().isEmpty()) {
             desc = editMe.getEmployeeDesc();
         } else {
-            desc = textarea_EditDesc.getText();
+            desc = textfield_NewDesc.getText();
         }
         
         if(validateFields(fname, lname)) {
+            editMe.setEmployeeFirstName(fname);
             editMe.setEmployeeFirstName(fname);
             editMe.setEmployeeLastName(lname);
             editMe.setEmployeeProfilePicture(profileid);
             editMe.setEmployeeDesc(desc);
             session.updateEmployee(editMe);
-            System.out.println("Editing Employee successful: " + editMe.getEID());
-            hideEditFields();
+            
+            System.out.println("Editing Employee Success: " + editMe.getEID());
+            return true;
             
         } else {
-            System.out.println("Edit Employee: " + editMe.getEID() + " failed.");
+            System.out.println("Editing Employee Failure: " + editMe.getEID());
+            return false;
+        }
+    }
+
+ /* #########################################################################
+  * #   Utility Methods                                                     #
+    ######################################################################### */ 
+    public void clearTextFields() {
+        for(TextField t : textfields) {
+            t.setText("");
         }
     }
     
-    public void commitEmployeeToDatabase(String fname, String lname, String desc, int profileid, Business business) {
-        /* # Build a dummy Employee to pass into Session. */
-        String id = session.generateID("E");
-        
-        Employee dummyEmployee = new Employee(id, profileid, fname, lname, desc, null);
-        session.saveEmployeeToDatabase(dummyEmployee, business);
-        /* # Add this employee to business database. */
-        business.getListOfEmployees().add(dummyEmployee);
-        /* # Update Choicebox. */
-        choicebox_SelectEmployee.getItems().add(dummyEmployee.getEID());
-        /* # Set selection to this employee.*/
-        choicebox_SelectEmployee.getSelectionModel().selectLast();
-        System.out.println("Adding New Employee successful: " + dummyEmployee.getEID());
-        /* # Enable Edit button. */
-        btn_EditEmployee.setDisable(false);
-        btn_EditEmployee.setOpacity(1);
-        hideEditFields();
-    }
-    
-    public void deleteEmployee() {
-        
-    }     
-
     public boolean validateFields(String fname, String lname) {
         Text text = new Text(); // Dummy text.
-        TextField fnameField = textfield_EditFirstName;
-        TextField lnameField = textfield_EditLastName;
+        TextField fnameField = textfield_NewFirstName;
+        TextField lnameField = textfield_NewLastName;
         /* # Clear Error status before you validate again. */
         clearTextFieldError();
         
@@ -312,118 +462,10 @@ public class BusinessManageEmployeeController implements Initializable{
             requirementCheck = requirementCheck + 1;
         }
         
-        return requirementCheck>0;
+        return requirementCheck>0;      
     }
-    
-    public void clearTextFieldError() {
-        textfields.forEach((field) -> {
-            setErrorTextField(field, true);
-        });
-    }
-    
-    public void clearEmployeeTextTable() {
-        texts.forEach((text) -> {
-            text.setText("");
-        });
-    }
-    
- /* #########################################################################
-  * #   EVENT LISTENERS                                                     #
-    ######################################################################### */   
-    
-    public void onClickAddEmployee() {
-        /* # Set mode to Adding Employee */
-        /* # Edit = False, Add = True */
-        editOrAdding = true;
-        clearEmployeeTextTable();
-        showEditFields();
-    }
-    
-    public void onClickEditEmployee() {
-        /* # Set mode to Adding Employee */
-        /* # Edit = False, Add = True */
-        editOrAdding = false;
-        choicebox_SelectEmployee.getSelectionModel().getSelectedIndex();
-        setEmployeeDetails(thisBusiness.getListOfEmployees().get(0));
-        
-        showEditFields();
-    }
-    
-    public void onClickSave() {
-        if(editOrAdding) {
-            addEmployee();
-        } else {
-            int index = choicebox_SelectEmployee.getSelectionModel().getSelectedIndex();
-            Business business = (Business) session.currentUser;
-            editEmployee(business.getListOfEmployees().get(index).getEID());
-        }
-    }
-    
-    public void onClickReturn() throws IOException {
-        Stage stage = (Stage) img_Return.getScene().getWindow();
-        rabbitfx.businessStage(stage);        
-    }
-    
-    public void onHoverImg(MouseEvent event) {
-        ImageView hoverNode = (ImageView) event.getSource();
-        onHoverEffectsApplyTo(hoverNode);
-        if(hoverNode.getId().equals(img_Timeslots.getId())) {
-            label_HoverIconDesc.setText(AlertLabels.HOVER_DESCRIPTION_MANAGE_WORKSHIFTS.toString());
-        }
-        
-        if(hoverNode.getId().equals(img_Return.getId())) {
-            label_HoverIconDesc.setText(AlertLabels.HOVER_DESCRIPTION_RETURN.toString());
-        }         
-    }
-    
-    public void onHoverImgExit(MouseEvent event) {
-        ImageView hoverNode = (ImageView) event.getSource();
-        hoverNode.setEffect(null);
-        label_HoverIconDesc.setText("");
-    }
-    
-    public void onHoverEffectsApplyTo(ImageView image) {
-        image.setEffect(null);
-        image.setEffect(glow);
-    }
-
-    public void onMouseHoldImg(MouseEvent event) {
-       ImageView mouseHoldNode = (ImageView) event.getSource();
-       onMouseHoldEffectApplyTo(mouseHoldNode);
-    }
-    
-    public void onMouseHoldEffectApplyTo(ImageView image) {
-        image.setEffect(null);
-        image.setEffect(innershadow);            
-    }    
-    
- /* #########################################################################
-  * #   Design Methods                                                      #
-    ######################################################################### */     
-    public void setErrorTextField(TextField tf, boolean toggle) {
-        ObservableList<String> styleClass = tf.getStyleClass();
-        if(toggle) { // Remove
-            styleClass.removeAll(Collections.singleton("error")); 
-        } else { // Add
-            styleClass.add("error");
-        }      
-    }
-        
+  
     public boolean fieldIsEmpty(TextField field) {
         return field.getText().isEmpty();
-    }
-    
-    public Employee getThisEmployee(String eid) {
-        Business business = (Business) session.currentUser;
-        List<Employee> employees = business.getListOfEmployees();
-        
-        for(Employee e : employees) {
-            if(e.getEID().equals(eid)) {
-                return e;
-            }
-        }
-        /* # Employee not found */
-        return null;
-    }
-    
+    }    
 }

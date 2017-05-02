@@ -154,17 +154,17 @@ public class RabbitFX extends RabbitApp {
     
     public void viewBusinessManageEmployee(Stage stage) throws IOException {
         
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/GUI/fxml/Manage_Employees.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/GUI/fxml/Business_ManageEmployees.fxml"));
         Parent root = loader.load();
         BusinessManageEmployeeController controller = loader.getController();
         
         controller.setSession(session);
         controller.setDriver(this);
-        controller.setProfilePictureChoices();
-        controller.hideEditFields();
-        controller.setTextFieldList();
-        controller.disableEditIfNoEmployees();
-        controller.setEmployeeChoices();
+        
+        controller.setEditProfileIconChoiceBox();        
+        controller.setEmployeeChoiceBox();
+
+
         
         showScene(stage, root);            
     }
