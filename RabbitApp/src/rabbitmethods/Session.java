@@ -5,6 +5,7 @@
  */
 package rabbitmethods;
 
+import com.sun.media.jfxmedia.logging.Logger;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -15,6 +16,8 @@ import java.sql.Date;
 import java.sql.Time;
 import java.util.List;
 import java.util.UUID;
+import java.util.logging.Level;
+import rabbitapp.RabbitApp;
 import rabbitobjects.Business;
 import rabbitobjects.Customer;
 import rabbitobjects.Employee;
@@ -26,8 +29,9 @@ import rabbitobjects.User;
  * @author Reisen
  * # User session with the application, login/logout/save/load/database population of List<User> of all users.
  */
-public class Session {
-    
+public class Session 
+{
+    private static final java.util.logging.Logger LOGGER = java.util.logging.Logger.getLogger( RabbitApp.class.getName() );
     public ArrayList<User> users;
     public User currentUser;
     public Connection connection;
@@ -49,6 +53,7 @@ public class Session {
         for(User user : users) {
             if(user.getEmail().equals(email)) {
                 if(user.getPassword().equals(password)) {
+                    LOGGER.fine("Logged in " + user.getEmail());
                     currentUser = user;
                     return true;
                 }
@@ -58,6 +63,7 @@ public class Session {
     }   
     public void logout() {
         /* # Set currentUser to null*/
+        LOGGER.fine("Logged out " + currentUser.getEmail());
         currentUser = null;
     }
     
@@ -71,6 +77,7 @@ public class Session {
          * # This means heavier coding in reading and writing but the database will be more flexible. */             
         /* # Get all User IDs from database into List. */
         String command = "SELECT * FROM " + schema + ".USERS";
+        LOGGER.finer("SQL Request to database: " + command);
         List<String> listOfID = new ArrayList<>();
         try {
             Statement statement = connection.createStatement();            
@@ -81,7 +88,7 @@ public class Session {
                 listOfID.add(id);
             }
         } catch(SQLException error) {
-            System.out.println(error.getMessage());
+            LOGGER.severe("SQL error when attempting read: " + error.getMessage());
         }
         
         listOfID.forEach((index) -> {
