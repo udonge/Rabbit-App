@@ -118,7 +118,7 @@ public class RabbitFX extends RabbitApp {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/GUI/fxml/ViewProfile_Business.fxml"));
         Parent root = loader.load();
         BusinessViewProfileController controller = loader.getController();
-        
+       
         controller.setSession(session);
         controller.setDriver(this);
         controller.getBusinessProfileInformation();
@@ -168,6 +168,7 @@ public class RabbitFX extends RabbitApp {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/GUI/fxml/SearchBusinesses.fxml"));
         Parent root = loader.load();
         SearchBusinessesController controller = loader.getController();
+        System.out.println("TEST: Loader should be " + loader.getController().toString());
         
         controller.setSession(session);
         controller.setDriver(this);

@@ -113,7 +113,7 @@ public class BusinessViewProfileController implements Initializable {
     
     @Override
     public void initialize(URL fxmlFileLocation, ResourceBundle resources) {
-        
+        System.out.println("TEST: Initalisation (view profile)");
     }    
     
     public void setDriver(RabbitFX rabbitfx) {

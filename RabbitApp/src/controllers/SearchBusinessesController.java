@@ -5,6 +5,7 @@
  */
 package controllers;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
@@ -14,6 +15,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.input.InputMethodEvent;
+import javafx.stage.Stage;
 import rabbitapp.RabbitFX;
 import rabbitmethods.Session;
 import rabbitobjects.*;
@@ -33,7 +35,7 @@ public class SearchBusinessesController implements Initializable {
     @FXML 
     public TextField searchText;
     @FXML
-    private Button searchByName;
+    public Button searchByName, searchByDesc, returnButton;
     
     /**
      * Initializes the controller class.
@@ -55,19 +57,18 @@ public class SearchBusinessesController implements Initializable {
     }
 
     @FXML
-    public void searchBusinessByName(InputMethodEvent event)
+    public void searchBusinessByName() throws IOException
     {
         System.out.println("TEST: name");
         ArrayList<Business> businesses = setBusinesses();
-        String searchTerm = searchText.getText();
+        String searchTerm = searchText.getText().toLowerCase();
         ArrayList<Business> outputBusinesses = new ArrayList<Business>();
         
         for(int i=0;i<businesses.size();i++)
         {
-            if (businesses.get(i).getBusinessName().contains(searchTerm))
+            if (businesses.get(i).getBusinessName().toLowerCase().contains(searchTerm))
             {
                 outputBusinesses.add(businesses.get(i));
-                break;
             }
         }
         
@@ -75,23 +76,30 @@ public class SearchBusinessesController implements Initializable {
     }
 
     @FXML
-    public void searchBusinessByDesc(ActionEvent event)
+    private void searchBusinessByDesc() throws IOException
     {
         System.out.println("TEST: description");
         ArrayList<Business> businesses = setBusinesses();
-        String searchTerm = searchText.getText();
+        String searchTerm = searchText.getText().toLowerCase();
         ArrayList<Business> outputBusinesses = new ArrayList<Business>();
         
         for(int i=0;i<businesses.size();i++)
         {
-            if (businesses.get(i).getBusinessDescription().contains(searchTerm))
+            if(businesses.get(i).getBusinessDescription() != null)
             {
-                outputBusinesses.add(businesses.get(i));
-                break;
+                if (businesses.get(i).getBusinessDescription().toLowerCase().contains(searchTerm))
+                {
+                    outputBusinesses.add(businesses.get(i));
+                }
             }
         }
         
         displayResults(outputBusinesses);
+    }
+    
+    public void onClickReturn() throws IOException {
+        Stage stage = (Stage) searchText.getScene().getWindow();
+        rabbitfx.customerStage(stage);      
     }
     
     private ArrayList<Business> setBusinesses()
@@ -107,10 +115,28 @@ public class SearchBusinessesController implements Initializable {
     
     private void displayResults(ArrayList<Business> businesses)
     {
+
         System.out.println("TEST: displayResults");
         for(int i=0;i<businesses.size();i++)
         {
             System.out.println("Name: " + businesses.get(i).getBusinessName() + '\n' + "Description: " + businesses.get(i).getBusinessDescription());
+            System.out.println("-------------------");
+
+        }
+    }
+    
+    private void displayAllBus()
+    {
+        ArrayList<Business> businesses = new ArrayList<Business>();
+        for(int i=0;i<session.users.size();i++)
+        {
+            if(session.users.get(i) instanceof Business) businesses.add((Business)session.users.get(i));
+        }
+        
+        for(int i=0;i<businesses.size();i++)
+        {
+            System.out.println("Name: " + businesses.get(i).getBusinessName() + '\n' + "Description: " + businesses.get(i).getBusinessDescription());
+            System.out.println("-------------------");
         }
     }
     
