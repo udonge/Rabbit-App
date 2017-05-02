@@ -11,6 +11,11 @@ import javafx.stage.Stage;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.util.logging.FileHandler;
+import java.util.logging.Handler;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import java.util.logging.SimpleFormatter;
 import rabbitmethods.Session;
 
 /**
@@ -20,8 +25,11 @@ import rabbitmethods.Session;
  */
 public class RabbitApp extends Application {
     
+    private static final Logger LOGGER = Logger.getLogger( RabbitApp.class.getName() );
     @Override
     public void start(Stage primaryStage) throws IOException {
+        initLogger();
+        LOGGER.fine("App Launched");
         /* # Declare class where menus will be constructed. */
         RabbitFX rabbitfx = new RabbitFX();
         /* # Declare a new session. */
@@ -36,12 +44,12 @@ public class RabbitApp extends Application {
            
         } catch(SQLException noDB) {
            System.out.println(noDB.getMessage());
+           LOGGER.severe("Issue creating connection: " + noDB.getMessage());
         }
 
         /* # Upon start up, load session then present Login screen */
         rabbitfx.setSession(session);
         rabbitfx.loginStage(primaryStage);
-        
     }
 
     /**
@@ -49,6 +57,15 @@ public class RabbitApp extends Application {
      */
     public static void main(String[] args) {
         launch(args);
+    }
+    
+    private void initLogger() throws IOException
+    {
+        Handler logOutput = new FileHandler("AppLogs.txt");
+        logOutput.setFormatter(new SimpleFormatter());
+        LOGGER.addHandler(logOutput);
+        LOGGER.setLevel(Level.FINEST);
+        LOGGER.fine("Logger initialised.");
     }
     
 }

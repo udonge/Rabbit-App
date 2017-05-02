@@ -14,6 +14,7 @@ import controllers.CustomerViewProfileController;
 import controllers.LoginController;
 import controllers.RegistrationController;
 import java.io.IOException;
+import java.util.logging.Logger;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -27,6 +28,7 @@ import rabbitmethods.Session;
  * # Loading GUIS and assigning controller classes occurs here.
  */
 public class RabbitFX extends RabbitApp {
+    private static final Logger LOGGER = Logger.getLogger( RabbitApp.class.getName() );
     public int resWidth = 1280;
     public int resHeight = 800;
     Session session;
@@ -60,6 +62,7 @@ public class RabbitFX extends RabbitApp {
     
     public void loginStage(Stage stage) throws IOException {
         /* # Display the Login scene. */
+        LOGGER.fine("Loading login stage...");
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/GUI/fxml/login.fxml"));
         Parent root = loader.load();
         LoginController controller = loader.getController();
@@ -68,10 +71,12 @@ public class RabbitFX extends RabbitApp {
         controller.setDriver(this);
         
         showScene(stage, root);
+        LOGGER.fine("Loaded login stage");
     }
     
     public void registrationStage(Stage stage) throws IOException {
         /* # Display the Registration scene. */
+        LOGGER.fine("Loading registration stage...");
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/GUI/fxml/registration.fxml"));
         Parent root = loader.load();
         RegistrationController controller = loader.getController();
@@ -80,10 +85,12 @@ public class RabbitFX extends RabbitApp {
         controller.setSession(session);
         
         showScene(stage, root);
+        LOGGER.fine("Loaded registration stage");
     }
     
     public void customerStage(Stage stage) throws IOException {
-        /* # Display the Customer Menu scene. */    
+        /* # Display the Customer Menu scene. */ 
+        LOGGER.fine("Loading customer stage...");
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/GUI/fxml/customer.fxml"));
         Parent root = loader.load();
         CustomerMainMenuController controller = loader.getController();
@@ -93,10 +100,12 @@ public class RabbitFX extends RabbitApp {
         controller.setCustomerMenu();
    
         showScene(stage,root);
+        LOGGER.fine("Loaded registration stage");
     }
     
     public void businessStage(Stage stage) throws IOException {
         /* # Display the Business Menu scene. */
+        LOGGER.fine("Loading business stage...");
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/GUI/fxml/business.fxml"));
         Parent root = loader.load();
         BusinessMainMenuController controller = loader.getController();
@@ -106,9 +115,11 @@ public class RabbitFX extends RabbitApp {
         controller.setBusinessMenu();
         
         showScene(stage, root);
+        LOGGER.fine("Loaded business stage");
     }
     
     public void viewProfileCustomer(Stage stage) throws IOException {
+        LOGGER.fine("Loading customer profile stage...");
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/GUI/fxml/ViewProfile_Customer.fxml"));
         Parent root = loader.load();
         CustomerViewProfileController controller = loader.getController();
@@ -118,9 +129,11 @@ public class RabbitFX extends RabbitApp {
         controller.getProfileInformation();
         
         showScene(stage, root); 
+        LOGGER.fine("Loaded customer profile stage");
     }
     
     public void viewProfileBusiness(Stage stage) throws IOException {
+        LOGGER.fine("Loading business profile stage...");
         /* # Display Profile for Currently logged in business. */
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/GUI/fxml/ViewProfile_Business.fxml"));
         Parent root = loader.load();
@@ -133,11 +146,11 @@ public class RabbitFX extends RabbitApp {
         controller.toggleEditObjectVisibility();
         
         showScene(stage, root);        
-        
+        LOGGER.fine("Loaded business profile stage");
     }
     
     public void viewBusinessManageTimeslot(Stage stage) throws IOException {
-        
+        LOGGER.fine("Loading timeslot management stage...");
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/GUI/fxml/Timeslots.fxml"));
         Parent root = loader.load();
         BusinessManageTimeslotController controller = loader.getController();
@@ -149,11 +162,12 @@ public class RabbitFX extends RabbitApp {
         controller.setProfilePictureChoices();
         controller.setEmployeeList();
         
-        showScene(stage, root);           
+        showScene(stage, root);       
+        LOGGER.fine("Loaded timeslot management stage");
     }
     
     public void viewBusinessManageEmployee(Stage stage) throws IOException {
-        
+        LOGGER.fine("Loading employee management stage...");
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/GUI/fxml/Business_ManageEmployees.fxml"));
         Parent root = loader.load();
         BusinessManageEmployeeController controller = loader.getController();
@@ -164,9 +178,8 @@ public class RabbitFX extends RabbitApp {
         controller.setEditProfileIconChoiceBox();        
         controller.setEmployeeChoiceBox();
 
-
-        
-        showScene(stage, root);            
+        showScene(stage, root);  
+        LOGGER.fine("Loaded employee management stage");
     }
     
 }
