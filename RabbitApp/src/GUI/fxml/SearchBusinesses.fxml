@@ -7,7 +7,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane id="AnchorPane" prefHeight="360" prefWidth="640" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.SearchBusinessesController">
+<AnchorPane id="AnchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.SearchBusinessesController">
    <children>
       <TextField id="searchText" layoutX="226.0" layoutY="76.0" promptText="Search..." />
       <Button layoutX="14.0" layoutY="14.0" mnemonicParsing="false" onAction="#searchBusinessByDesc" text="Back" />
@@ -16,7 +16,7 @@
             <Font size="39.0" />
          </font>
       </Text>
-      <Button layoutX="191.0" layoutY="103.0" mnemonicParsing="false" onAction="#searchBusinessByName" text="Search by Name" />
-      <Button layoutX="310.0" layoutY="103.0" mnemonicParsing="false" onAction="#searchBusinessByDesc" text="Search by Description" />
+      <Button fx:id="searchByName" layoutX="191.0" layoutY="103.0" mnemonicParsing="false" onMouseReleased="#searchBusinessByName" text="Search by Name" />
+      <Button fx:id="searchByDesc" layoutX="310.0" layoutY="103.0" mnemonicParsing="false" onMouseReleased="#searchBusinessByDesc" text="Search by Description" />
    </children>
 </AnchorPane>

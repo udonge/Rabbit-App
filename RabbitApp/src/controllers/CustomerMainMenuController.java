@@ -75,8 +75,11 @@ public class CustomerMainMenuController implements Initializable {
   * #   On Hover Icon Methods                                               #
     ######################################################################### */   
     
-    public void onClickMakeBooking() {
-    // TODO
+    public void onClickMakeBooking() throws IOException
+    {
+        Stage stage = (Stage) img_MakeBooking.getScene().getWindow();
+
+        rabbitfx.makeBookingStage(stage);
     }   
     public void onMouseHoldMakeBooking() {
         onMouseHoldEffectApplyTo(img_MakeBooking);
