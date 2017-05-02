@@ -21,13 +21,17 @@ public class Formatters {
         return new SimpleDateFormat("DD/MM/YYYY");
     }
     
-    public static SimpleDateFormat  formatDateToStringDDMMEEEE() {
-        return new SimpleDateFormat("DD/MM, EEEE");
+    public static SimpleDateFormat  formatDateToStringddMMEEEE() {
+        return new SimpleDateFormat("dd/MM, EEEE");
+    }
+    
+    public static SimpleDateFormat formatDateToStringEEEE() {
+        return new SimpleDateFormat("EEEE");
     }
     
     public static SimpleDateFormat formatTimeToStringHHmm() {
         return new SimpleDateFormat("HH:mm");
-    }
+    }   
     
     
 }

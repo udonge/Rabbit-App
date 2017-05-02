@@ -8,6 +8,8 @@ package rabbitobjects;
 import java.sql.Date;
 import java.sql.Time;
 import java.text.SimpleDateFormat;
+import java.util.Comparator;
+import java.util.List;
 import javafx.scene.text.Text;
 import rabbitmethods.Formatters;
 
@@ -94,9 +96,18 @@ public class Timeslot {
     ######################################################################### */     
     
     public static void setTextToDateOfTimeslot(Text text, Timeslot timeslot) {
-        SimpleDateFormat toDateDay = Formatters.formatDateToStringDDMMEEEE();
+        SimpleDateFormat toDateDay = Formatters.formatDateToStringddMMEEEE();
         Date date = timeslot.getAppointmentDate();
         String newText = toDateDay.format(date);
         text.setText(newText);
-    }    
+    }
+    
+    public static void sortThisListByDate(List<Timeslot> list) {
+        list.sort(Comparator.comparing(Timeslot::getAppointmentDate));
+
+    }
+
+    public static void sortThisListByTime(List<Timeslot> list) {
+        list.sort(Comparator.comparing(Timeslot::getAppointmentTime));
+    }
 }

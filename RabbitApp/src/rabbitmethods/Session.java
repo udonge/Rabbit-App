@@ -499,6 +499,24 @@ public class Session {
         }
     }
     
+    public void updateTimeslot(Timeslot timeslot) {
+        String updateCommand = 
+                "UPDATE " + schema + ".TIMESLOT SET " +
+                "PATRON = ? " +
+                "WHERE EID = '" + timeslot.getEmployeeID() + "' AND " +
+                "DATE = '" + timeslot.getAppointmentDate() + "' AND " +
+                "STARTTIME = '" + timeslot.getAppointmentTime() + "' AND " +
+                "ENDTIME = '" + timeslot.getAppointmentTimeEnd() + "' AND " +
+                "DESCRIPTION = '" + timeslot.getDescription() + "'";
+        try {
+            PreparedStatement statement = connection.prepareStatement(updateCommand);
+            statement.setString(1, timeslot.getPatron());
+            statement.executeUpdate();
+        } catch(SQLException error) {
+            System.out.println(error.getMessage());
+        }
+    }
+    
  /* #########################################################################
   * #   Remove From Database                                                #
     ######################################################################### */    

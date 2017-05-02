@@ -8,18 +8,21 @@ package controllers;
 import enums.AlertLabels;
 import java.io.IOException;
 import java.net.URL;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.ResourceBundle;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
+import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TitledPane;
 import javafx.scene.effect.Glow;
@@ -30,10 +33,12 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import rabbitapp.RabbitFX;
+import rabbitmethods.Formatters;
 import rabbitmethods.Session;
 import rabbitmethods.Validation;
 import rabbitobjects.Business;
 import rabbitobjects.Employee;
+import rabbitobjects.Timeslot;
 
 /**
  *
@@ -75,6 +80,29 @@ public class BusinessManageEmployeeController implements Initializable{
             img_ProfilePicture,
             img_Timeslots,
             img_Return;
+    /* # Timeslot Pane */
+    public ListView<String>
+            listview_Timeslots;
+    
+    public Button
+            btn_EditTimeslot,
+            btn_DeleteTimeslot;
+    
+    public TextField
+            textfield_SetCustomerID,
+            textfield_SetDetails;
+    
+    /* # Bookings Pane */
+    public ListView<String>
+            listview_Bookings;
+    
+    public Text
+        text_EditTimeslotError;
+    
+    public Text
+            text_BookingDate,
+            text_BookingPatron,
+            text_BookingDesc;
     
     /* # Add/Edit Pane */
     public TitledPane
@@ -121,7 +149,9 @@ public class BusinessManageEmployeeController implements Initializable{
         textfields.add(textfield_NewDesc);
         
         texts.add(text_EmployeeDesc);
-        texts.add(text_EmployeeName);     
+        texts.add(text_EmployeeName);
+        
+        label_HoverIconDesc.setText("");
         
     }    
     
@@ -255,6 +285,10 @@ public class BusinessManageEmployeeController implements Initializable{
             pane_Timeslots.setVisible(true);
             pane_History.setVisible(true);            
         }
+        
+        if(id.equals(btn_EditTimeslot.getId())) {
+            editTimeslot();
+        }
     }
     
     public void setErrorTextField(TextField tf, boolean toggle) {
@@ -269,6 +303,7 @@ public class BusinessManageEmployeeController implements Initializable{
     public void clearTextFieldError() {
         textfields.forEach((field) -> {
             setErrorTextField(field, true);
+            text_EditTimeslotError.setText("");
         });
     }
 
@@ -326,7 +361,40 @@ public class BusinessManageEmployeeController implements Initializable{
         choicebox_EditProfilePicture.getSelectionModel().select(e.getProfilePicture());
         text_EmployeeName.setText(e.getEmployeeFirstName() + " " + e.getEmployeeLastName());
         text_EmployeeDesc.setText(e.getEmployeeDesc());
+        
+        setListOfTimeslots(e);
     }
+    
+    private void setListOfTimeslots(Employee e) {
+        ListView<String> list = listview_Timeslots;
+        ObservableList<String> timeslots = FXCollections.observableArrayList();
+        Timeslot.sortThisListByDate(e.getEmployeeTimeslots());
+        
+        SimpleDateFormat s = Formatters.formatDateToStringddMMEEEE();
+        for(Timeslot t : e.getEmployeeTimeslots()) {
+            String date = s.format(t.getAppointmentDate());
+            String time = t.getAppointmentTime().toString();
+            timeslots.add(date + " - " + time);
+        }
+        list.setItems(timeslots);
+    }
+    
+    private void setListOfBookings(Employee e) {
+        ListView<String> list = listview_Bookings;
+        ObservableList<String> bookings = FXCollections.observableArrayList();
+        Timeslot.sortThisListByDate(e.getEmployeeTimeslots());
+        SimpleDateFormat s = Formatters.formatDateToStringddMMEEEE();
+        for(Timeslot t : e.getEmployeeTimeslots()) {
+            if(t.getPatron()!=null) {
+                String date = s.format(t.getAppointmentDate());
+                String time = t.getAppointmentTime().toString();
+                bookings.add(date + " - " + time + " [" + t.getPatron() +"]");
+            }
+        }
+        list.setItems(bookings);
+    }
+    
+
     
  /* #########################################################################
   * #   Set-Up Edit Page                                                    #
@@ -435,6 +503,29 @@ public class BusinessManageEmployeeController implements Initializable{
         } else {
             System.out.println("Editing Employee Failure: " + editMe.getEID());
             return false;
+        }
+    }
+    
+ /* #########################################################################
+  * #   Edit Timeslot                                                       #
+    ######################################################################### */ 
+    
+    public void editTimeslot() {
+        int index = listview_Timeslots.getSelectionModel().getSelectedIndex();
+        if(index>=0) {
+            Timeslot selectedTimeslot = thisEmployee.getEmployeeTimeslots().get(index);
+            
+            String patronID = textfield_SetCustomerID.getText();
+            if(session.idAlreadyExists(patronID)) {
+                text_EditTimeslotError.setText("");
+                selectedTimeslot.setPatron(patronID);
+                session.updateTimeslot(selectedTimeslot);
+                
+                System.out.println("Test Passed");
+            } else {
+                text_EditTimeslotError.setText("Customer does not exist.");
+                System.out.println("This user does not exist");
+            }
         }
     }
 

@@ -40,6 +40,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import rabbitapp.RabbitFX;
+import rabbitmethods.Formatters;
 import rabbitmethods.Session;
 import rabbitobjects.Business;
 import rabbitobjects.Employee;
@@ -425,6 +426,12 @@ public class BusinessManageTimeslotController implements Initializable{
         choicebox_SelectEmployee.getSelectionModel().selectFirst();
     }
     
+    public void setEmployeeHours() {
+        List<Timeslot> list = thisEmployee.getEmployeeTimeslots();
+        SimpleDateFormat d = Formatters.formatDateToStringEEEE();
+        
+    }
+    
     
  /* #########################################################################
   * #   Design Methods                                                      #
@@ -509,6 +516,51 @@ public class BusinessManageTimeslotController implements Initializable{
         return hour;
     }
     
+    public void setSelectedDays() {
+        if(checkbox_Sunday.isSelected()) {
+            daysSelected[0] = true;
+        } else {
+            daysSelected[0] = false;
+        }
+ 
+        if(checkbox_Monday.isSelected()) {
+            daysSelected[1] = true;
+        } else {
+            daysSelected[1] = false;
+        }
+
+        if(checkbox_Tuesday.isSelected()) {
+            daysSelected[2] = true;
+        } else {
+            daysSelected[2] = false;
+        }
+ 
+        if(checkbox_Wednesday.isSelected()) {
+            daysSelected[3] = true;
+        } else {
+            daysSelected[3] = false;
+        }
+
+        if(checkbox_Thursday.isSelected()) {
+            daysSelected[4] = true;
+        } else {
+            daysSelected[4] = false;
+        }
+ 
+        if(checkbox_Friday.isSelected()) {
+            daysSelected[5] = true;
+        } else {
+            daysSelected[5] = false;
+        } 
+
+        if(checkbox_Saturday.isSelected()) {
+            daysSelected[6] = true;
+        } else {
+            daysSelected[06] = false;
+        }
+        
+    }
+    
     public void addSelectedHourToList(ImageView image) {
         selection.add(image);
         nodeStateSelected(image);
@@ -591,6 +643,7 @@ public class BusinessManageTimeslotController implements Initializable{
         LocalDateTime currentDate = LocalDateTime.now();
         List<Timeslot> newTimeslots = new ArrayList<>();            
         
+        setSelectedDays();
         if(!thisEmployee.getEmployeeTimeslots().isEmpty()) {
             if(alertOverwrite()) {
                 
@@ -620,7 +673,7 @@ public class BusinessManageTimeslotController implements Initializable{
                             date,
                             endTime,
                             startTime,
-                            "Test");
+                            "None");
                         newTimeslots.add(timeslot);                        
                         System.out.println(
                         "Successfully Added: " +
