@@ -1,0 +1,16 @@
+May 03, 2017 4:38:19 PM rabbitapp.RabbitApp initLogger
+FINE: Logger initialised.
+May 03, 2017 4:38:19 PM rabbitapp.RabbitApp start
+FINE: Application launching...
+May 03, 2017 4:38:19 PM rabbitapp.RabbitFX loginStage
+FINE: Loading Login stage...
+May 03, 2017 4:38:19 PM rabbitapp.RabbitFX loginStage
+FINE: Loaded Login stage
+May 03, 2017 4:38:26 PM rabbitapp.RabbitFX businessStage
+FINE: Loading Business Menu stage...
+May 03, 2017 4:38:26 PM rabbitapp.RabbitFX businessStage
+FINE: Loaded Business Menu stage
+May 03, 2017 4:38:27 PM rabbitapp.RabbitFX viewBusinessManageEmployee
+FINE: Loading Employee Management stage...
+May 03, 2017 4:38:27 PM rabbitapp.RabbitFX viewBusinessManageEmployee
+FINE: Loaded Employee Management stage

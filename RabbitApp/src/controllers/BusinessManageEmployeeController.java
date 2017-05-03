@@ -151,6 +151,7 @@ public class BusinessManageEmployeeController implements Initializable{
         texts.add(text_EmployeeName);
         
         label_HoverIconDesc.setText("");
+        text_EditTimeslotError.setText("");
         
     }    
     

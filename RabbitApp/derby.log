@@ -1,7 +1,7 @@
-Sat Apr 29 14:22:55 AEST 2017 : Apache Derby Network Server - 10.11.1.2 - (1629631) started and ready to accept connections on port 1527
+Wed May 03 16:11:14 AEST 2017 : Apache Derby Network Server - 10.11.1.2 - (1629631) started and ready to accept connections on port 1527
 ----------------------------------------------------------------
-Sat Apr 29 14:22:55 AEST 2017:
-Booting Derby version The Apache Software Foundation - Apache Derby - 10.11.1.2 - (1629631): instance a816c00e-015b-b7f2-8142-ffffda78c60c 
+Wed May 03 16:11:14 AEST 2017:
+Booting Derby version The Apache Software Foundation - Apache Derby - 10.11.1.2 - (1629631): instance a816c00e-015b-ccef-1da1-ffffda78c60c 
 on database directory C:\Users\Reisen\Documents\NetBeansProjects\RabbitApp\Rabbit! - DB with class loader sun.misc.Launcher$AppClassLoader@6f94fa3e 
 Loaded from file:/C:/Program%20Files/Java/jdk1.8.0_121/db/lib/derby.jar
 java.vendor=Oracle Corporation
@@ -12,3 +12,9 @@ os.arch=amd64
 os.version=10.0
 derby.system.home=C:\Users\Reisen\Documents\NetBeansProjects\RabbitApp
 Database Class Loader started - derby.database.classpath=''
+----------------------------------------------------------------
+Wed May 03 16:39:58 AEST 2017: Shutting down Derby engine
+----------------------------------------------------------------
+Wed May 03 16:39:58 AEST 2017:
+Shutting down instance a816c00e-015b-ccef-1da1-ffffda78c60c on database directory C:\Users\Reisen\Documents\NetBeansProjects\RabbitApp\Rabbit! - DB with class loader sun.misc.Launcher$AppClassLoader@6f94fa3e 
+----------------------------------------------------------------

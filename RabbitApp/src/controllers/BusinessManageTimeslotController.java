@@ -691,7 +691,6 @@ public class BusinessManageTimeslotController implements Initializable{
             session.saveTimeslotToDatabase(t);
         }
         thisEmployee.setEmployeeTimeslots(newTimeslots);
-        session.constructTimeslotsOfEmployee(thisEmployee.getEID(), newTimeslots);
         
         System.out.println("============================");
         System.out.println("[Timeslot for " + thisEmployee.getEID());

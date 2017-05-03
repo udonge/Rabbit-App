@@ -404,9 +404,9 @@ public class Session {
             statement.setString(5, timeslot.getDescription());
             statement.setTime(6, timeslot.getAppointmentTime());
             statement.setTime(7, timeslot.getAppointmentTimeEnd());
-            statement.setString(8, timeslot.getTID());
-            
+            statement.setString(8, timeslot.getTID());            
             statement.executeUpdate();
+            
         } catch ( SQLException error ) {
             LOGGER.severe(String.format("Error while saving to DB:  %s", error.getMessage()));
         }
@@ -551,7 +551,7 @@ public class Session {
     public void removeTimeslotsOfEmployeeFromDatabase(Employee employee) {
         /* # Just remove the whole thing for now... too troublesome for individuals. */
         String removeCommand = 
-                "DELETE * FROM " + schema + ".TIMESLOT " +
+                "DELETE FROM " + schema + ".TIMESLOT " +
                 "WHERE EID = '" + employee.getEID() + "'";
         try {
             LOGGER.finer(String.format("Removing timeslot in DB using SQL: %s", removeCommand));

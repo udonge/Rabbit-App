@@ -262,7 +262,11 @@ public class RegistrationController implements  Initializable {
                 System.out.println(error.getMessage());
             }
         }
-        LOGGER.fine(String.format("Registration submitted for: %s, {PASSWORD REDACTED}, %s, %s, %s, %s, %s, %s", id, email, address, contactNo, firstName, lastName, dateOfBirth.toString()));
+        if(dateOfBirth==null) {
+            
+        }
+        
+        LOGGER.fine(String.format("Registration submitted for: %s, {PASSWORD REDACTED}, %s, %s, %s, %s, %s, %s", id, email, address, contactNo, firstName, lastName, dateOfBirth));
         Customer customer = new Customer(id,password, email, address, contactNo, firstName, lastName, dateOfBirth, null);
         session.users.add(customer);
         session.saveToDatabase(customer);
