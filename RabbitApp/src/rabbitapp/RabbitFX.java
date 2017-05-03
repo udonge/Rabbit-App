@@ -5,14 +5,7 @@
  */
 package rabbitapp;
 
-import controllers.BusinessMainMenuController;
-import controllers.BusinessManageEmployeeController;
-import controllers.BusinessManageTimeslotController;
-import controllers.BusinessViewProfileController;
-import controllers.CustomerMainMenuController;
-import controllers.CustomerViewProfileController;
-import controllers.LoginController;
-import controllers.RegistrationController;
+import controllers.*;
 import java.io.IOException;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -126,7 +119,7 @@ public class RabbitFX extends RabbitApp {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/GUI/fxml/ViewProfile_Business.fxml"));
         Parent root = loader.load();
         BusinessViewProfileController controller = loader.getController();
-        
+       
         controller.setSession(session);
         controller.setDriver(this);
         controller.getBusinessProfileInformation();
@@ -168,6 +161,21 @@ public class RabbitFX extends RabbitApp {
 
         
         showScene(stage, root);            
+    }
+    
+    public void makeBookingStage(Stage stage) throws IOException
+    {
+        System.out.println("TEST: Start of make stage");
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/GUI/fxml/SearchBusinesses.fxml"));
+        Parent root = loader.load();
+        SearchBusinessesController controller = loader.getController();
+        System.out.println("TEST: Loader should be " + loader.getController().toString());
+        
+        controller.setSession(session);
+        controller.setDriver(this);
+        
+        showScene(stage,root);
+        System.out.println("TEST: End of make stage");
     }
     
 }

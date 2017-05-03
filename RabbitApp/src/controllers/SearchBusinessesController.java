@@ -5,14 +5,20 @@
  */
 package controllers;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.TextField;
-import javafx.scene.input.InputMethodEvent;
+import javafx.scene.control.*;
+import javafx.scene.control.ListView;
+import javafx.stage.Stage;
+import rabbitapp.RabbitFX;
+import rabbitmethods.Session;
 import rabbitobjects.*;
 
 /**
@@ -22,50 +28,105 @@ import rabbitobjects.*;
  */
 public class SearchBusinessesController implements Initializable {
 
-    /**
-     * Initializes the controller class.
-     */
-    @FXML private TextField searchText;
-    @Override
-    public void initialize(URL url, ResourceBundle rb) {
-        // TODO
-    }    
+    RabbitFX rabbitfx;
+    Session session;
+    Customer thisCustomer;
 
+    @FXML 
+    private TextField searchText;
     @FXML
-    private ArrayList<Business> searchBusinessByName(InputMethodEvent event)
+    private Button searchByName, searchByDesc, returnButton;
+    @FXML
+    private ListView<String> resultsList;
+    
+    final ObservableList<String> listItems = FXCollections.observableArrayList();        
+
+    @Override
+    public void initialize(URL url, ResourceBundle rb) {}    
+    
+    public void setDriver(RabbitFX rabbitfx)
+    {        
+        this.rabbitfx = rabbitfx;
+    }
+    public void setSession(Session session)
     {
-        ArrayList<Business> businesses = new ArrayList<Business>();
-        
-        String searchTerm = searchText.getText();
-        String output = "Not found";
-        ArrayList<Business> outputBusinesses = new ArrayList<Business>();
-        for(int i=0;i<businesses.size();i++)
-        {
-            if (businesses.get(i).getBusinessName().contains(searchTerm))
-            {
-                outputBusinesses.add(businesses.get(i));
-                break;
-            }
-        }
-        return outputBusinesses;
+        this.session = session;
+        this.thisCustomer = (Customer) session.currentUser;
     }
 
     @FXML
-    private ArrayList<Business> searchBusinessByDesc(ActionEvent event)
+    public void searchBusinessByName(ActionEvent e) throws IOException
     {
-        ArrayList<Business> businesses = new ArrayList<Business>();
-
-        String searchTerm = searchText.getText();
+        ArrayList<Business> businesses = setBusinesses();
         ArrayList<Business> outputBusinesses = new ArrayList<Business>();
-        for(int i=0;i<businesses.size();i++)
+        
+        String searchTerm = searchText.getText().toLowerCase();
+        
+        if(searchTerm.length() > 0)
         {
-            if (businesses.get(i).getBusinessDescription().contains(searchTerm))
+            for(int i=0;i<businesses.size();i++)
             {
-                outputBusinesses.add(businesses.get(i));
-                break;
+                if (businesses.get(i).getBusinessName().toLowerCase().contains(searchTerm))
+                {
+                    outputBusinesses.add(businesses.get(i));
+                }
             }
         }
-        return outputBusinesses;
+        
+        displayResults(outputBusinesses);
+    }
+
+    @FXML
+    private void searchBusinessByDesc() throws IOException
+    {
+        ArrayList<Business> businesses = setBusinesses();
+        ArrayList<Business> outputBusinesses = new ArrayList<Business>();
+        
+        String searchTerm = searchText.getText().toLowerCase();
+        
+        if(searchTerm.length() > 0)
+        {
+            for(int i=0;i<businesses.size();i++)
+            {
+                if(businesses.get(i).getBusinessDescription() != null)
+                {
+                    if (businesses.get(i).getBusinessDescription().toLowerCase().contains(searchTerm))
+                    {
+                        outputBusinesses.add(businesses.get(i));
+                    }
+                }
+            }
+        }
+        
+        displayResults(outputBusinesses);
     }
     
+    public void onClickReturn() throws IOException
+    {
+        Stage stage = (Stage) searchText.getScene().getWindow();
+        rabbitfx.customerStage(stage);      
+    }
+    
+    private ArrayList<Business> setBusinesses()
+    {
+        ArrayList<Business> businesses = new ArrayList<>();
+        
+        for(int i=0;i<session.users.size();i++)
+        {
+            if(session.users.get(i) instanceof Business) businesses.add((Business)session.users.get(i));
+        }
+        
+        return businesses;
+    }
+    
+    private void displayResults(ArrayList<Business> businesses)
+    {
+        listItems.setAll();
+
+        for(int i=0;i<businesses.size();i++)
+        {
+            listItems.add("Name: " + businesses.get(i).getBusinessName() + "\nDescription: " + businesses.get(i).getBusinessDescription());
+        }
+        resultsList.setItems(listItems);   
+    }
 }
