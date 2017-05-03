@@ -9,12 +9,12 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
-import javafx.event.ActionEvent;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Button;
-import javafx.scene.control.TextField;
-import javafx.scene.input.InputMethodEvent;
+import javafx.scene.control.*;
+import javafx.scene.control.ListView;
 import javafx.stage.Stage;
 import rabbitapp.RabbitFX;
 import rabbitmethods.Session;
@@ -33,9 +33,11 @@ public class SearchBusinessesController implements Initializable {
 
     
     @FXML 
-    public TextField searchText;
+    private TextField searchText;
     @FXML
-    public Button searchByName, searchByDesc, returnButton;
+    private Button searchByName, searchByDesc, returnButton;
+    @FXML
+    ListView<String> resultsList;
     
     /**
      * Initializes the controller class.
@@ -43,6 +45,7 @@ public class SearchBusinessesController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         System.out.println("TEST: Initialise");
+        resultsList = new ListView<String>();
     }    
     
     public void setDriver(RabbitFX rabbitfx) {
@@ -115,14 +118,21 @@ public class SearchBusinessesController implements Initializable {
     
     private void displayResults(ArrayList<Business> businesses)
     {
-
+        ObservableList<String> data = FXCollections.observableArrayList();
         System.out.println("TEST: displayResults");
         for(int i=0;i<businesses.size();i++)
         {
             System.out.println("Name: " + businesses.get(i).getBusinessName() + '\n' + "Description: " + businesses.get(i).getBusinessDescription());
             System.out.println("-------------------");
-
+            data.addAll(businesses.get(i).getBusinessName(), businesses.get(i).getBusinessDescription(), "----");
         }
+        resultsList.setItems(null);
+        resultsList.setItems(data);
+        resultsList.setVisible(true);
+        
+        System.out.println("TEST: Results: " + resultsList.getItems().toString());
+
+        
     }
     
     private void displayAllBus()
