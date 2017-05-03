@@ -15,6 +15,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
+import java.util.logging.Logger;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
@@ -25,6 +26,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import rabbitapp.RabbitApp;
 import rabbitapp.RabbitFX;
 import rabbitmethods.Session;
 import rabbitmethods.Validation;
@@ -37,7 +39,7 @@ import rabbitobjects.Employee;
  * @author Reisen
  */
 public class RegistrationController implements  Initializable {
-    
+    private static final Logger LOGGER = Logger.getLogger(RabbitApp.class.getName());
     RabbitFX rabbitfx;
     Session session;
     Validation validation = new Validation();
@@ -258,6 +260,7 @@ public class RegistrationController implements  Initializable {
                 System.out.println(error.getMessage());
             }
         }
+        LOGGER.fine(String.format("Registration submitted for: %s, {PASSWORD REDACTED}, %s, %s, %s, %s, %s, %s", id, email, address, contactNo, firstName, lastName, dateOfBirth.toString()));
         Customer customer = new Customer(id,password, email, address, contactNo, firstName, lastName, dateOfBirth, null);
         session.users.add(customer);
         session.saveToDatabase(customer);
