@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.ResourceBundle;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
@@ -37,15 +38,18 @@ public class SearchBusinessesController implements Initializable {
     @FXML
     private Button searchByName, searchByDesc, returnButton;
     @FXML
-    ListView<String> resultsList;
+    private ListView<String> resultsList;
     
+      final ObservableList<String> listItems = FXCollections.observableArrayList();        
     /**
      * Initializes the controller class.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         System.out.println("TEST: Initialise");
-        resultsList = new ListView<String>();
+                
+        ObservableList<String> data = FXCollections.observableArrayList();
+        System.out.println("INITIALISE TEST: " + resultsList.getItems());
     }    
     
     public void setDriver(RabbitFX rabbitfx) {
@@ -60,7 +64,7 @@ public class SearchBusinessesController implements Initializable {
     }
 
     @FXML
-    public void searchBusinessByName() throws IOException
+    public void searchBusinessByName(ActionEvent e) throws IOException
     {
         System.out.println("TEST: name");
         ArrayList<Business> businesses = setBusinesses();
@@ -100,7 +104,8 @@ public class SearchBusinessesController implements Initializable {
         displayResults(outputBusinesses);
     }
     
-    public void onClickReturn() throws IOException {
+    public void onClickReturn() throws IOException
+    {
         Stage stage = (Stage) searchText.getScene().getWindow();
         rabbitfx.customerStage(stage);      
     }
@@ -118,21 +123,17 @@ public class SearchBusinessesController implements Initializable {
     
     private void displayResults(ArrayList<Business> businesses)
     {
-        ObservableList<String> data = FXCollections.observableArrayList();
+        listItems.setAll();
         System.out.println("TEST: displayResults");
         for(int i=0;i<businesses.size();i++)
         {
             System.out.println("Name: " + businesses.get(i).getBusinessName() + '\n' + "Description: " + businesses.get(i).getBusinessDescription());
             System.out.println("-------------------");
-            data.addAll(businesses.get(i).getBusinessName(), businesses.get(i).getBusinessDescription(), "----");
+            listItems.add(businesses.get(i).getBusinessName() + '\n' + businesses.get(i).getBusinessDescription() + '\n' + "----");
         }
-        resultsList.setItems(null);
-        resultsList.setItems(data);
-        resultsList.setVisible(true);
+        resultsList.setItems(listItems);
         
         System.out.println("TEST: Results: " + resultsList.getItems().toString());
-
-        
     }
     
     private void displayAllBus()
@@ -149,5 +150,4 @@ public class SearchBusinessesController implements Initializable {
             System.out.println("-------------------");
         }
     }
-    
 }

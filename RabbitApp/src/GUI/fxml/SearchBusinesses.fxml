@@ -16,8 +16,8 @@
             <Font size="39.0" />
          </font>
       </Text>
-      <Button fx:id="searchByName" layoutX="191.0" layoutY="103.0" mnemonicParsing="false" onMouseClicked="#searchBusinessByName" text="Search by Name" />
+      <Button fx:id="searchByName" layoutX="191.0" layoutY="103.0" mnemonicParsing="false" onAction="#searchBusinessByName" text="Search by Name" />
       <Button fx:id="searchByDesc" layoutX="310.0" layoutY="103.0" mnemonicParsing="false" onMouseClicked="#searchBusinessByDesc" text="Search by Description" />
-      <ListView fx:id="resultsList" editable="true" fixedCellSize="1.0" layoutX="210.0" layoutY="310.0" prefHeight="341.0" prefWidth="200.0" />
+      <ListView fx:id="resultsList" layoutX="210.0" layoutY="310.0" prefHeight="341.0" prefWidth="200.0" />
    </children>
 </AnchorPane>
