@@ -13,8 +13,11 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.sql.Date;
 import java.sql.Time;
+import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
+import java.util.logging.Logger;
+import rabbitapp.RabbitApp;
 import rabbitobjects.Business;
 import rabbitobjects.Customer;
 import rabbitobjects.Employee;
@@ -27,7 +30,7 @@ import rabbitobjects.User;
  * # User session with the application, login/logout/save/load/database population of List<User> of all users.
  */
 public class Session {
-    
+    private static final Logger LOGGER = Logger.getLogger(Session.class.getName());
     public ArrayList<User> users;
     public User currentUser;
     public Connection connection;
@@ -49,6 +52,7 @@ public class Session {
         for(User user : users) {
             if(user.getEmail().equals(email)) {
                 if(user.getPassword().equals(password)) {
+                    LOGGER.fine(String.format("Logged in user: %s", user.getEmail()));
                     currentUser = user;
                     return true;
                 }
@@ -58,6 +62,7 @@ public class Session {
     }   
     public void logout() {
         /* # Set currentUser to null*/
+        LOGGER.fine(String.format("Logged out user: %s", currentUser.getEmail()));
         currentUser = null;
     }
     
@@ -73,15 +78,17 @@ public class Session {
         String command = "SELECT * FROM " + schema + ".USERS";
         List<String> listOfID = new ArrayList<>();
         try {
+            LOGGER.finer(String.format("Reading from DB using SQL: %s", command));
             Statement statement = connection.createStatement();            
             ResultSet rsUser = statement.executeQuery(command);
             while(rsUser.next()) {
                 /* # Get common data first. */
                 String id = rsUser.getString("ID");
+                LOGGER.finest(String.format("Found: %s", id));
                 listOfID.add(id);
             }
         } catch(SQLException error) {
-            System.out.println(error.getMessage());
+            LOGGER.severe(String.format("Error while reading from DB:  %s", error.getMessage()));
         }
         
         listOfID.forEach((index) -> {
@@ -114,7 +121,7 @@ public class Session {
     public void getCommonUserData(String userID, User user) {
         String command = ("SELECT * FROM " + schema + ".USERS WHERE ID = '" + userID + "'");
         try {
-
+            LOGGER.finer(String.format("Reading from DB using SQL: %s", command));
             Statement statement = connection.createStatement();  
             ResultSet rsUser = statement.executeQuery(command);
             while(rsUser.next()) {
@@ -122,7 +129,7 @@ public class Session {
                 String password = rsUser.getString("PASSWORD");
                 String contactNo = rsUser.getString("CONTACTNO");
                 String address = rsUser.getString("ADDRESS");
-                
+                LOGGER.finer(String.format("Returned user: %s", email));
                 if(user instanceof Customer) {
                     user.setID(userID);
                     user.setEmail(email);
@@ -142,7 +149,7 @@ public class Session {
             users.add(user);
                     
         }catch (SQLException error) {
-            System.out.println(error.getMessage());
+            LOGGER.severe(String.format("Error while reading from DB:  %s", error.getMessage()));
         }        
     }
     
@@ -152,6 +159,7 @@ public class Session {
         String command = ("SELECT * FROM " + schema + ".CUSTOMERS WHERE ID = '" + userID +"'");
         Customer customer = null;
         try {
+            LOGGER.finer(String.format("Reading from DB using SQL: %s", command));
             Statement statement = connection.createStatement();
             ResultSet rsCustomer = statement.executeQuery(command);
             while(rsCustomer.next()) {
@@ -162,7 +170,7 @@ public class Session {
             customer = new Customer(null,null,null,null,null, firstName, lastName, dob, null);
             }
         } catch(SQLException error) {
-            System.out.println(error.getMessage());
+            LOGGER.severe(String.format("Error while reading from DB:  %s", error.getMessage()));
         }
         /* # The Bookings list should be populated here. */        
 
@@ -180,6 +188,7 @@ public class Session {
         List<Employee> employees = new ArrayList<>();
         boolean[] daysOpen = new boolean[7];
         try {
+            LOGGER.finer(String.format("Reading from DB using SQL: %s", command));
             Statement statement = connection.createStatement();
             ResultSet rsBusiness = statement.executeQuery(command);
             while(rsBusiness.next()) {
@@ -199,7 +208,7 @@ public class Session {
                           
             }
         } catch(SQLException error) {
-            System.out.println(error.getMessage());
+            LOGGER.severe(String.format("Error while reading from DB:  %s", error.getMessage()));
         }
         /* # Construct Employee List */
         constructListOfEmployees(employees, userID);
@@ -210,6 +219,7 @@ public class Session {
         String command = ("SELECT * FROM " + schema + ".EMPLOYEE WHERE BID = '" + userID + "'");
         Employee employee = null;
         try {
+            LOGGER.finer(String.format("Reading from DB using SQL: %s", command));
             Statement statement = connection.createStatement();
             ResultSet rsEmployee = statement.executeQuery(command);
             while(rsEmployee.next()) {
@@ -227,13 +237,14 @@ public class Session {
             }
             
         } catch(SQLException error) {
-            System.out.println(error.getMessage());
+            LOGGER.severe(String.format("Error while reading from DB:  %s", error.getMessage()));
         }
     }
     
     public void constructTimeslotsOfEmployee(String EID, List<Timeslot> list) {
         String command = ("SELECT * FROM " + schema + ".TIMESLOT  WHERE EID = '" + EID + "'");
         try {
+            LOGGER.finer(String.format("Reading from DB using SQL: %s", command));
             Statement statement = connection.createStatement();
             ResultSet rsTimeslot = statement.executeQuery(command);
             while(rsTimeslot.next()) {
@@ -248,11 +259,12 @@ public class Session {
                 list.add(timeslot);
             }
         } catch (SQLException error) {
-            System.out.println(error.getMessage());
+            LOGGER.severe(String.format("Error while reading from DB:  %s", error.getMessage()));
         }
     }
     
     public void constructDaysOpenArray(boolean[] days, String dbValue) {
+        LOGGER.finest(String.format("Constructing days open array..."));
         char[] decipher = Validation.turnStringToCharArray(dbValue);
         /* # 0 = Sunday, 6 = Saturday */
         for(char i : decipher) {
@@ -262,6 +274,7 @@ public class Session {
             } else {
                 System.out.println(index);
                 System.out.println("Error parsing day string, check Database. ");
+                LOGGER.severe(String.format("Error parsing day string. dbValue: %s | days: %s", dbValue, Arrays.toString(days)));
             }
         }
     }
@@ -272,9 +285,8 @@ public class Session {
     
     public void saveToDatabase(User user) {
         /* # Given a user, we save their details to the database through an insert command. */      
-        
+        LOGGER.fine(String.format("Saving user to DB."));
         String userCommand = "INSERT INTO " + schema + ".USERS " + "VALUES (?,?,?,?,?)";
-        
         String contactNo = null;
         String address = null;
         if(user.getContactNo()!=null)
@@ -283,6 +295,7 @@ public class Session {
             address = user.getAddress();
                 
         try {
+            LOGGER.finer(String.format("Saving to DB using SQL: %s", userCommand));
             PreparedStatement statement = connection.prepareStatement(userCommand);
             statement.setString(1, user.getID());
             statement.setString(2, user.getEmail());            
@@ -291,13 +304,15 @@ public class Session {
             statement.setString(5, address);
             statement.executeUpdate();            
         }catch(SQLException error) {
-            System.out.println(error.getMessage());
+            LOGGER.severe(String.format("Error while saving to DB:  %s", error.getMessage()));
         }
         
         if(user instanceof Customer) {
+            LOGGER.finer(String.format("User is a customer, saving to customer table."));
             saveCustomerToDatabase((Customer) user);
         }
         if(user instanceof Business) {
+            LOGGER.finer(String.format("User is a business, saving to business table."));
             saveBusinessToDatabase((Business) user);
         }        
     }
@@ -310,6 +325,7 @@ public class Session {
             date = customer.getDateOfBirth();
         }
         try {
+            LOGGER.finer(String.format("Saving customer to DB using SQL: %s", userCommand));
             PreparedStatement statement = connection.prepareStatement(userCommand);
             statement.setString(1, customer.getID());
             statement.setString(2, customer.getFirstName());
@@ -318,7 +334,7 @@ public class Session {
             statement.executeUpdate();
             
         }catch(SQLException error) {
-            System.out.println(error.getMessage());
+            LOGGER.severe(String.format("Error while saving to DB:  %s", error.getMessage()));
         }
         
         /* # Save Bookings Here.*/
@@ -336,6 +352,7 @@ public class Session {
             closeTime = business.getClosingHours();
         }
         try {
+            LOGGER.finer(String.format("Saving business to DB using SQL: %s", userCommand));
             PreparedStatement statement = connection.prepareStatement(userCommand);
             statement.setString(1, business.getID());
             statement.setString(2, business.getBusinessName());
@@ -348,13 +365,14 @@ public class Session {
             statement.setString(9, dayStringCode);
             statement.executeUpdate();            
         }catch(SQLException error) {
-            System.out.println(error.getMessage());
+            LOGGER.severe(String.format("Error while saving to DB:  %s", error.getMessage()));
         }        
     }
     
     public void saveEmployeeToDatabase(Employee employee, Business business) {
         String userCommand = "INSERT INTO " + schema + ".EMPLOYEE " + "VALUES (?,?,?,?,?,?)";
         try {
+            LOGGER.finer(String.format("Saving employee to DB using SQL: %s", userCommand));
             PreparedStatement statement = connection.prepareStatement(userCommand);
             statement.setString(1, employee.getEID());
             statement.setString(2, business.getID());
@@ -366,7 +384,7 @@ public class Session {
             statement.executeUpdate();
             
         } catch (SQLException error) {
-            System.out.println(error.getMessage());
+            LOGGER.severe(String.format("Error while saving to DB:  %s", error.getMessage()));
         }       
     }
     
@@ -377,6 +395,7 @@ public class Session {
             patron = timeslot.getPatron();
         }
         try {
+            LOGGER.finer(String.format("Saving timeslot to DB using SQL: %s", userCommand));
             PreparedStatement statement = connection.prepareStatement(userCommand);
             statement.setString(1, timeslot.getHost());
             statement.setString(2, patron);
@@ -389,18 +408,19 @@ public class Session {
             
             statement.executeUpdate();
         } catch ( SQLException error ) {
-            System.out.println(error.getMessage());
+            LOGGER.severe(String.format("Error while saving to DB:  %s", error.getMessage()));
         }
     }
     
     public String convertBooleanArrayToDayCode(boolean[] days) {
+        LOGGER.finest(String.format("Converting boolArray to dayCode"));
         String dayCode = "";
         for(int i = 0 ; i < days.length ; i++) {
             if(days[i]) {
                 dayCode = dayCode + i;
             }
         }
-        System.out.println("Complete Day Code: " + dayCode);
+        LOGGER.finest(String.format("Completed dayCode: %s", dayCode));
         return dayCode;
     }
  /* #########################################################################
@@ -416,18 +436,21 @@ public class Session {
                 "ADDRESS = ? " +
                 "WHERE ID = '" + user.getID() + "'";
         try {
+            LOGGER.finer(String.format("Updating user in DB using SQL: %s", updateCommand));
             PreparedStatement statement = connection.prepareStatement(updateCommand);
             statement.setString(1, user.getEmail());
             statement.setString(2, user.getContactNo());
             statement.setString(3, user.getAddress());
             statement.executeUpdate();
         } catch(SQLException error) {
-            System.out.println(error.getMessage());
+            LOGGER.severe(String.format("Error while updating in DB:  %s", error.getMessage()));
         }
         if(user instanceof Customer) {
+            LOGGER.finer(String.format("User is a customer, updating in the customer table."));
             updateCustomerUser((Customer) user);
         }
         if(user instanceof Business) {
+            LOGGER.finer(String.format("User is a business, updating in the business table."));
             updateBusinessUser((Business) user);
         }                
         
@@ -442,6 +465,7 @@ public class Session {
                 "WHERE ID = '" + user.getID() + "'";
         
         try {
+            LOGGER.finer(String.format("Updating customer in DB using SQL: %s", updateCommand));
             PreparedStatement statement = connection.prepareStatement(updateCommand);
             statement.setString(1, user.getFirstName());
             statement.setString(2, user.getLastName());
@@ -449,7 +473,7 @@ public class Session {
             statement.executeUpdate();
             
         } catch (SQLException error) {
-            System.out.println(error.getMessage());
+            LOGGER.severe(String.format("Error while updating in DB:  %s", error.getMessage()));
         }
     }
     
@@ -466,6 +490,7 @@ public class Session {
                 "OPENDAYS = ? " +
                 "WHERE ID = '" + user.getID() + "'";
         try {
+            LOGGER.finer(String.format("Updating business in DB using SQL: %s", updateCommand));
             PreparedStatement statement = connection.prepareStatement(updateCommand);
             statement.setString(1, user.getBusinessName());
             statement.setTime(2, user.getOpeningHours());
@@ -477,7 +502,7 @@ public class Session {
             statement.setString(8, convertBooleanArrayToDayCode(user.getDaysOpen()));
             statement.executeUpdate();
         } catch(SQLException error) {
-            System.out.println(error.getMessage());
+            LOGGER.severe(String.format("Error while updating in DB:  %s", error.getMessage()));
         }        
     }
     
@@ -490,6 +515,7 @@ public class Session {
                 "PROFILE = ? " +
                 "WHERE EID = '" + employee.getEID() + "'";
         try {
+            LOGGER.finer(String.format("Updating employee in DB using SQL: %s", updateCommand));
             PreparedStatement statement = connection.prepareStatement(updateCommand);
             statement.setString(1, employee.getEmployeeFirstName());
             statement.setString(2, employee.getEmployeeLastName());
@@ -497,7 +523,7 @@ public class Session {
             statement.setInt(4, employee.getProfilePicture());
             statement.executeUpdate();
         } catch(SQLException error) {
-            System.out.println(error.getMessage());
+            LOGGER.severe(String.format("Error while updating in DB:  %s", error.getMessage()));
         }
     }
     
@@ -508,12 +534,13 @@ public class Session {
                 "PATRON = ? " +
                 "WHERE TID = '" + timeslot.getTID() + "'";
         try {
+            LOGGER.finer(String.format("Updating timeslot in DB using SQL: %s", updateCommand));
             PreparedStatement statement = connection.prepareStatement(updateCommand);
             statement.setString(1, timeslot.getDescription());
             statement.setString(2, timeslot.getPatron());
             statement.executeUpdate();
         } catch(SQLException error) {
-            System.out.println(error.getMessage());
+            LOGGER.severe(String.format("Error while updating in DB:  %s", error.getMessage()));
         }
     }
     
@@ -527,15 +554,17 @@ public class Session {
                 "DELETE * FROM " + schema + ".TIMESLOT " +
                 "WHERE EID = '" + employee.getEID() + "'";
         try {
+            LOGGER.finer(String.format("Removing timeslot in DB using SQL: %s", removeCommand));
             Statement statement = connection.createStatement();
             statement.execute(removeCommand);
         } catch(SQLException error) {
-            System.out.println(error.getMessage());
+            LOGGER.severe(String.format("Error while removing in DB:  %s", error.getMessage()));
         }
     }
     
     public String generateID(String type) {
         /* # Build an ID with inbuilt check for repeats. */
+        LOGGER.finest(String.format("Generating ID of type: %s", type));
         String id = null;
         do{
             id = type;
@@ -544,7 +573,7 @@ public class Session {
             id = id + generate;  
         } while(idAlreadyExists(id));
 
-        
+        LOGGER.finest(String.format("ID Generated: %s", id));
         return id;
     }
     
