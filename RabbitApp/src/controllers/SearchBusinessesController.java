@@ -32,7 +32,6 @@ public class SearchBusinessesController implements Initializable {
     Session session;
     Customer thisCustomer;
 
-    
     @FXML 
     private TextField searchText;
     @FXML
@@ -40,42 +39,37 @@ public class SearchBusinessesController implements Initializable {
     @FXML
     private ListView<String> resultsList;
     
-      final ObservableList<String> listItems = FXCollections.observableArrayList();        
-    /**
-     * Initializes the controller class.
-     */
+    final ObservableList<String> listItems = FXCollections.observableArrayList();        
+
     @Override
-    public void initialize(URL url, ResourceBundle rb) {
-        System.out.println("TEST: Initialise");
-                
-        ObservableList<String> data = FXCollections.observableArrayList();
-        System.out.println("INITIALISE TEST: " + resultsList.getItems());
-    }    
+    public void initialize(URL url, ResourceBundle rb) {}    
     
-    public void setDriver(RabbitFX rabbitfx) {
-        System.out.println("TEST: setDrive");
+    public void setDriver(RabbitFX rabbitfx)
+    {        
         this.rabbitfx = rabbitfx;
     }
-    public void setSession(Session session) {
-        System.out.println("TEST: setSession");
+    public void setSession(Session session)
+    {
         this.session = session;
-        /* # Cast Business User. */
         this.thisCustomer = (Customer) session.currentUser;
     }
 
     @FXML
     public void searchBusinessByName(ActionEvent e) throws IOException
     {
-        System.out.println("TEST: name");
         ArrayList<Business> businesses = setBusinesses();
-        String searchTerm = searchText.getText().toLowerCase();
         ArrayList<Business> outputBusinesses = new ArrayList<Business>();
         
-        for(int i=0;i<businesses.size();i++)
+        String searchTerm = searchText.getText().toLowerCase();
+        
+        if(searchTerm.length() > 0)
         {
-            if (businesses.get(i).getBusinessName().toLowerCase().contains(searchTerm))
+            for(int i=0;i<businesses.size();i++)
             {
-                outputBusinesses.add(businesses.get(i));
+                if (businesses.get(i).getBusinessName().toLowerCase().contains(searchTerm))
+                {
+                    outputBusinesses.add(businesses.get(i));
+                }
             }
         }
         
@@ -85,18 +79,21 @@ public class SearchBusinessesController implements Initializable {
     @FXML
     private void searchBusinessByDesc() throws IOException
     {
-        System.out.println("TEST: description");
         ArrayList<Business> businesses = setBusinesses();
-        String searchTerm = searchText.getText().toLowerCase();
         ArrayList<Business> outputBusinesses = new ArrayList<Business>();
         
-        for(int i=0;i<businesses.size();i++)
+        String searchTerm = searchText.getText().toLowerCase();
+        
+        if(searchTerm.length() > 0)
         {
-            if(businesses.get(i).getBusinessDescription() != null)
+            for(int i=0;i<businesses.size();i++)
             {
-                if (businesses.get(i).getBusinessDescription().toLowerCase().contains(searchTerm))
+                if(businesses.get(i).getBusinessDescription() != null)
                 {
-                    outputBusinesses.add(businesses.get(i));
+                    if (businesses.get(i).getBusinessDescription().toLowerCase().contains(searchTerm))
+                    {
+                        outputBusinesses.add(businesses.get(i));
+                    }
                 }
             }
         }
@@ -112,42 +109,24 @@ public class SearchBusinessesController implements Initializable {
     
     private ArrayList<Business> setBusinesses()
     {
-        System.out.println("TEST: setBusinesses");
         ArrayList<Business> businesses = new ArrayList<>();
+        
         for(int i=0;i<session.users.size();i++)
         {
             if(session.users.get(i) instanceof Business) businesses.add((Business)session.users.get(i));
         }
+        
         return businesses;
     }
     
     private void displayResults(ArrayList<Business> businesses)
     {
         listItems.setAll();
-        System.out.println("TEST: displayResults");
+
         for(int i=0;i<businesses.size();i++)
         {
-            System.out.println("Name: " + businesses.get(i).getBusinessName() + '\n' + "Description: " + businesses.get(i).getBusinessDescription());
-            System.out.println("-------------------");
-            listItems.add(businesses.get(i).getBusinessName() + '\n' + businesses.get(i).getBusinessDescription() + '\n' + "----");
+            listItems.add("Name: " + businesses.get(i).getBusinessName() + "\nDescription: " + businesses.get(i).getBusinessDescription());
         }
-        resultsList.setItems(listItems);
-        
-        System.out.println("TEST: Results: " + resultsList.getItems().toString());
-    }
-    
-    private void displayAllBus()
-    {
-        ArrayList<Business> businesses = new ArrayList<Business>();
-        for(int i=0;i<session.users.size();i++)
-        {
-            if(session.users.get(i) instanceof Business) businesses.add((Business)session.users.get(i));
-        }
-        
-        for(int i=0;i<businesses.size();i++)
-        {
-            System.out.println("Name: " + businesses.get(i).getBusinessName() + '\n' + "Description: " + businesses.get(i).getBusinessDescription());
-            System.out.println("-------------------");
-        }
+        resultsList.setItems(listItems);   
     }
 }

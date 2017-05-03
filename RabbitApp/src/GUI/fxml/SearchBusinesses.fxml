@@ -9,15 +9,15 @@
 
 <AnchorPane id="AnchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.SearchBusinessesController">
    <children>
-      <TextField id="searchText" fx:id="searchText" layoutX="226.0" layoutY="76.0" promptText="Search..." />
+      <TextField id="searchText" fx:id="searchText" layoutX="577.0" layoutY="200.0" promptText="Search..." />
       <Button fx:id="returnButton" layoutX="14.0" layoutY="14.0" mnemonicParsing="false" onMouseClicked="#onClickReturn" text="Back" />
-      <Text layoutX="147.0" layoutY="52.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Search Businesses">
+      <Text layoutX="491.0" layoutY="88.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Search Businesses">
          <font>
             <Font size="39.0" />
          </font>
       </Text>
-      <Button fx:id="searchByName" layoutX="191.0" layoutY="103.0" mnemonicParsing="false" onAction="#searchBusinessByName" text="Search by Name" />
-      <Button fx:id="searchByDesc" layoutX="310.0" layoutY="103.0" mnemonicParsing="false" onMouseClicked="#searchBusinessByDesc" text="Search by Description" />
-      <ListView fx:id="resultsList" layoutX="210.0" layoutY="310.0" prefHeight="341.0" prefWidth="200.0" />
+      <Button fx:id="searchByName" layoutX="512.0" layoutY="237.0" mnemonicParsing="false" onAction="#searchBusinessByName" text="Search by Name" />
+      <Button fx:id="searchByDesc" layoutX="695.0" layoutY="237.0" mnemonicParsing="false" onMouseClicked="#searchBusinessByDesc" text="Search by Description" />
+      <ListView fx:id="resultsList" layoutX="504.0" layoutY="289.0" prefHeight="341.0" prefWidth="347.0" />
    </children>
 </AnchorPane>
