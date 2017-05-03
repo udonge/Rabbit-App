@@ -667,6 +667,7 @@ public class BusinessManageTimeslotController implements Initializable{
                     Time startTime = Time.valueOf(l);
                     Time endTime = Time.valueOf(end);
                     Timeslot timeslot = new Timeslot(
+                            session.generateID("T"),
                             thisBusiness.getID(),
                             null,
                             thisEmployee.getEID(),

@@ -20,6 +20,7 @@ import rabbitmethods.Formatters;
  * # Business that a Customer may browse and book. */
 public class Timeslot {
     
+    private String tid;                 // ID of Timeslot
     private String host;                // Business Providing Service. [HOST]
     private String patron;              // Customer Receiving Service. [PATRON]
     private String employeeID;          // Employee of Business assigned to Service. [EMPLOYEE]
@@ -29,6 +30,7 @@ public class Timeslot {
     private String description;         // Business sets a short 24 character description of service. [DESCRIPTION]
        
     public Timeslot(
+            String tid,
             String businessID,
             String customerID,
             String employeeID,
@@ -37,6 +39,7 @@ public class Timeslot {
             Time appointmentTime,
             String description) {
         
+        this.tid = tid;
         this.host = businessID;
         this.patron = customerID;
         this.employeeID = employeeID;
@@ -46,6 +49,9 @@ public class Timeslot {
         this.description = description;
     }
     /* # Setter */
+    public void setTID(String tid) {
+        this.tid = tid;
+    }
     public void setHost(String host) {
         this.host = host;
     }
@@ -69,6 +75,9 @@ public class Timeslot {
     }
     
     /* # Getter */
+    public String getTID() {
+        return this.tid;
+    }
     public String getHost() {
         return this.host;
     }

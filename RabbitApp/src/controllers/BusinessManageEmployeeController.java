@@ -78,7 +78,6 @@ public class BusinessManageEmployeeController implements Initializable{
             
     public ImageView
             img_ProfilePicture,
-            img_Timeslots,
             img_Return;
     /* # Timeslot Pane */
     public ListView<String>
@@ -108,7 +107,7 @@ public class BusinessManageEmployeeController implements Initializable{
     public TitledPane
             pane_Edit,
             pane_Timeslots,
-            pane_History;
+            pane_Bookings;
     
     public ImageView
             img_EditProfilePicture;
@@ -215,10 +214,6 @@ public class BusinessManageEmployeeController implements Initializable{
     public void setHoverIconDescText(ImageView v) {
         String id =  v.getId();
         
-         if(id.equals(img_Timeslots.getId())) {
-            label_HoverIconDesc.setText(AlertLabels.HOVER_DESCRIPTION_MANAGE_WORKSHIFTS.toString());
-        }
-        
         if(id.equals(img_Return.getId())) {
             label_HoverIconDesc.setText(AlertLabels.HOVER_DESCRIPTION_RETURN.toString());
         }   
@@ -227,9 +222,6 @@ public class BusinessManageEmployeeController implements Initializable{
     public void imgPurpose(ImageView v) throws IOException {
         String id = v.getId();
         
-        if(id.equals(img_Timeslots.getId())) {
-            // Navigate to This Employees Timeslots.
-        }
         
         if(id.equals(img_Return.getId())) {
             Stage stage = (Stage) img_Return.getScene().getWindow();
@@ -244,7 +236,7 @@ public class BusinessManageEmployeeController implements Initializable{
             text_AddEmployeeError.setText("");     
             img_ProfilePicture.setVisible(true);
             pane_Timeslots.setVisible(true);
-            pane_History.setVisible(true);              
+            pane_Bookings.setVisible(true);              
             if(pane_Edit.getText().equals("Edit")) {
                 if(editEmployee()) {
                     setEmployeeDetails(thisEmployee);
@@ -272,7 +264,7 @@ public class BusinessManageEmployeeController implements Initializable{
             pane_Edit.setExpanded(true);
             img_ProfilePicture.setVisible(false);            
             pane_Timeslots.setVisible(false);
-            pane_History.setVisible(false);
+            pane_Bookings.setVisible(false);
         }
         
         if(id.equals(btn_Cancel.getId())) {
@@ -283,7 +275,7 @@ public class BusinessManageEmployeeController implements Initializable{
             pane_Edit.setExpanded(false);
             img_ProfilePicture.setVisible(true);
             pane_Timeslots.setVisible(true);
-            pane_History.setVisible(true);            
+            pane_Bookings.setVisible(true);            
         }
         
         if(id.equals(btn_EditTimeslot.getId())) {
@@ -363,6 +355,7 @@ public class BusinessManageEmployeeController implements Initializable{
         text_EmployeeDesc.setText(e.getEmployeeDesc());
         
         setListOfTimeslots(e);
+        setListOfBookings(e);
     }
     
     private void setListOfTimeslots(Employee e) {
@@ -372,9 +365,12 @@ public class BusinessManageEmployeeController implements Initializable{
         
         SimpleDateFormat s = Formatters.formatDateToStringddMMEEEE();
         for(Timeslot t : e.getEmployeeTimeslots()) {
-            String date = s.format(t.getAppointmentDate());
-            String time = t.getAppointmentTime().toString();
-            timeslots.add(date + " - " + time);
+            if(t.getPatron()==null) {
+                String date = s.format(t.getAppointmentDate());
+                String time = t.getAppointmentTime().toString();
+                timeslots.add(date + " - " + time);                
+            }
+
         }
         list.setItems(timeslots);
     }
@@ -384,11 +380,17 @@ public class BusinessManageEmployeeController implements Initializable{
         ObservableList<String> bookings = FXCollections.observableArrayList();
         Timeslot.sortThisListByDate(e.getEmployeeTimeslots());
         SimpleDateFormat s = Formatters.formatDateToStringddMMEEEE();
+        String desc;
         for(Timeslot t : e.getEmployeeTimeslots()) {
             if(t.getPatron()!=null) {
                 String date = s.format(t.getAppointmentDate());
                 String time = t.getAppointmentTime().toString();
-                bookings.add(date + " - " + time + " [" + t.getPatron() +"]");
+                if(t.getDescription()!=null) {
+                    desc = t.getDescription();
+                } else {
+                    desc = "None";
+                }
+                bookings.add(desc + " - " + t.getPatron() + " | " + date + " - " + time);
             }
         }
         list.setItems(bookings);
@@ -439,8 +441,8 @@ public class BusinessManageEmployeeController implements Initializable{
 
         if(validateFields(fname, lname)) {
             String id = session.generateID("E");
-        
-            Employee dummyEmployee = new Employee(id, profileid, fname, lname, desc, null);
+            List<Timeslot> list = new ArrayList<>();
+            Employee dummyEmployee = new Employee(id, profileid, fname, lname, desc, list);
             session.saveEmployeeToDatabase(dummyEmployee, thisBusiness);
             thisBusiness.getListOfEmployees().add(dummyEmployee);
             /* # Update Choicebox. */
@@ -516,11 +518,13 @@ public class BusinessManageEmployeeController implements Initializable{
             Timeslot selectedTimeslot = thisEmployee.getEmployeeTimeslots().get(index);
             
             String patronID = textfield_SetCustomerID.getText();
+            String newDesc = textfield_SetDetails.getText();
             if(session.idAlreadyExists(patronID)) {
                 text_EditTimeslotError.setText("");
                 selectedTimeslot.setPatron(patronID);
+                selectedTimeslot.setDescription(newDesc);
                 session.updateTimeslot(selectedTimeslot);
-                
+                setEmployeeDetails(thisEmployee);
                 System.out.println("Test Passed");
             } else {
                 text_EditTimeslotError.setText("Customer does not exist.");

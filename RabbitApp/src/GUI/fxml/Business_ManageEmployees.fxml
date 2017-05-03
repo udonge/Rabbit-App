@@ -97,7 +97,7 @@
                                                    </GridPane.margin>
                                                 </TextField>
                                                 <Button fx:id="btn_DeleteTimeslot" mnemonicParsing="false" onMouseClicked="#onClickButton" text="Delete This Timeslot" textFill="#ee0707" GridPane.columnIndex="1" GridPane.halignment="CENTER" />
-                                                <TextField fx:id="text_SetDetails" promptText="Set Details" styleClass="field" GridPane.rowIndex="2">
+                                                <TextField fx:id="textfield_SetDetails" promptText="Set Details" styleClass="field" GridPane.rowIndex="2">
                                                    <GridPane.margin>
                                                       <Insets left="25.0" right="25.0" />
                                                    </GridPane.margin>
@@ -344,13 +344,6 @@
               <rowConstraints>
                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
               </rowConstraints>
-               <children>
-                  <ImageView fx:id="img_Timeslots" onMouseEntered="#onHoverImg" onMouseExited="#onHoverExitImg" onMousePressed="#onMouseHoldImg" GridPane.columnIndex="1" GridPane.halignment="CENTER">
-                     <image>
-                        <Image url="@assets/icon_Timeslots.png" />
-                     </image>
-                  </ImageView>
-               </children>
             </GridPane>
          </children>
       </GridPane>

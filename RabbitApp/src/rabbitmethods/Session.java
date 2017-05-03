@@ -5,7 +5,6 @@
  */
 package rabbitmethods;
 
-import com.sun.media.jfxmedia.logging.Logger;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -16,8 +15,6 @@ import java.sql.Date;
 import java.sql.Time;
 import java.util.List;
 import java.util.UUID;
-import java.util.logging.Level;
-import rabbitapp.RabbitApp;
 import rabbitobjects.Business;
 import rabbitobjects.Customer;
 import rabbitobjects.Employee;
@@ -29,9 +26,8 @@ import rabbitobjects.User;
  * @author Reisen
  * # User session with the application, login/logout/save/load/database population of List<User> of all users.
  */
-public class Session 
-{
-    private static final java.util.logging.Logger LOGGER = java.util.logging.Logger.getLogger( RabbitApp.class.getName() );
+public class Session {
+    
     public ArrayList<User> users;
     public User currentUser;
     public Connection connection;
@@ -53,7 +49,6 @@ public class Session
         for(User user : users) {
             if(user.getEmail().equals(email)) {
                 if(user.getPassword().equals(password)) {
-                    LOGGER.fine("Logged in " + user.getEmail());
                     currentUser = user;
                     return true;
                 }
@@ -63,7 +58,6 @@ public class Session
     }   
     public void logout() {
         /* # Set currentUser to null*/
-        LOGGER.fine("Logged out " + currentUser.getEmail());
         currentUser = null;
     }
     
@@ -77,7 +71,6 @@ public class Session
          * # This means heavier coding in reading and writing but the database will be more flexible. */             
         /* # Get all User IDs from database into List. */
         String command = "SELECT * FROM " + schema + ".USERS";
-        LOGGER.finer("SQL Request to database: " + command);
         List<String> listOfID = new ArrayList<>();
         try {
             Statement statement = connection.createStatement();            
@@ -88,7 +81,7 @@ public class Session
                 listOfID.add(id);
             }
         } catch(SQLException error) {
-            LOGGER.severe("SQL error when attempting read: " + error.getMessage());
+            System.out.println(error.getMessage());
         }
         
         listOfID.forEach((index) -> {
@@ -244,13 +237,14 @@ public class Session
             Statement statement = connection.createStatement();
             ResultSet rsTimeslot = statement.executeQuery(command);
             while(rsTimeslot.next()) {
+                String tid = rsTimeslot.getString("TID");
                 String host = rsTimeslot.getString("HOST");
                 String patron = rsTimeslot.getString("PATRON");
                 Date date = rsTimeslot.getDate("DATE");
                 String desc = rsTimeslot.getString("DESCRIPTION");
                 Time start = rsTimeslot.getTime("STARTTIME");
                 Time end = rsTimeslot.getTime("ENDTIME");
-                Timeslot timeslot = new Timeslot(host, patron, EID, date, start, end, desc);
+                Timeslot timeslot = new Timeslot(tid, host, patron, EID, date, start, end, desc);
                 list.add(timeslot);
             }
         } catch (SQLException error) {
@@ -377,7 +371,7 @@ public class Session
     }
     
     public void saveTimeslotToDatabase(Timeslot timeslot) {
-        String userCommand = "INSERT INTO " + schema + ".TIMESLOT " + "VALUES (?,?,?,?,?,?,?)";
+        String userCommand = "INSERT INTO " + schema + ".TIMESLOT " + "VALUES (?,?,?,?,?,?,?,?)";
         String patron = null;
         if(timeslot.getPatron()!=null) {
             patron = timeslot.getPatron();
@@ -391,6 +385,7 @@ public class Session
             statement.setString(5, timeslot.getDescription());
             statement.setTime(6, timeslot.getAppointmentTime());
             statement.setTime(7, timeslot.getAppointmentTimeEnd());
+            statement.setString(8, timeslot.getTID());
             
             statement.executeUpdate();
         } catch ( SQLException error ) {
@@ -509,15 +504,13 @@ public class Session
     public void updateTimeslot(Timeslot timeslot) {
         String updateCommand = 
                 "UPDATE " + schema + ".TIMESLOT SET " +
+                "DESCRIPTION = ?, " +
                 "PATRON = ? " +
-                "WHERE EID = '" + timeslot.getEmployeeID() + "' AND " +
-                "DATE = '" + timeslot.getAppointmentDate() + "' AND " +
-                "STARTTIME = '" + timeslot.getAppointmentTime() + "' AND " +
-                "ENDTIME = '" + timeslot.getAppointmentTimeEnd() + "' AND " +
-                "DESCRIPTION = '" + timeslot.getDescription() + "'";
+                "WHERE TID = '" + timeslot.getTID() + "'";
         try {
             PreparedStatement statement = connection.prepareStatement(updateCommand);
-            statement.setString(1, timeslot.getPatron());
+            statement.setString(1, timeslot.getDescription());
+            statement.setString(2, timeslot.getPatron());
             statement.executeUpdate();
         } catch(SQLException error) {
             System.out.println(error.getMessage());
@@ -531,7 +524,7 @@ public class Session
     public void removeTimeslotsOfEmployeeFromDatabase(Employee employee) {
         /* # Just remove the whole thing for now... too troublesome for individuals. */
         String removeCommand = 
-                "DELETE FROM " + schema + ".TIMESLOT " +
+                "DELETE * FROM " + schema + ".TIMESLOT " +
                 "WHERE EID = '" + employee.getEID() + "'";
         try {
             Statement statement = connection.createStatement();

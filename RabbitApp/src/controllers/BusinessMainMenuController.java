@@ -84,6 +84,14 @@ public class BusinessMainMenuController implements Initializable {
         node.setOpacity(0.4);
     }
     
+    public void disableTimeslotsIfNoEmployees() {
+        Business business = (Business) session.currentUser;
+        if(business.getListOfEmployees().isEmpty()) {
+            img_Timeslots.setOpacity(0.4);
+            img_Timeslots.setDisable(true);
+        }
+    }
+    
 
     
  /* #########################################################################
