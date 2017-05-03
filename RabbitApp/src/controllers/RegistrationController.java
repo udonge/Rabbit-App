@@ -224,10 +224,12 @@ public class RegistrationController implements  Initializable {
     
     public void onClickCustomerConfirm() {
         /* # Run textfield checks for appropriate selections. */
+        LOGGER.fine(String.format("Checking if registration fields are valid..."));
         if(validateCustomerTextFields()) {
+            LOGGER.fine(String.format("Fields are valid, submitting registration."));
             registerCustomer();
         } else {
-            System.out.println("Customer Registration Failure.");
+            LOGGER.fine(String.format("Registration fields invalid. Registration failed."));
         }
     } // End onClickCustomerConfirm
     
