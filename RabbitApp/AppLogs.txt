@@ -1,16 +1,10 @@
-May 03, 2017 4:38:19 PM rabbitapp.RabbitApp initLogger
+May 08, 2017 9:20:39 AM rabbitapp.RabbitApp initLogger
 FINE: Logger initialised.
-May 03, 2017 4:38:19 PM rabbitapp.RabbitApp start
+May 08, 2017 9:20:39 AM rabbitapp.RabbitApp start
 FINE: Application launching...
-May 03, 2017 4:38:19 PM rabbitapp.RabbitFX loginStage
+May 08, 2017 9:20:39 AM rabbitapp.RabbitApp start
+SEVERE: Issue creating connection: java.net.ConnectException : Error connecting to server localhost on port 1,527 with message Connection refused (Connection refused).
+May 08, 2017 9:20:39 AM rabbitapp.RabbitFX loginStage
 FINE: Loading Login stage...
-May 03, 2017 4:38:19 PM rabbitapp.RabbitFX loginStage
+May 08, 2017 9:20:40 AM rabbitapp.RabbitFX loginStage
 FINE: Loaded Login stage
-May 03, 2017 4:38:26 PM rabbitapp.RabbitFX businessStage
-FINE: Loading Business Menu stage...
-May 03, 2017 4:38:26 PM rabbitapp.RabbitFX businessStage
-FINE: Loaded Business Menu stage
-May 03, 2017 4:38:27 PM rabbitapp.RabbitFX viewBusinessManageEmployee
-FINE: Loading Employee Management stage...
-May 03, 2017 4:38:27 PM rabbitapp.RabbitFX viewBusinessManageEmployee
-FINE: Loaded Employee Management stage
