@@ -272,6 +272,14 @@ public class RegistrationController implements  Initializable {
         session.saveToDatabase(customer);
         resetUserText();
         text_Success.setVisible(true);
+        try
+        {
+            onClickReturn();
+        }
+        catch ( IOException IOException)
+        {
+            
+        }
     } // End registerCustomer
     
  /* #########################################################################
@@ -353,7 +361,16 @@ public class RegistrationController implements  Initializable {
         session.users.add(business);
         session.saveToDatabase(business);
         resetUserText();
-        text_Success.setVisible(true);        
+        text_Success.setVisible(true);   
+        try
+        {
+            onClickReturn();
+        }
+        catch ( IOException IOException)
+        {
+            
+        }
+        
     }
     
  /* #########################################################################
@@ -363,7 +380,7 @@ public class RegistrationController implements  Initializable {
     /* # Return to Login screen. */
     public void onClickReturn() throws IOException {
         /* # btn_CustomerReturn and btn_BusinessReturn are functionally the same. */
-        Stage stage = (Stage) btn_CustomerReturn.getScene().getWindow();      
+        Stage stage = (Stage) btn_CustomerReturn.getScene().getWindow();
         rabbitfx.loginStage(stage);        
     } //End onClickReturn
     
@@ -375,6 +392,4 @@ public class RegistrationController implements  Initializable {
         pane1.setVisible(!pane1.isVisible());
         pane2.setVisible(!pane2.isVisible());
     } //End toggleViewPane
-    
-    
 }
