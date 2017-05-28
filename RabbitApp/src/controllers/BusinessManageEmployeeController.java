@@ -429,7 +429,7 @@ public class BusinessManageEmployeeController implements Initializable{
                 } else {
                     desc = "None";
                 }
-                bookings.add(desc + " | " + t.getPatron() + " | " + date + " - " + time + " (" + timeslotID + ")");
+                bookings.add(desc + " | " + t.getPatron() + " | " + date + " - " + time + " | (" + timeslotID + ")");
             }
         }
         list.setItems(bookings);
