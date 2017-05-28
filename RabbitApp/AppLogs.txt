@@ -1,16 +1,108 @@
-May 03, 2017 4:38:19 PM rabbitapp.RabbitApp initLogger
+May 28, 2017 7:15:36 PM rabbitapp.RabbitApp initLogger
 FINE: Logger initialised.
-May 03, 2017 4:38:19 PM rabbitapp.RabbitApp start
+May 28, 2017 7:15:36 PM rabbitapp.RabbitApp start
 FINE: Application launching...
-May 03, 2017 4:38:19 PM rabbitapp.RabbitFX loginStage
+May 28, 2017 7:15:36 PM rabbitapp.RabbitFX loginStage
 FINE: Loading Login stage...
-May 03, 2017 4:38:19 PM rabbitapp.RabbitFX loginStage
+May 28, 2017 7:15:38 PM rabbitapp.RabbitFX loginStage
 FINE: Loaded Login stage
-May 03, 2017 4:38:26 PM rabbitapp.RabbitFX businessStage
+May 28, 2017 7:15:44 PM rabbitapp.RabbitFX businessStage
 FINE: Loading Business Menu stage...
-May 03, 2017 4:38:26 PM rabbitapp.RabbitFX businessStage
+May 28, 2017 7:15:44 PM rabbitapp.RabbitFX businessStage
 FINE: Loaded Business Menu stage
-May 03, 2017 4:38:27 PM rabbitapp.RabbitFX viewBusinessManageEmployee
-FINE: Loading Employee Management stage...
-May 03, 2017 4:38:27 PM rabbitapp.RabbitFX viewBusinessManageEmployee
-FINE: Loaded Employee Management stage
+May 28, 2017 7:15:46 PM rabbitapp.RabbitFX viewProfileBusiness
+FINE: Loading Business Profile stage...
+May 28, 2017 7:15:46 PM rabbitapp.RabbitFX viewProfileBusiness
+FINE: Loaded Business Profile stage
+May 28, 2017 7:15:52 PM rabbitapp.RabbitFX businessStage
+FINE: Loading Business Menu stage...
+May 28, 2017 7:15:52 PM rabbitapp.RabbitFX businessStage
+FINE: Loaded Business Menu stage
+May 28, 2017 7:15:54 PM rabbitapp.RabbitFX viewProfileBusiness
+FINE: Loading Business Profile stage...
+May 28, 2017 7:15:54 PM rabbitapp.RabbitFX viewProfileBusiness
+FINE: Loaded Business Profile stage
+May 28, 2017 7:16:00 PM rabbitapp.RabbitFX businessStage
+FINE: Loading Business Menu stage...
+May 28, 2017 7:16:00 PM rabbitapp.RabbitFX businessStage
+FINE: Loaded Business Menu stage
+May 28, 2017 7:16:01 PM rabbitapp.RabbitFX viewBusinessManageTimeslot
+FINE: Loading Timeslot Management stage...
+May 28, 2017 7:16:02 PM rabbitapp.RabbitFX viewBusinessManageTimeslot
+FINE: Loaded Timeslot Management stage
+May 28, 2017 7:16:03 PM rabbitapp.RabbitFX businessStage
+FINE: Loading Business Menu stage...
+May 28, 2017 7:16:03 PM rabbitapp.RabbitFX businessStage
+FINE: Loaded Business Menu stage
+May 28, 2017 7:16:04 PM rabbitapp.RabbitFX viewProfileBusiness
+FINE: Loading Business Profile stage...
+May 28, 2017 7:16:04 PM rabbitapp.RabbitFX viewProfileBusiness
+FINE: Loaded Business Profile stage
+May 28, 2017 7:16:06 PM rabbitapp.RabbitFX businessStage
+FINE: Loading Business Menu stage...
+May 28, 2017 7:16:06 PM rabbitapp.RabbitFX businessStage
+FINE: Loaded Business Menu stage
+May 28, 2017 7:16:07 PM rabbitapp.RabbitFX viewBusinessManageTimeslot
+FINE: Loading Timeslot Management stage...
+May 28, 2017 7:16:07 PM rabbitapp.RabbitFX viewBusinessManageTimeslot
+FINE: Loaded Timeslot Management stage
+May 28, 2017 7:16:09 PM rabbitapp.RabbitFX businessStage
+FINE: Loading Business Menu stage...
+May 28, 2017 7:16:09 PM rabbitapp.RabbitFX businessStage
+FINE: Loaded Business Menu stage
+May 28, 2017 7:16:10 PM rabbitapp.RabbitFX viewBusinessManageTimeslot
+FINE: Loading Timeslot Management stage...
+May 28, 2017 7:16:11 PM rabbitapp.RabbitFX viewBusinessManageTimeslot
+FINE: Loaded Timeslot Management stage
+May 28, 2017 7:16:17 PM rabbitapp.RabbitFX businessStage
+FINE: Loading Business Menu stage...
+May 28, 2017 7:16:17 PM rabbitapp.RabbitFX businessStage
+FINE: Loaded Business Menu stage
+May 28, 2017 7:16:17 PM rabbitapp.RabbitFX viewBusinessManageTimeslot
+FINE: Loading Timeslot Management stage...
+May 28, 2017 7:16:18 PM rabbitapp.RabbitFX viewBusinessManageTimeslot
+FINE: Loaded Timeslot Management stage
+May 28, 2017 7:16:19 PM rabbitapp.RabbitFX businessStage
+FINE: Loading Business Menu stage...
+May 28, 2017 7:16:19 PM rabbitapp.RabbitFX businessStage
+FINE: Loaded Business Menu stage
+May 28, 2017 7:16:20 PM rabbitapp.RabbitFX viewBusinessManageTimeslot
+FINE: Loading Timeslot Management stage...
+May 28, 2017 7:16:20 PM rabbitapp.RabbitFX viewBusinessManageTimeslot
+FINE: Loaded Timeslot Management stage
+May 28, 2017 7:16:21 PM rabbitapp.RabbitFX businessStage
+FINE: Loading Business Menu stage...
+May 28, 2017 7:16:21 PM rabbitapp.RabbitFX businessStage
+FINE: Loaded Business Menu stage
+May 28, 2017 7:16:23 PM rabbitapp.RabbitFX viewProfileBusiness
+FINE: Loading Business Profile stage...
+May 28, 2017 7:16:23 PM rabbitapp.RabbitFX viewProfileBusiness
+FINE: Loaded Business Profile stage
+May 28, 2017 7:16:28 PM rabbitapp.RabbitFX businessStage
+FINE: Loading Business Menu stage...
+May 28, 2017 7:16:28 PM rabbitapp.RabbitFX businessStage
+FINE: Loaded Business Menu stage
+May 28, 2017 7:16:29 PM rabbitapp.RabbitFX viewBusinessManageTimeslot
+FINE: Loading Timeslot Management stage...
+May 28, 2017 7:16:30 PM rabbitapp.RabbitFX viewBusinessManageTimeslot
+FINE: Loaded Timeslot Management stage
+May 28, 2017 7:16:37 PM rabbitapp.RabbitFX businessStage
+FINE: Loading Business Menu stage...
+May 28, 2017 7:16:37 PM rabbitapp.RabbitFX businessStage
+FINE: Loaded Business Menu stage
+May 28, 2017 7:16:39 PM rabbitapp.RabbitFX viewProfileBusiness
+FINE: Loading Business Profile stage...
+May 28, 2017 7:16:39 PM rabbitapp.RabbitFX viewProfileBusiness
+FINE: Loaded Business Profile stage
+May 28, 2017 7:16:41 PM rabbitapp.RabbitFX businessStage
+FINE: Loading Business Menu stage...
+May 28, 2017 7:16:41 PM rabbitapp.RabbitFX businessStage
+FINE: Loaded Business Menu stage
+May 28, 2017 7:16:41 PM rabbitapp.RabbitFX viewBusinessManageTimeslot
+FINE: Loading Timeslot Management stage...
+May 28, 2017 7:16:42 PM rabbitapp.RabbitFX viewBusinessManageTimeslot
+FINE: Loaded Timeslot Management stage
+May 28, 2017 7:22:06 PM rabbitapp.RabbitFX businessStage
+FINE: Loading Business Menu stage...
+May 28, 2017 7:22:06 PM rabbitapp.RabbitFX businessStage
+FINE: Loaded Business Menu stage

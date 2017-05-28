@@ -409,9 +409,16 @@ public class BusinessManageTimeslotController implements Initializable{
     }
     
     public void setEmployeeList() {
-        thisBusiness.getListOfEmployees().stream().filter((e) -> (e.getEID()!=null)).forEachOrdered((e) -> {
-            choicebox_SelectEmployee.getItems().add(e.getEID());
-        });
+        List<Employee> employeeList = thisBusiness.getListOfEmployees();
+        ChoiceBox<String> selectEmployee = choicebox_SelectEmployee;
+        
+        for(Employee e : employeeList) {
+            if(e.getEID()!=null) {
+                String fullName = e.getEmployeeFirstName() + " " + e.getEmployeeLastName();
+                selectEmployee.getItems().add(fullName);                
+            }
+        }
+        
         choicebox_SelectEmployee.getSelectionModel().selectedIndexProperty().addListener
         (new ChangeListener<Number>() {
             public void changed(ObservableValue ov,

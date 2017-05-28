@@ -16,6 +16,7 @@ import javafx.scene.effect.Glow;
 import javafx.scene.effect.InnerShadow;
 import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import rabbitapp.RabbitFX;
 import rabbitmethods.Session;
@@ -44,7 +45,9 @@ public class BusinessMainMenuController implements Initializable {
     public Label
             label_Title,
             label_GreetingText,
-            label_HoverIconDesc;
+            label_HoverIconDesc,
+            label_noBusinessHours;
+    
     
  /* #########################################################################
   * #   Constructor Methods                                                 #
@@ -68,9 +71,11 @@ public class BusinessMainMenuController implements Initializable {
         innershadow.setOffsetX(6);
         innershadow.setOffsetY(6);
         innershadow.setColor(Color.BLACK);
-        
-        if(sessionUser.getOpeningHours()==null || sessionUser.getClosingHours()==null) {
+        label_noBusinessHours.setOpacity(0);
+        if(sessionUser.getOpeningHours()==null || sessionUser.getClosingHours()==null || closedAllDays()) {
             disableNode(img_Timeslots);
+            System.out.println("TEST: No opening hours");
+            label_noBusinessHours.setOpacity(100);
         }
     }
     
@@ -90,6 +95,19 @@ public class BusinessMainMenuController implements Initializable {
             img_Timeslots.setOpacity(0.4);
             img_Timeslots.setDisable(true);
         }
+    }
+    
+    public boolean closedAllDays()
+    {
+        Business sessionUser = (Business) session.currentUser;
+        boolean[] daysOpen = sessionUser.getDaysOpen();
+        boolean result = true;
+        for(int i=0;i<daysOpen.length;i++)
+        {
+            if(daysOpen[i] == true) result=false;
+        }
+
+        return result;
     }
     
 

@@ -153,6 +153,7 @@ public class BusinessManageEmployeeController implements Initializable{
         label_HoverIconDesc.setText("");
         text_EditTimeslotError.setText("");
         
+        
     }    
     
     public void setDriver(RabbitFX rabbitfx) {
@@ -161,6 +162,13 @@ public class BusinessManageEmployeeController implements Initializable{
     public void setSession(Session session) {
         this.session = session;
         this.thisBusiness = (Business) session.currentUser;
+        
+        if(thisBusiness.getListOfEmployees().isEmpty())
+        {
+            pane_Edit.setVisible(false);
+            pane_Timeslots.setVisible(false);
+            pane_Bookings.setVisible(false);
+        }
     }
     
  /* #########################################################################
@@ -260,7 +268,9 @@ public class BusinessManageEmployeeController implements Initializable{
         
         if(id.equals(btn_AddEmployee.getId())) {
             clearTextFields();
+            choicebox_EditProfilePicture.getSelectionModel().clearAndSelect(0);
             clearEmployeeTextTable();
+            pane_Edit.setVisible(true);
             pane_Edit.setText("Add");
             pane_Edit.setExpanded(true);
             img_ProfilePicture.setVisible(false);            
@@ -318,8 +328,8 @@ public class BusinessManageEmployeeController implements Initializable{
         
         for(Employee e : employeeList) {
             if(e.getEID()!=null) {
-                String eid = e.getEID();
-                selectEmployee.getItems().add(eid);                
+                String fullName = e.getEmployeeFirstName() + " " + e.getEmployeeLastName();
+                selectEmployee.getItems().add(fullName);                
             }
         }
         
@@ -439,6 +449,7 @@ public class BusinessManageEmployeeController implements Initializable{
         String fname = textfield_NewFirstName.getText();
         String lname = textfield_NewLastName.getText();
         String desc = textfield_NewDesc.getText();
+        
 
         if(validateFields(fname, lname)) {
             String id = session.generateID("E");
@@ -447,7 +458,8 @@ public class BusinessManageEmployeeController implements Initializable{
             session.saveEmployeeToDatabase(dummyEmployee, thisBusiness);
             thisBusiness.getListOfEmployees().add(dummyEmployee);
             /* # Update Choicebox. */
-            choicebox_SelectEmployee.getItems().add(dummyEmployee.getEID());
+            String employeeFullName = dummyEmployee.getEmployeeFirstName() + dummyEmployee.getEmployeeLastName();
+            choicebox_SelectEmployee.getItems().add(employeeFullName);
             /* # Set selection to this employee.*/
             choicebox_SelectEmployee.getSelectionModel().selectLast();  
             text_AddEmployeeError.setText("");
