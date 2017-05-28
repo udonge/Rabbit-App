@@ -37,6 +37,7 @@ import rabbitmethods.Formatters;
 import rabbitmethods.Session;
 import rabbitmethods.Validation;
 import rabbitobjects.Business;
+import rabbitobjects.Customer;
 import rabbitobjects.Employee;
 import rabbitobjects.Timeslot;
 
@@ -70,7 +71,8 @@ public class BusinessManageEmployeeController implements Initializable{
     
     public Button 
             btn_Return,
-            btn_AddEmployee;
+            btn_AddEmployee,
+            btn_DeleteBooking;
     
     public Text
             text_EmployeeName,
@@ -292,6 +294,31 @@ public class BusinessManageEmployeeController implements Initializable{
         if(id.equals(btn_EditTimeslot.getId())) {
             editTimeslot();
         }
+        
+        if(id.equals(btn_DeleteBooking.getId()))
+        {
+            ListView<String> list = listview_Bookings;
+            String booking = list.getSelectionModel().getSelectedItem();
+            int length = booking.length();
+            String timeslotID = booking.substring(length-11, length-1);
+            Employee e = thisEmployee;
+            List<Timeslot> timeslots = e.getEmployeeTimeslots();
+            System.out.println("Employee: " + e.getEmployeeFirstName() + " " + e.getEmployeeLastName());
+            System.out.println("TID: " + timeslotID);
+            for(int i=0;i<timeslots.size();i++)
+            {
+                if(timeslots.get(i).getTID().equals(timeslotID))
+                {
+                    e.getEmployeeTimeslots().get(i).setPatron(null);
+                    session.updateTimeslot(e.getEmployeeTimeslots().get(i));
+                    System.out.println("FOUND");
+                    break;
+                }
+            }
+            
+            setListOfBookings(thisEmployee);
+            
+        }
     }
     
     public void setErrorTextField(TextField tf, boolean toggle) {
@@ -327,7 +354,7 @@ public class BusinessManageEmployeeController implements Initializable{
         clearEmployeeTextTable();
         
         for(Employee e : employeeList) {
-            if(e.getEID()!=null) {
+            if(e.getEmployeeFirstName()!=null) {
                 String fullName = e.getEmployeeFirstName() + " " + e.getEmployeeLastName();
                 selectEmployee.getItems().add(fullName);                
             }
@@ -396,15 +423,17 @@ public class BusinessManageEmployeeController implements Initializable{
             if(t.getPatron()!=null) {
                 String date = s.format(t.getAppointmentDate());
                 String time = t.getAppointmentTime().toString();
+                String timeslotID = t.getTID();
                 if(t.getDescription()!=null) {
                     desc = t.getDescription();
                 } else {
                     desc = "None";
                 }
-                bookings.add(desc + " - " + t.getPatron() + " | " + date + " - " + time);
+                bookings.add(desc + " | " + t.getPatron() + " | " + date + " - " + time + " (" + timeslotID + ")");
             }
         }
         list.setItems(bookings);
+        
     }
     
 
@@ -526,20 +555,40 @@ public class BusinessManageEmployeeController implements Initializable{
     ######################################################################### */ 
     
     public void editTimeslot() {
+        boolean found = false;
+        ArrayList<Customer> customers = new ArrayList<Customer>();
         int index = listview_Timeslots.getSelectionModel().getSelectedIndex();
         if(index>=0) {
             Timeslot selectedTimeslot = thisEmployee.getEmployeeTimeslots().get(index);
             
-            String patronID = textfield_SetCustomerID.getText();
+            String userDetails = textfield_SetCustomerID.getText();
             String newDesc = textfield_SetDetails.getText();
-            if(session.idAlreadyExists(patronID)) {
+            if(session.emailAlreadyExists(userDetails)) //If user entered email, gets ID
+            {
+                for(int i=0;i<session.users.size();i++)
+                { //Creates array of customers
+                    if(session.users.get(i) instanceof Customer) customers.add((Customer)session.users.get(i));
+                }
+                for(int i=0;i<customers.size();i++)
+                { //searches for email, to convert to ID
+                    if(customers.get(i).getEmail().equals(userDetails))
+                    {
+                        userDetails=customers.get(i).getID();
+                        found = true;
+                        break;
+                    }
+                }
+            }
+            
+            if(session.idAlreadyExists(userDetails)) { //makes booking based on ID
                 text_EditTimeslotError.setText("");
-                selectedTimeslot.setPatron(patronID);
+                selectedTimeslot.setPatron(userDetails);
                 selectedTimeslot.setDescription(newDesc);
                 session.updateTimeslot(selectedTimeslot);
                 setEmployeeDetails(thisEmployee);
                 System.out.println("Test Passed");
-            } else {
+            } 
+            if(!found) {
                 text_EditTimeslotError.setText("Customer does not exist.");
                 System.out.println("This user does not exist");
             }
@@ -575,5 +624,27 @@ public class BusinessManageEmployeeController implements Initializable{
   
     public boolean fieldIsEmpty(TextField field) {
         return field.getText().isEmpty();
-    }    
+    }   
+    
+    public void updateBooking()
+    {
+        ListView<String> list = listview_Bookings;
+        String input, bookingDate, bookingID, bookingDesc;
+        String[] inputs;
+        if(!list.getSelectionModel().isEmpty())
+        {
+            input = list.getSelectionModel().getSelectedItem();
+            inputs = input.split("\\|");
+            bookingDesc = inputs[0].replaceAll("\\s","");
+            bookingID = inputs[1].replaceAll("\\s","");
+            bookingDate = inputs[2].replaceAll("\\s","");
+
+            text_BookingDate.setText(bookingDate);
+            text_BookingPatron.setText(bookingID);
+            text_BookingDesc.setText(bookingDesc);
+        }
+    }
 }
+
+
+

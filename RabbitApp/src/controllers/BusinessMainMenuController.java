@@ -72,7 +72,7 @@ public class BusinessMainMenuController implements Initializable {
         innershadow.setOffsetY(6);
         innershadow.setColor(Color.BLACK);
         label_noBusinessHours.setOpacity(0);
-        if(sessionUser.getOpeningHours()==null || sessionUser.getClosingHours()==null || closedAllDays()) {
+        if(closedAllDays() || sessionUser.getOpeningHours()==null || sessionUser.getClosingHours()==null) {
             disableNode(img_Timeslots);
             System.out.println("TEST: No opening hours");
             label_noBusinessHours.setOpacity(100);
@@ -104,7 +104,13 @@ public class BusinessMainMenuController implements Initializable {
         boolean result = true;
         for(int i=0;i<daysOpen.length;i++)
         {
-            if(daysOpen[i] == true) result=false;
+            System.out.println("Day " + i + " is " + daysOpen[i]);
+            if(daysOpen[i] == true)
+            {
+                result=false;
+                break;
+            }
+            
         }
 
         return result;
