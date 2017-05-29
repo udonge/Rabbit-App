@@ -8,6 +8,7 @@ package rabbitmethods;
 import enums.ErrorLabels;
 import enums.NameFieldExceptions;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 import javafx.scene.text.Text;
 import javax.mail.internet.AddressException;
@@ -134,7 +135,7 @@ public class Validation {
     public boolean contactNoIsValid(String contact, Text error) {
         String contactNo = contact;
         if(contactNo.isEmpty()) {           
-            return true;
+            return false;
         }      
         if(charIsNotNumeric(turnStringToCharArray(contactNo))) {
             error.setText(ErrorLabels.REGISTRATION_FAILURE_CONTACTNO_FIELD_INVALID.toString());
@@ -155,13 +156,25 @@ public class Validation {
             return true;
             
         }
-              
-        if(dateIsValid(day,month,year)) {
-            errorText.setText("");
-            return true;
-        } else {
+        else if(dateIsValid(day,month,year)) {
+            if(Integer.parseInt(year) >= Calendar.getInstance().get(Calendar.YEAR))
+            {
+                errorText.setText("Year must be prior to " + Calendar.getInstance().get(Calendar.YEAR));
+                return false;
+            }
+            else
+            {
+                errorText.setText("");
+                return true;
+            }
+        } 
+        
+        
+        else {
             return false;
-        }      
+        }
+        
+        
     } // End of dateOfBirthIsValid
     
     public boolean dateIsValid(String day, String month, String year) {
