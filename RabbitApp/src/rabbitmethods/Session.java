@@ -527,6 +527,7 @@ public class Session {
         }
     }
     
+    
     public void updateTimeslot(Timeslot timeslot) {
         String updateCommand = 
                 "UPDATE " + schema + ".TIMESLOT SET " +
