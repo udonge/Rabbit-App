@@ -480,7 +480,7 @@ public class BusinessManageTimeslotController implements Initializable{
     
     public void onClickSave() {
         if(generateWorkshift()) {
-            clearSelectedHoursFromList();
+            //clearSelectedHoursFromList();
         } else {
             System.out.println("User cancelled changes.");
         }
